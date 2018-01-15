@@ -30,9 +30,9 @@ let routes = [
         name: '运营委托',
         iconCls: 'el-icon-message',//图标样式class
         children: [
-            { path: '/main', component: Main, name: '电话委托', hidden: true },
-            { path: '/main', component: Main, name: '超级用户', hidden: true },
-            { path: '/main', component: Main, name: '修改流拍', hidden: true },
+            { path: '/table', component: Main, name: '电话委托', hidden: false },
+            { path: '/table', component: Main, name: '超级用户', hidden: false },
+            { path: '/table', component: Main, name: '修改流拍', hidden: false },
             { path: '/table', component: Table, name: 'Table' },
             { path: '/form', component: Form, name: 'Form' },
             { path: '/user', component: user, name: '列表' },
@@ -52,8 +52,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '订单管理',
-        iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
+        iconCls: 'fa fa-id-card-o',
         children: [
             { path: '/page6', component: Page6, name: '全部订单' },
             { path: '/page6', component: Page6, name: '售后订单' },
@@ -63,10 +62,37 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: 'Charts',
-        iconCls: 'fa fa-bar-chart',
+        name: '用户管理',
+        iconCls: 'fa fa-address-card',
+        leaf: false,//只有一个节点
         children: [
-            { path: '/echarts', component: echarts, name: 'echarts' }
+            { path: '/page6', component: Page6, name: '全部用户' },
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '资金管理',
+        iconCls: 'fa fa-address-card',
+        leaf: false,//只有一个节点
+        children: [
+            { path: '/page6', component: Page6, name: '交易记录' },
+            { path: '/page6', component: Page6, name: '审核' },
+            { path: '/page6', component: Page6, name: '银行卡管理' }
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '设置',
+        iconCls: 'fa fa-bar-chart',
+        leaf: false,//只有一个节点
+        children: [
+            { path: '/page6', component: Page6, name: '权限设置' },
+            { path: '/page6', component: Page6, name: '积分设置' },
+            { path: '/page6', component: Page6, name: '会员设置' },
+            { path: '/page6', component: Page6, name: '文档设置' },
+            { path: '/page6', component: Page6, name: '标签设置' }
         ]
     },
     {
