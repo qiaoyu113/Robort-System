@@ -9,7 +9,8 @@
 					<i class="fa fa-align-justify"></i>
 				</div>
 			</el-col>
-			<el-col :span="4" class="userinfo">
+			<el-col :span="5" class="userinfo">
+				<span class="home" style="float:left;">网站首页</span>
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
