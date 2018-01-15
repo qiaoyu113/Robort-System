@@ -10,7 +10,7 @@
 				</div>
 			</el-col>
 			<el-col :span="5" class="userinfo">
-				<span class="home" style="float:left;">网站首页</span>
+				<router-link to="/table"><span class="home" style="float:left;">网站首页</span></router-link >
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
@@ -141,7 +141,7 @@
 
 <style scoped lang="scss">
 	@import '~scss_vars';
-	
+	a{text-decoration: none;color:#fff;}
 	.container {
 		position: absolute;
 		top: 0px;
