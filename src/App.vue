@@ -1,63 +1,67 @@
 <template>
-    <div id="app" class="scroll">
-        <!--<router-view class="view"></router-view>-->
-        <keep-alive >
-            <router-view v-if="$route.meta.keepAlive"></router-view>
-        </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
-        <div class="clearB"></div>
-    </div>
+	<div id="app">
+		<transition name="fade"
+		            mode="out-in">
+			<router-view></router-view>
+		</transition>
+	</div>
 </template>
 
 <script>
-    import {appService} from './service/appService'
-    export default {
-        name: 'app',
-        components: {},
-        mounted: function () {
-            /*if(appService.getUserInfo()) {
-                let now = new Date()
-//                console.log(this.$store.state.userInfo.exp*1000);
-//                console.log(now.getTime());
-                let t = this.$store.state.userInfo.exp*1000 - now.getTime() ;   //时间差的毫秒数
-                let h = Math.floor(t/(3600*1000))
-                if(h<3){
-                    appService.putToken()
-                }
-            }*/
-            appService.onBridgeReady();
-        },
-        methods: {
-        }
-    }
+export default {
+	name: 'app',
+	components: {
+	}
+}
+
 </script>
 
-<style lang="less">
-    @import url('assets/css/base.less');
-    @import url('assets/css/icon/iconfont.css');
-    html, body {
-        margin: 0 auto;
-        width: 100%;
-        word-wrap: break-word;
-        overflow: scroll;
-        height: 100%;
-        max-width: 450px;
-        position:relative;
-    }
-    body {
-        font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Helvetica Neue,Arial,sans-serif;
-    }
-    p{margin: 0;}
-    #home {
-        padding-bottom: 65px;
-    }
-    .omit {
-        text-align: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
+<style lang="scss">
+body {
+	margin: 0px;
+	padding: 0px;
+	/*background: url(assets/bg1.jpg) center !important;
+		background-size: cover;*/
+	// background: #1F2D3D;
+	font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+	font-size: 14px;
+	-webkit-font-smoothing: antialiased;
+}
 
+#app {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	width: 100%;
+}
+
+.el-submenu [class^=fa] {
+	vertical-align: baseline;
+	margin-right: 10px;
+}
+
+.el-menu-item [class^=fa] {
+	vertical-align: baseline;
+	margin-right: 10px;
+}
+
+.toolbar {
+	background: #f2f2f2;
+	padding: 10px;
+	//border:1px solid #dfe6ec;
+	margin: 10px 0px;
+	.el-form-item {
+		margin-bottom: 10px;
+	}
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: all .2s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+	opacity: 0;
+}
 </style>
