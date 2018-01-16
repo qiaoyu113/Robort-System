@@ -16,15 +16,15 @@
         components: {},
         mounted: function () {
             /*if(appService.getUserInfo()) {
-                let now = new Date()
-//                console.log(this.$store.state.userInfo.exp*1000);
-//                console.log(now.getTime());
-                let t = this.$store.state.userInfo.exp*1000 - now.getTime() ;   //时间差的毫秒数
-                let h = Math.floor(t/(3600*1000))
-                if(h<3){
-                    appService.putToken()
-                }
-            }*/
+             let now = new Date()
+             //                console.log(this.$store.state.userInfo.exp*1000);
+             //                console.log(now.getTime());
+             let t = this.$store.state.userInfo.exp*1000 - now.getTime() ;   //时间差的毫秒数
+             let h = Math.floor(t/(3600*1000))
+             if(h<3){
+             appService.putToken()
+             }
+             }*/
             appService.onBridgeReady();
         },
         methods: {
@@ -33,7 +33,7 @@
 </script>
 
 <style lang="less">
-    @import url('assets/css/base.less');
+    /*@import url('assets/css/base.less');*/
     @import url('assets/css/icon/iconfont.css');
     @import "./assets/css/theme.less";
     @import './assets/css/common/swiper.min.css';

@@ -3,8 +3,8 @@ import App from './App.vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import routers from './router'
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-default/index.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 // import VueLazyload from 'vue-lazyload'
 import store from './vuex';
 import './mixin/directive';
@@ -32,7 +32,7 @@ Vue.config.debug = true
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VueCropper)
-
+Vue.use(ElementUI)
 // 定义全局组件
 import zmodal from './component/common/modal.vue'
 import zbanner from './component/common/banner.vue'
