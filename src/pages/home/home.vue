@@ -80,11 +80,10 @@
                                 </template>
                                 <el-menu-item-group>
                                     <el-menu-item index="权限设置"><router-link to="/setup/jurisdiction">权限设置</router-link></el-menu-item>
-
                                     <el-menu-item index="积分设置"><router-link to="/setup/integral">积分设置</router-link></el-menu-item>
-                                    <el-menu-item index="会员设置">会员设置</el-menu-item>
-                                    <el-menu-item index="文档设置">文档设置</el-menu-item>
-                                    <el-menu-item index="标签设置">标签设置</el-menu-item>
+                                    <el-menu-item index="会员设置"><router-link to="/setup/member">会员设置</router-link></el-menu-item>
+                                    <el-menu-item index="文档设置"><router-link to="/setup/file">文档设置</router-link></el-menu-item>
+                                    <el-menu-item index="标签设置"><router-link to="/setup/label">标签设置</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                         </el-menu>
@@ -106,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-               
+                <router-view></router-view>
             </div>
         </main>
     </div>
