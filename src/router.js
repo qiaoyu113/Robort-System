@@ -25,30 +25,15 @@ Vue.component('z-home', backhome)
 
 
 // 定义组件
-
 const short = (resolve) => {require(['./pages/short.vue'],resolve)}
 const home = (resolve) => {require(['./pages/home/home.vue'],resolve)}
-// 直播
-const live = (resolve) => {require(['./pages/home/home.vue'],resolve)}
-const liveDetails = (resolve) => {require(['./pages/home/home.vue'],resolve)}
-//个人中心
-const mycenter = (resolve) => {require(['./pages/personal/mycenter.vue'],resolve)}
-const setting = (resolve) => {require(['./pages/personal/setting.vue'],resolve)}
-const vip = (resolve) => {require(['./pages/personal/vip.vue'],resolve)}
-const comment = (resolve) => {require(['./pages/home/comment.vue'],resolve)}
-const purchase = (resolve) => {require(['./pages/personal/purchase.vue'],resolve)}
-const interested = (resolve) => {require(['./pages/personal/interested.vue'],resolve)}
-const collect = (resolve) => {require(['./pages/personal/collect.vue'],resolve)}
-const history = (resolve) => {require(['./pages/personal/history.vue'],resolve)}
-const set = (resolve) => {require(['./pages/personal/set.vue'],resolve)}
-const set2 = (resolve) => {require(['./pages/personal/set2.vue'],resolve)}
-const password = (resolve) => {require(['./pages/personal/password.vue'],resolve)}
-const help = (resolve) => {require(['./pages/personal/help.vue'],resolve)}
-const feed = (resolve) => {require(['./pages/personal/feed.vue'],resolve)}
-const question = (resolve) => {require(['./pages/personal/question.vue'],resolve)}
-const about = (resolve) => {require(['./pages/personal/about.vue'],resolve)}
-const relation = (resolve) => {require(['./pages/personal/relation.vue'],resolve)}
-const serve = (resolve) => {require(['./pages/personal/serve.vue'],resolve)}
+
+//内容
+const Commissioned = (resolve) => {require(['./pages/home/Commissioned.vue'],resolve)}
+
+//登陆
+const login = (resolve) => {require(['./pages/login/login.vue'],resolve)}
+
 // 404错误页面
 const error = (resolve) => {require(['./pages/error.vue'],resolve)}
 
@@ -57,27 +42,10 @@ const routers = [
     {path: '/d/:shortId', component: short},
     {name: 'home',path:'/',component: home, meta: {keepAlive: true}},
     {name: 'err',path:'/s/404',component: error}, //错误跳到404页面
-    // 直播
-    {name: 'live',path:'/lives',component: live},
-    {name: 'liveDetails',path:'/lives/detail/:liveDetailId',component: liveDetails},
-    // 个人中心
-    {name: 'mycenter',path:'/mycenter',component: mycenter},
-    {name: 'setting',path:'/setting',component: setting},
-    {name: 'vip',path:'/vip',component: vip},
-    {name: 'comment',path:'/comment',component: comment},
-    {name: 'purchase',path:'/purchase',component: purchase},
-    {name: 'interested',path:'/interested',component: interested},
-    {name: 'collect',path:'/collect',component: collect},
-    {name: 'history',path:'/history',component: history},
-    {name: 'set',path:'/set',component: set},
-    {name: 'set2',path:'/set2',component: set2},
-    {name: 'password',path:'/password',component: password},
-    {name: 'help',path:'/help',component: help},
-    {name: 'feed',path:'/feed',component: feed},
-    {name: 'question',path:'/question',component: question},
-    {name: 'about',path:'/about',component: about},
-    {name: 'relation',path:'/relation',component: relation},
-    {name: 'serve',path:'/serve',component: serve},
+    // 内容路径
+    {name: 'Commissioned',path:'/Commissioned',component: Commissioned},
+    //登陆
+    {name: 'login',path:'/login',component: login},
 ]
 
 const router = new VueRouter({

@@ -96,7 +96,7 @@
                 <div class="right-top">
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">
-                        <div class="rightHome">网站首页</div>
+                        <div class="rightHome"><a href="www.baidu.com">网站首页</a></div>
                         <div class="User">
                             <div class="UserImg">
                                 <img class="image" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=12867320,655225767&fm=27&gp=0.jpg"/>
@@ -105,18 +105,16 @@
                         </div>
                     </div>
                 </div>
+                <!--展示内容-->
+                <div class="showBox">
+
+                </div>
             </div>
         </main>
     </div>
 </template>
 
 <script>
-    import Vue from 'vue'
-    import Element from 'element-ui'
-    import 'element-ui/lib/theme-default/index.css'
-
-    Vue.use(Element)
-
     export default {
         name: 'app',
         data: function (){
@@ -132,8 +130,8 @@
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
             },
-            select(key,keyPath){
-                console.log(key);
+            select(key,keyPath,indexPath){
+                console.log(key,keyPath,indexPath._uid);
                 this.titleName = key
             }
         }
@@ -149,6 +147,7 @@
     }
 
     /* 主内容区 */
+    a{text-decoration: none;color:#304156;}
     main{    display: -webkit-box;  display: -ms-flexbox;  display: flex;  position:fixed; top:0;left:0;right:0;bottom:0;margin:auto;overflow:overlay; background-color: #FCFCFC;  }
     main .main-left{position:absolute;text-align: center;width: 180px;height:100%;float: left;background:#304156; overflow-y: overlay;}
     main .main-left::-webkit-scrollbar {display:none}
@@ -161,12 +160,13 @@
     .el-submenu .el-menu-item:hover, .el-submenu__title:hover{background:#1F2D3D;}
     .el-submenu .el-menu-item, .el-submenu__title{color:#BFCBD9;text-align:left;}
     main .main-right{  position: absolute;left:180px;right:0;top:0;bottom:0;margin:auto;-webkit-box-flex: 1;  -ms-flex: 1;  flex: 1;  background-color: #fff;overflow: overlay;}
-    .right-top{width:100%;height:60px;border-bottom: 1px solid #e6e6e6;padding:0 40px;box-sizing: border-box;}
-    .right-top .topLeft{width:300px;height:60px;line-height:60px;float:left;font-size: 14px;color:#333;font-weight: bold;}
+    .right-top{width:100%;height:60px;border-bottom: 1px solid #e6e6e6;padding:0 40px;box-sizing: border-box;box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);}
+    .right-top .topLeft{width:300px;height:60px;line-height:60px;float:left;font-size: 14px;color:#304156;font-weight: bold;}
     .right-top .topRight{width:300px;height:60px;float:right;}
     .right-top .topRight .rightHome{width:100px;float:left;line-height:60px;}
     .right-top .topRight .User{width:200px;height:60px;line-height:60px;text-align: center;float:left;}
     .right-top .topRight .User .UserImg{width:40px;height:40px;border-radius: 100%;float:left;border:2px solid #eeeeee;overflow: hidden;margin-top:10px;}
     .right-top .topRight .User .UserImg .image{width:100%;height:100%;}
     .right-top .topRight .User .name{float:left;width:80px;text-align: center;color:#969896;line-height: 60px;font-size: 14px;}
+    .showBox{width:100%;overflow: hidden;}
 </style>
