@@ -21,9 +21,9 @@
                                     <span>运营管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="电话委托">电话委托</el-menu-item>
-                                    <el-menu-item index="超级用户">超级用户</el-menu-item>
-                                    <el-menu-item index="修改流拍">修改流拍</el-menu-item>
+                                    <el-menu-item index="电话委托"><router-link :to="{name:'operPhone'}">电话委托</router-link></el-menu-item>
+                                    <el-menu-item index="超级用户"><router-link :to="{name:'operPhone'}">超级用户</router-link></el-menu-item>
+                                    <el-menu-item index="修改流拍"><router-link to="/setup/jurisdiction">修改流拍</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
@@ -104,10 +104,9 @@
                         </div>
                     </div>
                 </div>
-                <router-view></router-view>
                 <!--展示内容-->
                 <div class="showBox">
-                    <!--<router-link></router-link>-->
+                    <router-view></router-view>
                 </div>
             </div>
         </main>
@@ -161,7 +160,7 @@
     .el-submenu .el-menu-item, .el-submenu__title{color:#BFCBD9;text-align:left;}
     main .main-right{  position: absolute;left:180px;right:0;top:0;bottom:0;margin:auto;-webkit-box-flex: 1;  -ms-flex: 1;  flex: 1;  background-color: #fff;overflow: overlay;}
     .right-top{width:100%;height:60px;border-bottom: 1px solid #e6e6e6;padding:0 40px;box-sizing: border-box;}
-    .right-top .topLeft{width:300px;height:60px;line-height:60px;float:left;font-size: 14px;color:#333;font-weight: bold;}
+    .right-top .topLeft{width:300px;height:60px;line-height:60px;float:left;font-size: 14px;color:#97a8be;font-weight: bold;}
     .right-top .topRight{width:300px;height:60px;float:right;}
     .right-top .topRight .rightHome{width:100px;float:left;line-height:60px;}
     .right-top .topRight .User{width:200px;height:60px;line-height:60px;text-align: center;float:left;}

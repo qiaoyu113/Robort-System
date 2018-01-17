@@ -39,6 +39,8 @@ const file = (resolve) => {require(['./pages/setup/file.vue'],resolve)}
 const label = (resolve) => {require(['./pages/setup/label.vue'],resolve)}
 //登陆
 const login = (resolve) => {require(['./pages/login/login.vue'],resolve)}
+//运营管理
+const operPhone = (resolve) => {require(['./pages/operation/phone.vue'],resolve)}
 // 404错误页面
 const error = (resolve) => {require(['./pages/error.vue'],resolve)}
 
@@ -54,6 +56,7 @@ const routers = [
                {name: 'member',path:'/setup/member',component: member},
                {name: 'file',path:'/setup/file',component: file},
                {name: 'label',path:'/setup/label',component: label},
+               {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
            ]
        },
     {name: 'err',path:'/s/404',component: error}, //错误跳到404页面
