@@ -46,22 +46,13 @@
        <!-- 搜索框 -->
           <div class="search clearfix">
               <div class="search_l">
-                 <!-- <el-input placeholder="请输入内容" v-model="input4"> -->
+                 <el-input placeholder="请输入内容" v-model="input4">
                        <!-- <el-button slot="append"><i class="iconfont icon-sousuo"></i></el-button> -->
                        <!-- <el-button slot="append" icon="el-icon-circle-plus"></el-button> -->
                        <!-- <template slot="append"><p><i class="iconfont icon-sousuo"></i></p></template> -->
-                 <!-- </el-input> -->
+                 </el-input>
 
-                 <div style="margin-top: 15px;">
-  <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-    <el-select v-model="select" slot="prepend" placeholder="请选择">
-      <el-option label="餐厅名" value="1"></el-option>
-      <el-option label="订单号" value="2"></el-option>
-      <el-option label="用户电话" value="3"></el-option>
-    </el-select>
-    <el-button slot="append" icon="el-icon-search"></el-button>
-  </el-input>
-</div>
+  
             </div>
             <div class="search_r">
 
@@ -108,10 +99,10 @@
 </template>
 
 <script>
+
     // import Vue from 'vue'
     // import Element from 'element-ui'
     // import 'element-ui/lib/theme-default/index.css'
-
 
     export default {
         name: 'app',
