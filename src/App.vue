@@ -43,6 +43,7 @@
     @import url('assets/css/icon/iconfont.css');
     @import "./assets/css/theme.less";
     @import './assets/css/common/swiper.min.css';
+    @import './assets/css/base.less';
     html, body {
         margin: 0 auto;
         width: 100%;
