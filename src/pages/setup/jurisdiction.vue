@@ -46,11 +46,25 @@
        <!-- 搜索框 -->
           <div class="search clearfix">
               <div class="search_l">
-                 <el-input placeholder="请输入内容" v-model="input4">
-                      <template slot="append">.com</template>
-                 </el-input>
+                 <!-- <el-input placeholder="请输入内容" v-model="input4"> -->
+                       <!-- <el-button slot="append"><i class="iconfont icon-sousuo"></i></el-button> -->
+                       <!-- <el-button slot="append" icon="el-icon-circle-plus"></el-button> -->
+                       <!-- <template slot="append"><p><i class="iconfont icon-sousuo"></i></p></template> -->
+                 <!-- </el-input> -->
+
+                 <div style="margin-top: 15px;">
+  <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+    <el-select v-model="select" slot="prepend" placeholder="请选择">
+      <el-option label="餐厅名" value="1"></el-option>
+      <el-option label="订单号" value="2"></el-option>
+      <el-option label="用户电话" value="3"></el-option>
+    </el-select>
+    <el-button slot="append" icon="el-icon-search"></el-button>
+  </el-input>
+</div>
             </div>
             <div class="search_r">
+
                 <el-button>添加账号</el-button>
             </div>
            </div>
@@ -119,7 +133,7 @@
 </script>
 
 <style lang="less">
-   .clearfix:after{ display:block; content:''; clear:both;}
+  
       .jurisdiction{
           .option{
                border-bottom: 1px solid #333;
@@ -185,6 +199,30 @@
                 .search_r{
                     float: right;
                 }
+            }
+            .table{
+                width: 100%;
+                table{
+                    border-collapse: collapse;
+                    width: 100%;
+                    th{
+                        border:1px solid #333;
+                        height: 40px;
+                        line-height: 40px;
+                        text-align: center;
+                    }
+                    td{
+                        text-align: center;
+                        border:1px solid #333;
+                        height: 40px;
+                        line-height: 40px;
+                        color: #666;
+                        a{
+                            padding: 0 4px;
+                        }
+                    }
+                }
+
             }
 
           }
