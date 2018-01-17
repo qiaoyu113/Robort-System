@@ -37,22 +37,23 @@ const integral = (resolve) => {require(['./pages/setup/integral.vue'],resolve)}
 const member = (resolve) => {require(['./pages/setup/member.vue'],resolve)}
 const file = (resolve) => {require(['./pages/setup/file.vue'],resolve)}
 const label = (resolve) => {require(['./pages/setup/label.vue'],resolve)}
+//登陆
+const login = (resolve) => {require(['./pages/login/login.vue'],resolve)}
 // 404错误页面
 const error = (resolve) => {require(['./pages/error.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
     {path: '/d/:shortId', component: short},
+    {name:'login',path: '/login', component: login},
     {name: 'home',path:'/',component: home, meta: {keepAlive: true},
            children:[
            // 设置
-            
-             {name: 'jurisdiction',path:'/setup/jurisdiction',component: jurisdiction},
-           {name: 'integral',path:'/setup/integral',component: integral},
-           {name: 'member',path:'/setup/member',component: member},
-            {name: 'file',path:'/setup/file',component: file},
-            {name: 'label',path:'/setup/label',component: label},   
-            
+               {name: 'jurisdiction',path:'/setup/jurisdiction',component: jurisdiction},
+               {name: 'integral',path:'/setup/integral',component: integral},
+               {name: 'member',path:'/setup/member',component: member},
+               {name: 'file',path:'/setup/file',component: file},
+               {name: 'label',path:'/setup/label',component: label},
            ]
        },
     {name: 'err',path:'/s/404',component: error}, //错误跳到404页面

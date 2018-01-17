@@ -96,7 +96,7 @@
                 <div class="right-top">
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">
-                        <div class="rightHome">网站首页</div>
+                        <div class="rightHome"><a href="www.baidu.com" style="color:#606266;">网站首页</a></div>
                         <div class="User">
                             <div class="UserImg">
                                 <img class="image" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=12867320,655225767&fm=27&gp=0.jpg"/>
@@ -106,18 +106,17 @@
                     </div>
                 </div>
                 <router-view></router-view>
+                <!--展示内容-->
+                <div class="showBox">
+                    <!--<router-link></router-link>-->
+                </div>
             </div>
         </main>
     </div>
 </template>
 
 <script>
-    import Vue from 'vue'
-    import Element from 'element-ui'
-    import 'element-ui/lib/theme-default/index.css'
-
-    Vue.use(Element)
-
+    import {commonService} from '../../service/commonService'
     export default {
         name: 'app',
         data: function (){
@@ -133,8 +132,8 @@
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
             },
-            select(key,keyPath){
-                console.log(key);
+            select(key,keyPath,indexPath){
+                console.log(key,keyPath,indexPath._uid);
                 this.titleName = key
             }
         }
@@ -150,6 +149,7 @@
     }
 
     /* 主内容区 */
+    a{text-decoration: none;color:#BFCBD9;}
     main{    display: -webkit-box;  display: -ms-flexbox;  display: flex;  position:fixed; top:0;left:0;right:0;bottom:0;margin:auto;overflow:overlay; background-color: #FCFCFC;  }
     main .main-left{position:absolute;text-align: center;width: 180px;height:100%;float: left;background:#304156; overflow-y: overlay;}
     main .main-left::-webkit-scrollbar {display:none}
