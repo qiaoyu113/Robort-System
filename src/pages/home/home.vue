@@ -12,7 +12,6 @@
                                 @open="handleOpen"
                                 @select="select"
                                 @close="handleClose"
-                                background-color="#304156"
                                 text-color="#BFCBD9"
                                 active-text-color="#FF9E40">
                             <el-submenu
@@ -96,7 +95,7 @@
                 <div class="right-top">
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">
-                        <div class="rightHome"><a href="www.baidu.com" style="color:#606266;">网站首页</a></div>
+                        <div class="rightHome"><a href="www.baidu.com">网站首页</a></div>
                         <div class="User">
                             <div class="UserImg">
                                 <img class="image" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=12867320,655225767&fm=27&gp=0.jpg"/>
@@ -116,7 +115,6 @@
 </template>
 
 <script>
-    import {commonService} from '../../service/commonService'
     export default {
         name: 'app',
         data: function (){
@@ -149,14 +147,14 @@
     }
 
     /* 主内容区 */
-    a{text-decoration: none;color:#BFCBD9;}
-    main{    display: -webkit-box;  display: -ms-flexbox;  display: flex;  position:fixed; top:0;left:0;right:0;bottom:0;margin:auto;overflow:overlay; background-color: #FCFCFC;  }
-    main .main-left{position:absolute;text-align: center;width: 180px;height:100%;float: left;background:#304156; overflow-y: overlay;}
+    a{text-decoration: none;color: inherit;}
+    main{  min-width: 1200px;  display: -webkit-box;  display: -ms-flexbox;  display: flex;  position:fixed; top:0;left:0;right:0;bottom:0;margin:auto;overflow:overlay; background-color: #FCFCFC;  }
+    main .main-left{position:absolute;text-align: center;width: 181px;height:100%;float: left;background:#304156; overflow-y: overlay;}
     main .main-left::-webkit-scrollbar {display:none}
     main .main-left .logo{width:100%;height:60px;font-size:16px;font-weight: bold;line-height:60px;color:#BFCBD9;}
     main .main-left .el-menu{background:#304156;}
     .el-submenu .el-menu-item{min-width:180px;}
-    .el-menu-item.is-active{color:#3792FF !important;}
+    .el-menu-item.is-active{color:#3792FF !important;background:#1F2D3D;}
     .el-menu-item-group{background:#1F2D3D;}
     /*.is-opened{background:#1F2D3D;}*/
     .el-submenu .el-menu-item:hover, .el-submenu__title:hover{background:#1F2D3D;}

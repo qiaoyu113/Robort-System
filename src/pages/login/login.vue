@@ -15,6 +15,7 @@
                     <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
                 </el-form-item>
             </el-form>
+            <el-checkbox v-model="checked">记住密码</el-checkbox>
         </div>
     </div>
 </template>
@@ -38,6 +39,7 @@
                 }
             };
             return {
+                checked: true,
                 ruleForm2: {
                     pass: '',
                     geetesst: false,
@@ -68,7 +70,12 @@
                     // 这里可以调用验证实例 captchaObj 的实例方法
                     captchaObj.appendTo(captchaBox);
                     captchaObj.onSuccess(function () {
-                        that.geetesst = true;
+                        let result = captchaObj.getValidate();
+                        commonService.postGaptchas({challenge:result.geetest_challenge,validate:result.geetest_validate,seccode:result.geetest_seccode}).then(function(res){
+                            if(res.data.message == 'success'){
+                                that.geetesst = true;
+                            }
+                        })
                     })
                 })
             })
@@ -77,17 +84,25 @@
             submitForm(formName) {
                 let that = this
                 that.$refs[formName].validate((valid) => {
-                    console.log(valid)
                     let geetesst = that.geetesst
-                    if(geetesst){
-                        if (valid) {
-                            alert('submit!');
-                        } else {
-                            console.log('error submit!!');
-                            return false;
+                    if (valid) {
+                        if(geetesst){
+                            that.$notify({
+                                title: '登陆成功',
+                                type: 'success'
+                            });
+                        }else {
+                            that.$notify({
+                                title: '请点击按钮进行验证',
+                                type: 'warning'
+                            });
                         }
-                    }else{
-                        alert('请点击按钮验证验证码')
+                    } else {
+                        that.$notify({
+                            title: '请输入密码账号',
+                            type: 'warning'
+                        });
+                        return false;
                     }
                 });
             },

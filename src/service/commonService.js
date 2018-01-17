@@ -11,6 +11,10 @@ export const commonService = {
     getGaptchas: function (params) {
         return axios.get('/gaptchas' + this.getParam(params))
     },
+    /* 校验Geetest */
+    postGaptchas: function (params) {
+        return axios.post('/gaptchas',qs.stringify(params))
+    },
     /* 通用：验证验证码的对错 */
     postValidateImg: function (params) {
         return axios.post('/kaptchas',qs.stringify(params))
