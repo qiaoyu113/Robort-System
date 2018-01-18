@@ -274,5 +274,8 @@
     .el-button--small, .el-button--small.is-round {
         padding: 5px 15px;
     }
+    .el-table__body-wrapper{
+        overflow: hidden;
+    }
 }
 </style>
