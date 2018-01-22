@@ -1,6 +1,6 @@
 <template>
 	<div class="file">
-		eee
+		文档设置
 	</div>
 </template>
 

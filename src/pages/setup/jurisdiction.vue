@@ -2,8 +2,8 @@
     <div class="jurisdiction">
     <!-- 选项卡 -->
        <div class="option clearfix">
-        <p :class="{'p_border':indexs==1}">角色设置</p>
-        <p :class="{'p_border':indexs==2}">账号设置</p>
+        <p :class="{'p_border':indexs==1}" @click="shows(1)">角色设置</p>
+        <p :class="{'p_border':indexs==2}" @click="shows(2)">账号设置</p>
        </div>
         <!-- 角色设置 -->
        <div class="v_box" :class="{'show':indexs==1}">
@@ -48,7 +48,7 @@
               <div class="search_l">
                  <el-input placeholder="请输入内容" v-model="input4">
                        <!-- <el-button slot="append"><i class="iconfont icon-sousuo"></i></el-button> -->
-                       <!-- <el-button slot="append" icon="el-icon-circle-plus"></el-button> -->
+                       <el-button slot="append" icon="el-icon-search"></el-button>
                        <!-- <template slot="append"><p><i class="iconfont icon-sousuo"></i></p></template> -->
                  </el-input>
 
@@ -108,7 +108,7 @@
         name: 'app',
         data: function (){
             return {
-              indexs:2,
+              indexs:1,
               input4:'',
             }
         },
@@ -116,6 +116,9 @@
            
         },
         methods: {
+          shows:function(id){
+            this.indexs=id
+          }
 
               
         },
@@ -162,6 +165,7 @@
                         border:1px solid #333;
                         height: 40px;
                         line-height: 40px;
+                        text-align: center;
                     }
                     td{
                         text-align: center;
