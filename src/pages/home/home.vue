@@ -23,7 +23,7 @@
                                 <el-menu-item-group>
                                     <el-menu-item index="电话委托"><router-link :to="{name:'operPhone'}">电话委托</router-link></el-menu-item>
                                     <el-menu-item index="超级用户"><router-link :to="{name:'operPhone'}">超级用户</router-link></el-menu-item>
-                                    <el-menu-item index="修改流拍"><router-link to="/setup/jurisdiction">修改流拍</router-link></el-menu-item>
+                                    <el-menu-item index="修改流拍"><router-link :to="{name:'operPhone'}">修改流拍</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu

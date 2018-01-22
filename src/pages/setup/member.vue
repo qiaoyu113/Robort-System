@@ -1,5 +1,5 @@
 <template>
 	<div class="file">
-		eee
+		会员设置
 	</div>
 </template>
