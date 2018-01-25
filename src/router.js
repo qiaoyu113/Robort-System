@@ -43,6 +43,11 @@ const login = (resolve) => {require(['./pages/login/login.vue'],resolve)}
 const operPhone = (resolve) => {require(['./pages/operation/phone.vue'],resolve)}
 // 404错误页面
 const error = (resolve) => {require(['./pages/error.vue'],resolve)}
+// 合同管理
+const productAdd = (resolve) => {require(['./pages/contract/product/add.vue'],resolve)}
+const productPackage = (resolve) => {require(['./pages/contract/product-package.vue'],resolve)}
+const customService = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
+const contractTemplate = (resolve) => {require(['./pages/contract/contract-template.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -57,6 +62,12 @@ const routers = [
                {name: 'file',path:'/setup/file',component: file},
                {name: 'label',path:'/setup/label',component: label},
                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
+               // 合同管理
+               {name: 'productAdd',path:'/contract/product/add',component: productAdd},
+               {name: 'productPackage',path:'/contract/product',component: productPackage},
+               {name: 'customService',path:'/contract/services',component: customService},
+               {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
+
            ]
        },
     {name: 'err',path:'/s/404',component: error}, //错误跳到404页面

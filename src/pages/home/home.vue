@@ -3,7 +3,7 @@
         <main>
             <!-- 左侧导航 -->
             <div class="main-left">
-                <div class="logo">茶印管理后台</div>
+                <div class="logo">合同机器人</div>
                 <el-row class="tac">
                     <el-col>
                         <el-menu
@@ -83,6 +83,18 @@
                                     <el-menu-item index="会员设置"><router-link to="/setup/member">会员设置</router-link></el-menu-item>
                                     <el-menu-item index="文档设置"><router-link to="/setup/file">文档设置</router-link></el-menu-item>
                                     <el-menu-item index="标签设置"><router-link to="/setup/label">标签设置</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
+                                    index="7" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-document"></i>
+                                    <span>合同管理</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="产品包"><router-link to="/contract/product">产品包</router-link></el-menu-item>
+                                    <el-menu-item index="合同模板"><router-link to="/contract/template">合同模板</router-link></el-menu-item>
+                                    <el-menu-item index="定制服务"><router-link to="/contract/services">定制服务</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                         </el-menu>
