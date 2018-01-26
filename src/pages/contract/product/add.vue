@@ -1,11 +1,31 @@
 <template>
   <div class="container">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
       <el-form-item label="产品包名称" prop="name" size="mini">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="产品包封面图" prop=""></el-form-item>
-      <el-form-item label="合作伙伴LOGO" prop=""></el-form-item>
+      <el-form-item label="产品包封面图" prop="">
+        <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="合作伙伴LOGO" prop="">
+        <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="简介" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
@@ -20,13 +40,6 @@
       </el-form-item>
       <el-form-item label="价格" prop="type">
         <el-input size="mini"></el-input>
-        <el-checkbox-group v-model="ruleForm.type">
-          <el-checkbox label="促销设置" name="type"></el-checkbox>
-        </el-checkbox-group>
-        <el-radio-group v-model="ruleForm.resource">
-          <el-radio label="积分抵现"></el-radio>
-          <el-radio label="折扣优惠"></el-radio>
-        </el-radio-group>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>

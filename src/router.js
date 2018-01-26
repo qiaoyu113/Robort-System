@@ -45,8 +45,12 @@ const operPhone = (resolve) => {require(['./pages/operation/phone.vue'],resolve)
 const error = (resolve) => {require(['./pages/error.vue'],resolve)}
 // 合同管理
 const productAdd = (resolve) => {require(['./pages/contract/product/add.vue'],resolve)}
+const productEdit = (resolve) => {require(['./pages/contract/product/edit.vue'],resolve)}
+const productDetail = (resolve) => {require(['./pages/contract/product/detail.vue'],resolve)}
 const productPackage = (resolve) => {require(['./pages/contract/product-package.vue'],resolve)}
 const customService = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
+const contractTemplateAdd = (resolve) => {require(['./pages/contract/template/add.vue'],resolve)}
+const contractTemplateEdit = (resolve) => {require(['./pages/contract/template/edit.vue'],resolve)}
 const contractTemplate = (resolve) => {require(['./pages/contract/contract-template.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
@@ -63,9 +67,15 @@ const routers = [
                {name: 'label',path:'/setup/label',component: label},
                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
                // 合同管理
+               // 产品包
                {name: 'productAdd',path:'/contract/product/add',component: productAdd},
+               {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
+               {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
                {name: 'productPackage',path:'/contract/product',component: productPackage},
                {name: 'customService',path:'/contract/services',component: customService},
+               // 模板
+               {name: 'contractTemplateAdd',path:'/contract/template/add',component: contractTemplateAdd},
+               {name: 'contractTemplateEdit',path:'/contract/template/edit/:templateId',component: contractTemplateEdit},
                {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
 
            ]

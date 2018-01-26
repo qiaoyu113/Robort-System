@@ -50,11 +50,13 @@
               label="操作"
               width="140">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
-          <el-button type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small" @click="del">删除</el-button>
-          <el-button type="text" size="small">取消置顶</el-button>
-          <el-button type="text" size="small">上架</el-button>
+          <el-button @click="toDetail(scope.row.id)" type="text" size="small">详情</el-button>
+          <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
+          <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
+          <el-button @click="doTop($event)" type="text" size="small" v-if="isTop==1">取消置顶</el-button>
+          <el-button @click="doTop($event)" type="text" size="small" v-if="isTop==0">置顶</el-button>
+          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==0">上架</el-button>
+          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==1">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,15 +73,15 @@
     </el-pagination>
     <!--弹框-->
     <el-dialog
-            title="提示"
+            :title="dialog.title"
             modal="false"
             :visible.sync="centerDialogVisible"
             width="30%"
             center>
-          <span>需要注意的是内容是默认不居中的</span>
+          <span>{{ dialog.content }}</span>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+            <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
+            <el-button size="mini" type="primary" @click="centerDialogVisible = false">确 定</el-button>
           </span>
     </el-dialog>
   </div>
@@ -89,66 +91,143 @@
     props: [],
     data () {
       return {
+        isTop: 0, // 是否显示置顶按钮
+        isOnline: 0, // 是否显示上架按钮
+        dialog: {
+          title: '',
+          content: '',
+          prodId: 0,
+          oprTyp: 0 //操作类型：1.删除；2.上架；3.下架
+        },
         centerDialogVisible: false, // 弹框
-        tableData: [{
-          info: {
-            //name: '王小虎京东方快速搭建焚枯食淡过凉开水大驾光临对上了可见芬达上看了',
-            name: '王小虎',
-            price: '1.00',
-            link: 'http://crm.shequnyi.cn/',
-            src: '/src/assets/image/demo/1.jpg'
-          },
-          date: '2016-05-03 11:11',
-          num: 10,
-          order: 11000,
-          state: '已下架'
-        }, {
-          info: {
-            name: '王小虎',
-            price: '1.00',
-            link: 'http://crm.shequnyi.cn/',
-            src: '/src/assets/image/demo/2.jpg'
-          },
-          date: '2016-05-02 14:00',
-          num: 200333,
-          order: 1542,
-          state: '未开始'
-
-        }, {
-          info: {
-            name: '王小虎',
-            price: '1.00',
-            link: 'http://crm.shequnyi.cn/',
-            src: '/src/assets/image/demo/3.jpg'
-          },
-          date: '2016-05-04 11:11',
-          num: 200333,
-          order: 1542,
-          state: '未开始'
-        }, {
-          info: {
-            name: '王小虎',
-            price: '1.00',
-            link: 'http://crm.shequnyi.cn/',
-            src: '/src/assets/image/demo/4.jpg'
-          },
-          date: '2016-05-01 14:00',
-          num: 200333,
-          order: 1542,
-          state: '进行中'
-        }]
+        tableData: [] //列表数据
       }
     },
     components: {},
-    mounted () {},
+    mounted () {
+      let that = this;
+      that.getList();
+    },
     methods: {
+      //获得列表
+      getList () {
+         let that = this;
+         that.tableData = [
+          {
+            id: 3,
+            info: {
+              //name: '王小虎京东方快速搭建焚枯食淡过凉开水大驾光临对上了可见芬达上看了',
+              name: '王小虎',
+              price: '1.00',
+              link: 'http://crm.shequnyi.cn/',
+              src: '/src/assets/image/demo/1.jpg'
+            },
+            date: '2016-05-03 11:11',
+            num: 10,
+            order: 11000,
+            state: '已下架'
+          }, {
+            id: 2,
+            info: {
+              name: '王小虎',
+              price: '1.00',
+              link: 'http://crm.shequnyi.cn/',
+              src: '/src/assets/image/demo/2.jpg'
+            },
+            date: '2016-05-02 14:00',
+            num: 200333,
+            order: 1542,
+            state: '未开始'
+          },
+          {
+            id: 4,
+            info: {
+              name: '王小虎',
+              price: '1.00',
+              link: 'http://crm.shequnyi.cn/',
+              src: '/src/assets/image/demo/3.jpg'
+            },
+            date: '2016-05-04 11:11',
+            num: 200333,
+            order: 1542,
+            state: '未开始'
+          },
+          {
+            id: 1,
+            info: {
+              name: '王小虎',
+              price: '1.00',
+              link: 'http://crm.shequnyi.cn/',
+              src: '/src/assets/image/demo/4.jpg'
+            },
+            date: '2016-05-01 14:00',
+            num: 200333,
+            order: 1542,
+            state: '进行中'
+          }];
+      },
+      //添加产品包
       add () {
         this.$router.push({name: 'productAdd'});
       },
-      del () {
+      // 详情
+      toDetail (id) {
         let that = this;
-        that.centerDialogVisible = true;
+        that.$route.params.prodId = id;
+        that.$router.push({name: 'productDetail'});
       },
+      // 编辑
+      doEdit (id) {
+        let that = this;
+        that.$route.params.prodId = id;
+        that.$router.push({name: 'productEdit'});
+      },
+      // 删除
+      doDelete (id, index, rows) {
+        let that = this;
+        that.dialog = {
+          title: '删除提示',
+          content: '删除后该产品包将在列表中移除，同时不会在前台展示，已购买的用户可以继续使用，确定将该产品包删除吗？'
+        };
+        that.centerDialogVisible = true;
+        rows.splice(index, 1);
+      },
+      // 置顶
+      doTop (event) {
+        let obj = event.currentTarget; // 当前对象
+        if(obj.innerHTML == '置顶'){
+          obj.innerHTML = '取消置顶';
+        }else{
+          obj.innerHTML = '置顶';
+        }
+      },
+      //上架
+      onOff (event) {
+        let that = this;
+        let obj = event.currentTarget; // 当前对象
+        console.log(obj.innerHTML)
+        if(obj.innerHTML == '上架'){
+          that.dialog = {
+            title: '上架提示',
+            content: '确定上架吗？'
+          };
+          that.centerDialogVisible = true;
+          obj.innerHTML = '下架';
+        }else{
+          that.dialog = {
+            title: '下架提示',
+            content: '下架后该产品包将不会在前台展示，已购买的用户可以继续使用，确定下架吗？'
+          };
+          that.centerDialogVisible = true;
+          obj.innerHTML = '上架';
+        }
+      },
+      //弹出框按钮的操作
+      // 确认
+      handleOk (done) {
+
+      },
+      // 关闭
       handleClose(done) {
         this.$confirm('确认关闭？')
                 .then(_ => {
@@ -175,14 +254,4 @@
   .container .picTxt .txt{word-wrap:break-word;}
   .container .picTxt .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
   .container .picTxt .txt .price{display:block;}
-  /*.container{*/
-    /*padding: 20px;*/
-    /*.opr{*/
-      /*margin:*/
-      /*overflow:hidden;*/
-    /*.left{}*/
-    /*.right{}*/
-    /*}*/
-  /*}*/
-
 </style>
