@@ -52,6 +52,16 @@ const customService = (resolve) => {require(['./pages/contract/custom-services.v
 const contractTemplateAdd = (resolve) => {require(['./pages/contract/template/add.vue'],resolve)}
 const contractTemplateEdit = (resolve) => {require(['./pages/contract/template/edit.vue'],resolve)}
 const contractTemplate = (resolve) => {require(['./pages/contract/contract-template.vue'],resolve)}
+// 内容管理
+const partner = (resolve) => {require(['./pages/content/partner.vue'],resolve)}
+const partnerAdd = (resolve) => {require(['./pages/content/partner/add.vue'],resolve)}
+const productFunc = (resolve) => {require(['./pages/content/product.vue'],resolve)}
+const videoDemo = (resolve) => {require(['./pages/content/video.vue'],resolve)}
+const aboutUs = (resolve) => {require(['./pages/content/aboutUs.vue'],resolve)}
+const news = (resolve) => {require(['./pages/content/news.vue'],resolve)}
+const comment= (resolve) => {require(['./pages/content/comment.vue'],resolve)}
+const banner= (resolve) => {require(['./pages/content/banner.vue'],resolve)}
+
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -77,6 +87,23 @@ const routers = [
                {name: 'contractTemplateAdd',path:'/contract/template/add',component: contractTemplateAdd},
                {name: 'contractTemplateEdit',path:'/contract/template/edit/:templateId',component: contractTemplateEdit},
                {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
+               // 内容管理—》合作伙伴
+               {name: 'partner',path:'/content/partner',component: partner},
+               {name: 'partnerAdd',path:'/content/partner/:partnerTyp/add',component: partnerAdd},
+               // 内容管理—》产品功能
+               {name: 'productFunc',path:'/content/product',component: productFunc},
+               // 内容管理—》演示视频
+               {name: 'videoDemo',path:'/content/video',component: videoDemo},
+               // 内容管理—》关于我们
+               {name: 'aboutUs',path:'/content/about',component: aboutUs},
+               // 内容管理—》新闻管理
+               {name: 'news',path:'/content/news',component: news},
+               // 内容管理—》评论管理
+               {name: 'comment',path:'/content/comment',component: comment},
+               // 内容管理—》焦点图管理
+               {name: 'banner',path:'/content/banner',component: banner},
+
+
 
            ]
        },
