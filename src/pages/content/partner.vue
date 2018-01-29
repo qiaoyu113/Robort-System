@@ -80,7 +80,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {conService} from '../../service/contentService'
+  import {contentService} from '../../service/contentService'
 
   export default {
     props: [],
@@ -111,7 +111,7 @@
       //获得列表
       getList () {
         let that = this;
-        conService.getPartners({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function(res){
+        contentService.getPartners({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function(res){
           console.log('partners', res);
         });
 //        that.tableData = [

@@ -101,6 +101,7 @@
     "v-distpicker": "^1.0.12",
     "vue": "^2.5.7",
     "vue-baidu-map": "^0.18.9",
+    "vue-cropper": "^0.2.9",
     "vue-infinite-scroll": "^2.0.2",
     "vue-lazyload": "^1.1.4",
     "vue-loader": "^13.0.5",

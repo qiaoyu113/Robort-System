@@ -53,7 +53,7 @@
 </template>
 <script type="text/ecmascript-6">
   import {CKEDITOR} from '../../../assets/js/plugins/ckeditor/ckeditor'
-  import {conService} from '../../../service/contentService'
+  import {contentService} from '../../../service/contentService'
   export default {
     props: [],
     data () {
@@ -111,7 +111,7 @@
         let name = '', cover = '', productPackageId = '', templateId = '', country = '',
                 prov = '', provCode = '', city = '', cityCode = '', phone = '', description = '';
         // 表单提交
-        conService.addPartner({name: name,
+        contentService.addPartner({name: name,
           cover: cover,
           type: that.pType,
           productPackageId: productPackageId,
