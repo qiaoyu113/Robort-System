@@ -26,7 +26,23 @@ export const contentService = {
     getProductFucInfo: function (params) {
         return axios.get('/admin/productfunctions/' + params);
     },
-    //
+    // 焦点图管理
+    getBanners: function (params) {
+        return axios.get('/admin/banner' + this.getParams(params));
+    },
+    addBanner: function (params) {
+        return axios.post('/admin/banner', qs.stringify(params));
+    },
+    editBanner: function (params) {
+        return axios.put('/admin/banner', qs.stringify(params));
+    },
+    getBanner: function (params) {
+        return axios.get('/admin/banner/' + params);
+    },
+    deleteBanner: function (params) {
+        return axios.post('/admin/banner/status', qs.stringify(params));
+    },
+    // 参数拼接
     getParams: function (param) {
         let url = '';
         for(let key in param){

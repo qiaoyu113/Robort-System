@@ -82,14 +82,15 @@
       </span>
     </el-dialog>
     <!--新增-->
-    <el-dialog title="新增产品功能" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
           <div class="upload-img" v-model="form.pic">
-            <img id="uploadImage" class="image" v-show="isImageState==1">
+            <img id="uploadImage" class="image" v-show="isImageState==1" :src="imgUrl">
             <div class="btn" v-show="isImageState==0"><i class="el-icon-plus"></i>
               <input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
             </div>
+            <i class="el-icon-circle-close del" v-show="isImageState==1" @click="delImgUrl"></i>
           </div>
         </el-form-item>
         <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
@@ -124,7 +125,10 @@ import {contentService} from '../../service/contentService'
     props: [],
     data () {
       return {
+        isAddEdit: 1, //1.添加；2.编辑
+        dialogTitle: '',//添加标题 or 编辑标题
         form: {
+          id: '',
           pic: '',
           title: '',
           intro: '',
@@ -150,13 +154,13 @@ import {contentService} from '../../service/contentService'
           rows: null,
           index: -1,
           id: ''
-        },
+        },// 删除使用
         option: {
           img: '',
           info: true,
           size: 1,
           outputType: 'jpeg',
-          canScale: false,
+          canScale: true,
           autoCrop: true,
           // 只有自动截图开启 宽度高度才生效
           autoCropWidth: 300,
@@ -166,6 +170,7 @@ import {contentService} from '../../service/contentService'
           fixedNumber: [2, 1]
         }, //截图
         isImageState: 0, // 显示图片区域 or 显示上传图片按钮区域
+        imgUrl: '', // 图片显示路径
         currentPage: 1, // 默认当前页为第一页
         page: {
           size: 1,
@@ -195,8 +200,8 @@ import {contentService} from '../../service/contentService'
           if(res.data.success) {
             let page = res.data.datas;
             let table = res.data.datas.datas;
-            console.log('page', page);
-            console.log('table', table);
+            //console.log('page', page);
+            //console.log('table', table);
             that.page.totalPage = page.totalPage;
             that.page.totalCount = parseInt(page.totalCount);
             for (let i = 0; i < table.length; i++) {
@@ -231,25 +236,30 @@ import {contentService} from '../../service/contentService'
           intro: '',
           order: ''
         };
+        that.isAddEdit = 1;
+        that.isImageState = 0;
+        that.imgUrl = '';
+        that.dialogTitle = '新增产品功能';
         that.dialogFormVisible = true;
       },
       // 编辑
       doEdit (id) {
         let that = this;
         contentService.getProductFucInfo(id).then(function (res) {
-          console.log('编辑', res);
+          //console.log('编辑', res);
           if(res.data.success){
             let obj = res.data.datas;
             that.form={
+              id: obj.id,
               pic: obj.cover,
               title: obj.name,
               intro: obj.description,
               order: obj.sortNum
             }
-            //if(obj.cover!=null && obj.cover!==''){
-              //that.isImageState=1;
-              //document.getElementById('uploadImage').src = that.$store.state.picHead + obj.cover;
-            //}
+            that.isAddEdit = 2;
+            that.isImageState=1;
+            that.imgUrl = that.$store.state.picHead + obj.cover;
+            that.dialogTitle = '编辑产品功能';
             that.dialogFormVisible = true;
           }
         });
@@ -272,28 +282,48 @@ import {contentService} from '../../service/contentService'
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功
             //alert('submit!');
-            console.log('form', that.form);
-            contentService.addProductFuc({name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
-              //console.log('submit success', res);
-              if(res.data.success){
-                that.dialogFormVisible = false;
-              }
-            });
+            //console.log('form', that.form);
+            if(that.isAddEdit == 1){
+                contentService.addProductFuc({name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
+                    //console.log('submit success', res);
+                    if(res.data.success){
+                        that.dialogFormVisible = false;
+                    }
+                });
+            }else if(that.isAddEdit == 2){
+                contentService.editProductFuc({id: that.form.id,name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
+                    //console.log('submit success', res);
+                    if(res.data.success){
+                        that.dialogFormVisible = false;
+                    }
+                });
+            }
+            that.currentPage = 1;
+            that.page.num = 1;
+            that.getList();
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
+      //删除图片路径
+      delImgUrl () {
+          let that = this;
+          that.isImageState = 0; // 显示图片上传按钮
+          that.imgUrl = ''; // 清空页面显示的图片路径
+          that.form.pic = ''; // 清空form表单要提交的图片路径
+      },
       // 图片上传至服务器
       postToService (base64, width, height) {
         let that = this;
-        console.log(2);
+        //console.log(2);
         pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
            //console.log('截取的图片', res);
           if(res.data.success){
             that.form.pic = res.data.datas;
-            document.getElementById('uploadImage').src = that.$store.state.picHead + res.data.datas;
+            //document.getElementById('uploadImage').src = that.$store.state.picHead + res.data.datas;
+            that.imgUrl = that.$store.state.picHead + res.data.datas;
             that.isImageState=1;
             that.dialogCropperVisible = false;
           }
@@ -303,7 +333,7 @@ import {contentService} from '../../service/contentService'
       finish (type) {
         let that = this;
         // 输出
-        console.log('截取类型',type);
+        //console.log('截取类型',type);
         if (type === 'blob') {
           this.$refs.cropper.getCropBlob((data) => {
             // blob:http://localhost:8090/1dd58c90-3625-4e27-8daf-fa2c8dbd6c7f
@@ -391,7 +421,7 @@ import {contentService} from '../../service/contentService'
      border:1px solid #dcdfe6;
        .file{width:300px;height:150px;position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;cursor: pointer;opacity:0;}
     }
-
+    .del{font-size: 20px;position:absolute;top: 30px;right: -8px;z-index:1;/*color:#ddd;*/cursor:pointer;}
   }
   .container{padding: 20px;}
   .container .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
