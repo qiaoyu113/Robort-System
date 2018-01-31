@@ -52,7 +52,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {CKEDITOR} from '../../../assets/js/plugins/ckeditor/ckeditor'
+  import {CKEDITOR} from '../../../assets/js/plugins/ckeditor4/ckeditor'
   import {contentService} from '../../../service/contentService'
   export default {
     props: [],

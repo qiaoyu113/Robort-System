@@ -18,7 +18,7 @@
             empty-text="暂无数据"
             @selection-change="handleSelectionChange"
             style="width: 100%">
-      <el-table-column type="selection" width="30"></el-table-column>
+      <!--<el-table-column type="selection" width="30"></el-table-column>-->
       <el-table-column
               prop="title"
               label="合同模板名称">
@@ -28,7 +28,7 @@
               label="分类">
       </el-table-column>
       <el-table-column
-              prop="package"
+              prop="packages"
               label="所在产品包">
       </el-table-column>
       <el-table-column
@@ -41,8 +41,8 @@
         <template slot-scope="scope">
           <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
-          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==0" class="el-btn-no">上架</el-button>
-          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==1" class="el-btn-no">下架</el-button>
+          <el-button @click="onOff($event)" type="text" size="small" v-if="scope.row.close==0" class="el-btn-no">上架</el-button>
+          <el-button @click="onOff($event)" type="text" size="small" v-if="scope.row.close==1" class="el-btn-no">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,12 +73,13 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {contractService} from '../../service/contractService'
+  import {common} from '../../assets/js/common/common'
   export default {
     props: [],
     data () {
       return {
         isTop: 0, // 是否显示置顶按钮
-        isOnline: 0, // 是否显示上架按钮
         dialog: {
           title: '',
           content: '',
@@ -88,47 +89,67 @@
         centerDialogVisible: false, // 弹框
         tableData: [], //列表数据
         multipleSelection: [], //列表数据
+        cPackage: [], //产品包信息
+        delInfo: {
+          id: '',
+          index: '',
+          rows: ''
+        }, // 删除信息
+        page: {
+          size: 10,
+          num: 1,
+          totalCount: 0,
+          totalPage: 0
+        },
+        query: '',
+        productPkgId: '',
       }
     },
     components: {},
     mounted () {
       let that = this;
+      that.getPackage();
       that.getList();
     },
     methods: {
       //获得列表,分类筛选
       getList () {
         let that = this;
-        that.tableData = [
-          {
-            id: 1,
-            title: '王小虎',
-            typ: '金融',
-            package: '合同模板所在产品包的名称',
-            date: '2016-05-01 14:00'
-          }, {
-            id: 2,
-            title: '王小虎',
-            typ: '商务交易',
-            package: '合同模板所在产品包的名称',
-            date: '2016-05-02 14:00'
-          },
-          {
-            id: 3,
-            title: '王小虎',
-            typ: '娱乐',
-            package: '合同模板所在产品包的名称',
-            date: '2016-05-03 14:00'
-          },
-          {
-            id: 4,
-            title: '王小虎',
-            typ: '商务交易',
-            package: '合同模板所在产品包的名称',
-            date: '2016-05-04 14:00'
-          }];
+        that.tableData = [];
+        contractService.getTemplates({pageNo: that.page.num, pageSize: that.page.size, name: that.query, productPkgId: that.productPkgId}).then(function (res) {
+          // console.log('模板列表', res);
+          if(res.data.success){
+            let array = res.data.datas.datas;
+            for(let i=0;i<array.length;i++){
+              let obj = {
+                id: array[i].id,
+                title: array[i].name,
+                typ: array[i].className,
+                packages: '——',
+                date: common.getFormatOfDate(array[i].createTime*1, 'yyyy-MM-dd hh:mm'),
+                close: array[i].close //是否下架
+              };
+              for(let j=0;j<that.cPackage.length;j++){
+                if(that.cPackage.id == array[i].productPkgId) {
+                   obj.packages = that.cPackage.name;
+                }
+              }
+              that.tableData.push(obj);
+            }
+          }else{}
+        });
       },
-      //添加产品包
+      // 获得产品包名称
+      getPackage () {
+        let that = this;
+        contractService.getPackage().then(function (res) {
+          console.log('chanpng', res);
+          if(res.data.success){
+            that.cPackage = res.data.datas;
+          }else{}
+        });
+      },
+      //添加合同模板
       add () {
         this.$router.push({name: 'contractTemplateAdd'});
       },
@@ -146,7 +167,12 @@
           content: '删除合同模板后，同时也会从产品包中删除，确定删除吗？'
         };
         that.centerDialogVisible = true;
-        rows.splice(index, 1);
+        // 保存删除需要条件
+        that.delInfo = {
+          id: id,
+          index: index,
+          rows: rows
+        }
       },
       //上架
       onOff (event) {
@@ -183,7 +209,17 @@
       },
       //弹出框按钮的操作
       // 确认
-      handleOk (done) {
+      handleOk () {
+        let that = this;
+        let id = that.delInfo.id;
+        let index = that.delInfo.index;
+        let rows = that.delInfo.rows;
+        contractService.deleteOneTemplate(id).then(function (res) {
+          console.log('删除', res);
+          if(res.data.success){
+            rows.splice(index, 1);
+          }
+        });
 
       },
       // 关闭
@@ -201,8 +237,8 @@
   .el-table th{background:#f5f7fa!important;}
   .el-table td{font-size:14px;color:#333!important;}
   .el-pagination{margin-top:20px;text-align:right;}
-  .v-modal{z-index:2000!important;}
-  .el-dialog{z-index:2018;}
+  .v-modal{display:none!important;}
+  .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .container{padding: 20px;
     .opr{
       margin:40px auto 20px;overflow:hidden;

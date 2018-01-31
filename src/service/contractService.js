@@ -53,8 +53,11 @@ export const contractService = {
     getTemplateType: function (params) { // 获取模板分类
         return axios.get('/admin/dictionarys/list' + this.getParams(params));
     },
-    getHotDogsTemplate: function (params) {
+    getHotDogsTemplate: function (params) { // 获得HotDog模板
        return axios.get('/admin/hotdocs/templates' + this.getParams(params));
+    },
+    getPackage: function (params) { // 获取产品包信息
+        return axios.get('/admin/productpkgs/list' + this.getParams(params));
     },
     getParams: function (param) {
         let url = '';
