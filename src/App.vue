@@ -68,5 +68,7 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
-
+    /* 弹层样式重置 */
+    .v-modal{display:none!important;}
+    .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
 </style>

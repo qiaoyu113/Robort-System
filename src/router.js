@@ -57,6 +57,8 @@ const partner = (resolve) => {require(['./pages/content/partner.vue'],resolve)}
 const partnerAdd = (resolve) => {require(['./pages/content/partner/add.vue'],resolve)}
 const productFunc = (resolve) => {require(['./pages/content/product.vue'],resolve)}
 const videoDemo = (resolve) => {require(['./pages/content/video.vue'],resolve)}
+const videoDemoAdd = (resolve) => {require(['./pages/content/video/add.vue'],resolve)}
+const videoDemoEdit = (resolve) => {require(['./pages/content/video/edit.vue'],resolve)}
 const aboutUs = (resolve) => {require(['./pages/content/aboutUs.vue'],resolve)}
 const news = (resolve) => {require(['./pages/content/news.vue'],resolve)}
 const comment= (resolve) => {require(['./pages/content/comment.vue'],resolve)}
@@ -94,6 +96,8 @@ const routers = [
                {name: 'productFunc',path:'/content/product',component: productFunc},
                // 内容管理—》演示视频
                {name: 'videoDemo',path:'/content/video',component: videoDemo},
+               {name: 'videoDemoAdd',path:'/content/video/add',component: videoDemoAdd},
+               {name: 'videoDemoEdit',path:'/content/video/edit/:videoId',component: videoDemoEdit},
                // 内容管理—》关于我们
                {name: 'aboutUs',path:'/content/about',component: aboutUs},
                // 内容管理—》新闻管理

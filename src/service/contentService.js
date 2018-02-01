@@ -26,6 +26,28 @@ export const contentService = {
     getProductFucInfo: function (params) {
         return axios.get('/admin/productfunctions/' + params);
     },
+    // 演示视频
+    getVideoDemos: function (params) { // 获得列表
+        return axios.get('/admin/demovideos' + this.getParams(params));
+    },
+    addVideoDemo: function (params) { // 添加演示视频
+        return axios.post('/admin/demovideos', qs.stringify(params));
+    },
+    editVideoDemo: function (params) { // 编辑演示视频
+        return axios.put('/admin/demovideos', qs.stringify(params));
+    },
+    stickVideoDemo: function (params) { // 置顶演示视频
+        return axios.put('/admin/demovideos/stick', qs.stringify(params));
+    },
+    disStickVideoDemo: function (params) { // 取消置顶视频
+        return axios.put('/admin/demovideos/disstick', qs.stringify(params));
+    },
+    deleteVideoDemo: function (params) { // 删除演示视频
+        return axios.delete('/admin/demovideos/' + params);
+    },
+    getVideoDemo: function (params) { // 获得详情
+        return axios.get('/admin/demovideos/' + params);
+    },
     // 焦点图管理
     getBanners: function (params) {
         return axios.get('/admin/banner' + this.getParams(params));
