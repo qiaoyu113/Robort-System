@@ -10,17 +10,17 @@
       </el-form-item>
       <el-form-item label="选择分类" prop="typ"  size="mini">
         <el-select v-model="ruleForm.typ" placeholder="请选择">
-          <el-option :label="item.name" :value="item" v-for="item in bType"></el-option>
+          <el-option v-for="(item, key, index) in bType" :label="item.name" :value="item" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="选择国家" prop="country"  size="mini">
         <el-select v-model="ruleForm.country" placeholder="请选择">
-          <el-option v-for="(value, key) in optionCountry" :label="value" :value="value"></el-option>
+          <el-option v-for="(value, key, index) in optionCountry" :label="value" :value="value" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="选择合同模板" prop="template"  size="mini">
         <el-select v-model="ruleForm.template" placeholder="请选择"><!--@change="templateItem(item)"-->
-          <el-option v-for="item in hotDog" :label="item.DisplayName" :value="item.Id"></el-option>
+          <el-option v-for="(item, key, index) in hotDog" :label="item.DisplayName" :value="item.Id" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="合同模板详情" prop="detail">
@@ -28,7 +28,7 @@
       </el-form-item>
       <el-form-item label="添加到产品包" prop="packages"  size="mini">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
-          <el-option v-for="item in cPackage" :label="item.name" :value="item.id"></el-option>
+          <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -47,11 +47,11 @@
     props: [],
     data () {
       return {
-        optionCountry: '', // 国家下拉列表
-        hotDog: '', // hotDog模板下拉列表
+        optionCountry: [], // 国家下拉列表
+        hotDog: [], // hotDog模板下拉列表
         hotDogObj: '',
-        bType: '', // 所属分类下拉列表
-        cPackage: '', // 产品包下拉列表
+        bType: [], // 所属分类下拉列表
+        cPackage: [], // 产品包下拉列表
         ruleForm: {
           title: '',
           isTry: false,

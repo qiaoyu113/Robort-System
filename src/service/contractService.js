@@ -34,7 +34,7 @@ export const contractService = {
     contractPackageAndTemplate: function (params) {
         return axios.put('/admin/productpkgs/addtemplates', qs.stringify(params));
     },
-    // 合同管理
+    // 合同模板
     getTemplates: function (params) { // 获取模板列表
         return axios.get('/admin/templates/' + this.getParams(params));
     },
@@ -49,6 +49,9 @@ export const contractService = {
     },
     getOneTemplate: function (params) { // 获取一个模板信息
         return axios.get('/admin/templates/' + params);// id
+    },
+    isOnlineOfTemplate: function (id, params) {
+        return axios.put('/admin/templates/close/' + id , qs.stringify(params));// id
     },
     getTemplateType: function (params) { // 获取模板分类
         return axios.get('/admin/dictionarys/list' + this.getParams(params));
