@@ -9,6 +9,9 @@ export const pluginService = {
     uploadFile: function (params) {
         return axios.post('/files', params);
     },
+    getYunToken: function (params) {
+        return axios.get('/ststoken' + this.getParams(params));
+    },
     getParams: function (param) {
         let url = '';
         for(let key in param){

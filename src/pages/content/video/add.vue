@@ -28,13 +28,14 @@
           <p class="v-des">请上传mp4格式，且不超过500M</p>
           <div class="video-list">
             <p class="v-des" v-for="(item, key, index) in fileList">
-              <span>{{ item.name }} {{item.size}}M</span>
-              <i class="el-icon-circle-close" @click="delVideo(index)"></i>
-              <i class="el-icon-circle-check"></i>
-            </p>
+              <span>{{ item.name }}</span><span style="margin-left:10px;color:#bbb;">{{item.size}}M</span>
+              <i class="el-icon-close" @click="delVideo" v-if="fileList.length > 0"></i>
+              <i class="el-icon-circle-check"  v-if="fileList.length > 0"></i>
+            </p><!-- v-if="percent<1 && percent>0"-->
+            <img class="progress" :width="percent">
           </div>
       </el-form-item>
-      <el-form-item label="简介"prop="desc">
+      <el-form-item label="简介" prop="desc">
         <el-input placeholder="请输入简介" v-model="form.desc" name="desc" class="iptFormLen itemLeft"></el-input>
       </el-form-item>
       <el-form-item>
@@ -92,13 +93,22 @@
             { required: true, message: '请输入简介', trigger: 'blur' }
           ]
         }, //表单验证
-        fileList: [{name: 'aa.txt', size: '2', url: ''}],
+        percent: 0,
+        fileList: [],
+        ossOption: { // oss上传
+            region: 'oss-cn-shanghai',
+            accessKeyId: '',
+            accessKeySecret: '',
+            stsToken: '',
+            bucket: 'shiatang'
+        },
         option: {
           img: '',
           info: true,
           size: 1,
-          outputType: 'jpeg',
-          canScale: true,
+          //outputType: 'jpeg',
+          outputType: 'jpeg || png || webp',
+          canScale: false,
           autoCrop: true,
           // 只有自动截图开启 宽度高度才生效
           autoCropWidth: 900,
@@ -116,35 +126,30 @@
     mounted () {
       let that = this;
       localStorage.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMeWFiOW8gOWni-W4puS9oOmjniIsInVzZXJJZCI6IjEiLCJwbGF0Zm9ybSI6IlBDSDUiLCJwZXJtaXNzaW9ucyI6WyJYVEdMOlFVRVJZIl0sImV4cCI6MTUxNzYzODM5MywibmJmIjoxNTE3MDMzNTkzfQ.g4jxqOPEm0MrH0q2ecyksVt-3lXJmvMBQVfZmwomd8c';
-      that.editor();
+      that.editor(); // 初始化富文本编辑器
+      that.getYunToken(); // 得到阿里云token
     },
     methods: {
       // 表单提交
       submit (form) {
         let that = this;
+        that.form.desc = myEditor.getData();
         // 表单验证
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功
             //alert('submit!');
-            //console.log('form', that.form);
-            if(that.isAddEdit == 1){
-              contentService.addProductFuc({name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit success', res);
-                if(res.data.success){
-                  that.dialogFormVisible = false;
-                }
-              });
-            }else if(that.isAddEdit == 2){
-              contentService.editProductFuc({id: that.form.id,name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit success', res);
-                if(res.data.success){
-                  that.dialogFormVisible = false;
-                }
-              });
-            }
-            that.currentPage = 1;
-            that.page.num = 1;
-            that.getList();
+              console.log('tijiao', that.form);
+            contentService.addVideoDemo({
+                name: that.form.title,
+                cover: that.form.pic,
+                video: that.form.video,
+                description: that.form.desc}).then(function (res) {
+                  console.log('submit success', res);
+                  if(res.data.success){
+                      //that.dialogFormVisible = false;
+                      that.$router.push({name: 'videoDemo'});
+                  }
+            });
           } else {
             console.log('error submit!!');
             return false;
@@ -223,30 +228,108 @@
         let file = e.target.files[0];
         let fileName = file.name;
         let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+        let key ='upload/'+that.getNowFormatDate()+'/'+ file.name; // 新文件名称
+        let  suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
+          console.log('length', that.fileList.length);
+          // 只可以上传一个视频
+        if(that.fileList.length >= 1){
+            this.$alert('只可以上传一个视频', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
+            return false;
+        }
+        // 请上传mp4格式的视频
+        if(suffix!='.mp4'){
+            this.$alert('请上传MP4格式的视频', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
+            return false;
+        }
+        // 视频小于500mb
         if(limit < 500){
-          let fd = new FormData();
-          fd.append('myfile', file);
-           // 上传
-          pluginService.uploadFile(fd).then(function (res) {
-            console.log('上传文件', res);
-            if(res.data.success){
-              let option = {
-                name: fileName,
-                size: Math.floor(limit),
-                url: res.data.datas.myfile
-              }
-              that.fileList.push(option);
-            }
-          });
+            let client = new OSS.Wrapper(that.ossOption);
+            // 上传
+            client.multipartUpload(key, file, {
+                progress: function* (percentage, cpt) {
+                    // 上传进度
+                    //_this.percentage = percentage
+                    console.log('percentage', percentage);
+                    console.log('cpt', cpt);
+                }
+            }).then((results) => {
+                // 上传完成
+                console.log(results,'上传完成');
+                that.form.video = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+                  let option = {
+                    name: fileName,
+                    size: Math.floor(limit),
+                    //url: res.data.datas.myfile
+                  }
+                  that.fileList.push(option);
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            var obj = document.getElementById('uploadVideo') ;
+            obj.select();
+            document.selection.clear();
+//obj.outerHTML=obj.outerHTML;
+
         }else{
            // 不超过500m
+            this.$alert('上传视频的大小不能超过500mb', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
         }
+          //document.getElementById('uploadVideo')[0].value = '';
+          //document.getElementById('uploadVideo')[0].outerHTML = '';
       },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      getYunToken () { // 获取阿里云token
+          let that = this;
+          pluginService.getYunToken().then(function (res) {
+             //console.log('获取阿里云token', res);
+              if(res.data.success){
+                  let info = res.data.datas;
+                  that.ossOption.accessKeyId = info.accesskeyid;
+                  that.ossOption.accessKeySecret = info.accesskeysecret;
+                  that.ossOption.stsToken = info.securitytoken;
+              }
+          });
       },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
+      progress (p) {
+            return function (done) {
+                console.log(p);
+                done();
+            };
+      },
+      getNowFormatDate () { //  给上传的视频重命名为当前时间
+          let date = new Date();
+          let seperator1 = "-";
+          let year = date.getFullYear();
+          let month = date.getMonth() + 1;
+          let strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          let currentdate = year + seperator1 + month + seperator1 + strDate;
+          return currentdate;
+      },
+      // 删除视频
+      delVideo () {
+          let that = this;
+          that.fileList = [];
+          that.form.video = '';
+
+//          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
       },
       // 富文本编辑器
       editor(){
@@ -319,6 +402,8 @@
   .el-form-item__content,.el-form-item__label{line-height:28px;}
   .el-upload-list__item-name [class^=el-icon]{height:auto!important;}
   .el-form-item__content{margin-left:78px!important;}
+  .el-upload-list{width: 600px;}
+  .el-upload-list__item-status-label{top:5px;}
   .container{
     font-size:14px;color:#333;
     padding: 20px;
@@ -343,14 +428,15 @@
     .video-list{width:600px;
        .v-des{color:#333;display:flex;justify-content: flex-start; align-items: center;}
        .el-icon-circle-check{margin-left:10px;cursor:pointer;color:#67c23a;display:block;}
-       .el-icon-circle-close{margin-left:10px;cursor:pointer; display:none;}
+       .el-icon-close{margin-left:10px;cursor:pointer; display:none;}
        .v-des:hover{background:#eee;}
        .v-des:hover .el-icon-circle-check{display:none;}
-       .v-des:hover .el-icon-circle-close{display:block;}
+       .v-des:hover .el-icon-close{display:block;}
     }
     .v-upload-btn{width:80px;height:28px;position:relative;
       .file{width:80px;height:28px;position:absolute;top:0; left:0;cursor: pointer;opacity:0;}
     }
+    .progress{height:2px;border-radius:2px;background:#4EAAFE;}
     .thumb{width:150px;height:100px;}
   }
 </style>

@@ -21,8 +21,8 @@
       <el-table-column
               label="视频名称">
         <template slot-scope="scope">
-          <span>置顶</span>
-          <span>{{scope.row.title}}</span>
+          <span class="top-mark" v-if="scope.row.sortNum > 0">置顶</span>
+          <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -31,10 +31,10 @@
       </el-table-column>
       <el-table-column
               label="操作"
-              width="90">
+              width="150">
         <template slot-scope="scope">
-          <el-button @click="doEdit(scope.row.id)" type="text" size="small">置顶</el-button>
-          <el-button @click="doEdit(scope.row.id)" type="text" size="small">取消置顶</el-button>
+          <el-button @click="toTop(scope.row.id)" v-if="scope.row.sortNum <= 0" type="text" size="small">置顶</el-button>
+          <el-button @click="toDown(scope.row.id)" v-if="scope.row.sortNum > 0" type="text" size="small">取消置顶</el-button>
           <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
         </template>
@@ -66,6 +66,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {common} from '../../assets/js/common/common'
   import {contentService} from '../../service/contentService'
 
   export default {
@@ -101,18 +102,16 @@
       //获得列表
       getList () {
         let that = this;
-        contentService.getProductFuc({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function(res){
-          //console.log('产品功能列表', res);
+        contentService.getVideoDemos({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function(res){
+          //console.log('演示视频列表', res);
           if(res.data.success) {
             let page = res.data.datas;
             let table = res.data.datas.datas;
-            //console.log('page', page);
-            //console.log('table', table);
             that.page.totalPage = page.totalPage;
             that.page.totalCount = parseInt(page.totalCount);
             for (let i = 0; i < table.length; i++) {
               table[i].cover = that.$store.state.picHead + table[i].cover;
-              //that.tableData.push(table[i]);
+              table[i].createTime = common.getFormatOfDate(table[i].createTime*1, 'yyyy-MM-dd hh:mm');
             }
             that.tableData = table;
           }
@@ -120,7 +119,6 @@
       },
       // 分页
       handleSizeChange (val) {
-        //console.log(`每页 ${val} 条`);
         let that = this;
         that.page.size = val;
         that.getList();
@@ -154,6 +152,26 @@
           id: id
         };
       },
+      // 置顶
+      toTop (id) {
+          let that = this;
+          contentService.stickVideoDemo({demoVideoId: id}).then(function (res) {
+              console.log('置顶操作', res);
+              if(res.data.success){
+                  that.getList();
+              }
+          });
+      },
+      // 取消置顶
+      toDown (id) {
+          let that = this;
+          contentService.disStickVideoDemo({demoVideoId: id}).then(function (res) {
+              console.log('置顶操作', res);
+              if(res.data.success){
+                  that.getList();
+              }
+          });
+      },
       //弹出框按钮的操作
       // 确认删除
       handleOk () {
@@ -163,11 +181,12 @@
         let index = that.couch.index;
         let id = that.couch.id;
         this.centerDialogVisible = false;
-        contentService.deleteProductFuc(id).then(function (res) {
+        contentService.deleteVideoDemo(id).then(function (res) {
           //console.log('删除', res);
           if(res.data.success){
             rows.splice(index, 1);
             that.page.num = 1;
+            that.currentPage = 1;
             that.getList();
           }
         });
@@ -208,6 +227,6 @@
   .container .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
   .container .img-cover .image{max-width:100px;max-height:80px;width:auto;height:auto;}
   .container .txt{word-wrap:break-word;}
-  .container .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+  .container .txt .mark,.top-mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
   .container .txt .price{display:block;}
 </style>
