@@ -10,6 +10,21 @@ export const contentService = {
     addPartner: function (params) {
         return axios.post('/admin/partners', qs.stringify(params));
     },
+    editPartner: function (params) {
+        return axios.put('/admin/partners', qs.stringify(params));
+    },
+    disStickPartner: function (params) {
+        return axios.put('/admin/partners/disstick', qs.stringify(params));
+    },
+    stickPartner: function (params) {
+        return axios.put('/admin/partners/stick', qs.stringify(params));
+    },
+    getPartner: function (params) {
+        return axios.get('/admin/partners' + params);
+    },
+    deletePartner: function (params) {
+        return axios.delete('/admin/partners/' + params);
+    },
     // 产品功能
     getProductFuc: function (params) {
        return axios.get('/admin/productfunctions' + this.getParams(params));
@@ -47,6 +62,51 @@ export const contentService = {
     },
     getVideoDemo: function (params) { // 获得详情
         return axios.get('/admin/demovideos/' + params);
+    },
+    // HotDocs代表用户
+    getHotUsers: function (params) { // 获得代表人员列表
+        return axios.get('/admin/hotusers' + this.getParams(params));
+    },
+    addHotUser: function (params) { // 添加代表人员
+        return axios.post('/admin/hotusers', qs.stringify(params));
+    },
+    editHotUser: function (params) { // 编辑代表人员
+        return axios.put('/admin/hotusers', qs.stringify(params));
+    },
+    deleteHotUser: function (params) { // 删除代表人员
+        return axios.delete('/admin/hotusers' + params);
+    },
+    getHotUser: function (params) { // 获得代表人员详情
+        return axios.get('/admin/hotusers' + params);
+    },
+    // 关于我们
+    getIntroduces: function (params) {
+        return axios.get('/admin/introductions' + this.getParams(params));
+    },
+    addIntroduce: function (params) {
+        return axios.post('/admin/introductions', qs.stringify(params));
+    },
+    // 新闻管理
+    getNewses: function (params) { // 获得新闻列表
+        return axios.get('/admin/articles' + this.getParams(params));
+    },
+    addNews: function (params) { // 添加新闻
+        return axios.post('/admin/articles', qs.stringify(params));
+    },
+    editNews: function (params) { // 编辑新闻
+        return axios.put('/admin/articles', qs.stringify(params));
+    },
+    stickNews: function (params) { // 置顶新闻
+        return axios.put('/admin/articles/stick', qs.stringify(params));
+    },
+    disStickNews: function (params) { // 取消置顶新闻
+        return axios.put('/admin/articles/disstick', qs.stringify(params));
+    },
+    deleteNews: function (params) { // 删除新闻
+        return axios.delete('/admin/articles/' + params);
+    },
+    getNews: function (params) { // 获得新闻详情
+        return axios.get('/admin/articles/' + params);
     },
     // 焦点图管理
     getBanners: function (params) {

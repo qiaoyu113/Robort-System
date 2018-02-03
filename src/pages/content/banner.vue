@@ -1,10 +1,8 @@
 <template>
   <div class="container">
     <!--切换选项卡-->
-    <el-tabs v-model="tabIndex" @tab-click="handleClick">
+    <el-tabs v-model="tabIndex">
       <el-tab-pane label="首页" name="first"></el-tab-pane>
-      <el-tab-pane label="合作伙伴" name="second"></el-tab-pane>
-      <el-tab-pane label="新闻" name="third"></el-tab-pane>
     </el-tabs>
     <!--按钮、搜索-->
     <p class="opration-bar">
@@ -14,28 +12,27 @@
     <el-table
             :data="tableData"
             empty-text="暂无数据"
-            style="width: 100%"><!--prop="name"style="width:40%"style="width:10%"style="width:10%"style="width:10%"              style="width:20%"-->
+            style="width: 100%">
       <el-table-column
-              fixed
-              label="宣传图">
+              prop = 'sortNum'
+              label="排序号">
+      </el-table-column>
+      <el-table-column
+              label="图片">
         <template slot-scope="scope">
           <div class="img-cover">
-            <img :src="scope.row.cover" class="image">
+            <img :src="scope.row.picUrl" class="image">
           </div>
         </template>
       </el-table-column>
       <el-table-column
-              prop = 'name'
+              prop = 'picTitle'
               label="标题">
       </el-table-column>
       <el-table-column
-              prop = 'description'
-              label="介绍">
+              prop = 'createDate'
+              label="创建时间">
       </el-table-column>
-      <!--<el-table-column-->
-      <!--prop="link"              fixed="right"-->
-      <!--label="跳转链接">-->
-      <!--</el-table-column>-->
       <el-table-column
               label="操作"
               width="90">
@@ -45,17 +42,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!--分页-->
-    <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
-            :page-size="page.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.totalCount" v-if="tableData.length>0">
-    </el-pagination>
     <!--弹框-->
     <el-dialog
             title="删除提示"
@@ -90,7 +76,7 @@
     <!--新增-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
+        <el-form-item label="上传主显图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
           <div class="upload-img" v-model="form.pic">
             <img id="uploadImage" class="image" v-show="isImageState==1" :src="imgUrl">
             <div class="btn" v-show="isImageState==0"><i class="el-icon-plus"></i>
@@ -102,8 +88,28 @@
         <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
           <el-input v-model="form.title" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="介绍" :label-width="formLabelWidth" prop="intro">
-          <el-input type="textarea" :rows="2" resize="none" placeholder="请输入简介" v-model="form.intro"></el-input>
+
+        <el-form-item label="" :label-width="formLabelWidth" prop="link">
+          <el-radio-group v-model="form.radio">
+            <el-radio :label="1">跳转链接</el-radio>
+            <el-radio :label="2">添加视频</el-radio>
+          </el-radio-group>
+          <el-input placeholder="http://" v-model="form.link" v-if="form.radio==1"></el-input>
+          <div style="margin-top:10px;" v-if="form.radio==2">
+            <div class="v-upload-btn">
+              <el-button size="mini" type="primary">点击上传</el-button>
+              <input type="file" id="uploadVideo" accept="*" @change="uploadVideo" class="file">
+            </div>
+            <p class="v-des">请上传mp4格式，且不超过500M</p>
+            <div class="video-list">
+              <p class="v-des" v-for="(item, key, index) in fileList">
+                <span>{{ item.name }}</span>
+                <i class="el-icon-close" @click="delVideo" v-if="fileList.length > 0"></i>
+                <i class="el-icon-circle-check"  v-if="fileList.length > 0"></i>
+              </p>
+              <img class="progress">
+            </div>
+          </div>
         </el-form-item>
         <el-form-item label="排序号" :label-width="formLabelWidth" prop="order">
           <el-select v-model="form.order" placeholder="请选择排序号">
@@ -124,6 +130,7 @@
 </template>
 <script type="text/ecmascript-6">
   import VueCropper from 'vue-cropper'
+  import {common} from '../../assets/js/common/common'
   import {pluginService} from '../../service/pluginService'
   import {contentService} from '../../service/contentService'
 
@@ -131,27 +138,27 @@
     props: [],
     data () {
       return {
-        tabIndex: 'first',//哪一个tab
+        tabIndex: 'first', // 显示第一个选项卡
         isAddEdit: 1, //1.添加；2.编辑
         dialogTitle: '',//添加标题 or 编辑标题
         form: {
           id: '',
           pic: '',
           title: '',
-          intro: '',
+          radio: 1,
+          link: '',
           order: ''
         }, // 新增表单
         rules: {
           pic: [
-            { required: true, message: '请上传产品功能封面图', trigger: 'blur' },
+            { required: true, message: '请上传焦点图', trigger: 'blur' },
           ],
           title: [
-            { required: true, message: '请输入产品功能名称', trigger: 'blur' },
+            { required: true, message: '请输入焦点图名称', trigger: 'blur' },
             { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
           ],
-          intro: [
-            { required: true, message: '请填写产品功能简介', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
+          link: [
+            { required: true, message: '请填写链接', trigger: 'blur' }
           ],
           order: [
             { required: true, message: '请选择排序号', trigger: 'change' }
@@ -170,22 +177,22 @@
           canScale: true,
           autoCrop: true,
           // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 300,
-          autoCropHeight: 150,
+          autoCropWidth: 900,
+          autoCropHeight: 600,
           // 开启宽度和高度比例
           fixed: true,
-          fixedNumber: [2, 1]
+          fixedNumber: [3, 2]
         }, //截图
         isImageState: 0, // 显示图片区域 or 显示上传图片按钮区域
         imgUrl: '', // 图片显示路径
-        currentPage: 1, // 默认当前页为第一页
-        page: {
-          size: 1,
-          num: 1,
-          totalCount: 0,
-          totalPage: 1,
-        },//分页数
-        query: '',// 查询条件
+        fileList: [], // 视频
+        ossOption: { // oss上传
+          region: 'oss-cn-shanghai',
+          accessKeyId: '',
+          accessKeySecret: '',
+          stsToken: '',
+          bucket: 'shiatang'
+        },
         centerDialogVisible: false, // 提示弹框
         dialogFormVisible: false, // 表单弹窗
         dialogCropperVisible: false, // 截图弹框
@@ -195,43 +202,24 @@
     components: { 'vue-cropper': VueCropper},
     mounted () {
       let that = this;
-      localStorage.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMeWFiOW8gOWni-W4puS9oOmjniIsInVzZXJJZCI6IjEiLCJwbGF0Zm9ybSI6IlBDSDUiLCJwZXJtaXNzaW9ucyI6WyJYVEdMOlFVRVJZIl0sImV4cCI6MTUxNzYzODM5MywibmJmIjoxNTE3MDMzNTkzfQ.g4jxqOPEm0MrH0q2ecyksVt-3lXJmvMBQVfZmwomd8c';
       that.getList();
+      that.getYunToken();
     },
     methods: {
       //获得列表
       getList () {
         let that = this;
-        contentService.getBanners({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function(res){
-          console.log('焦点图列表', res);
+        contentService.getBanners({type: 0, status: 1}).then(function(res){
+          //console.log('焦点图列表', res);
           if(res.data.success) {
-            let page = res.data.datas;
-            let table = res.data.datas.datas;
-            //console.log('page', page);
-            //console.log('table', table);
-            that.page.totalPage = page.totalPage;
-            that.page.totalCount = parseInt(page.totalCount);
+            let table = res.data.datas;
             for (let i = 0; i < table.length; i++) {
-              table[i].cover = that.$store.state.picHead + table[i].cover;
-              //that.tableData.push(table[i]);
+              table[i].picUrl = that.$store.state.picHead + table[i].picUrl;
+              table[i].createDate = common.getFormatOfDate(table[i].createDate*1, 'yyyy-MM-dd hh:mm');
             }
             that.tableData = table;
           }
         });
-      },
-      // 分页
-      handleSizeChange (val) {
-        //console.log(`每页 ${val} 条`);
-        let that = this;
-        that.page.size = val;
-        that.getList();
-      },
-      handleCurrentChange (val) {
-        // 当前页，就是当前点击的那一页
-        //console.log(`当前页: ${val}`);
-        let that = this;
-        that.page.num = val;
-        that.getList();
       },
       //添加
       add () {
@@ -240,33 +228,51 @@
         that.form = {
           pic: '',
           title: '',
-          intro: '',
+          radio: 1,
+          link: '',
           order: ''
         };
         that.isAddEdit = 1;
         that.isImageState = 0;
         that.imgUrl = '';
-        that.dialogTitle = '新增产品功能';
+        that.dialogTitle = '新增焦点图';
         that.dialogFormVisible = true;
       },
       // 编辑
       doEdit (id) {
         let that = this;
         contentService.getBanner(id).then(function (res) {
-          //console.log('编辑', res);
+          console.log('编辑', res);
           if(res.data.success){
             let obj = res.data.datas;
             that.form={
               id: obj.id,
-              pic: obj.cover,
-              title: obj.name,
-              intro: obj.description,
+              pic: obj.picUrl,
+              title: obj.picTitle,
+              radio: 1,
+              link: '',
               order: obj.sortNum
+            }
+            that.isImageState=1;
+            that.imgUrl = that.$store.state.picHead + obj.picUrl;
+            console.log(that.imgUrl);
+            if(obj.bannerType == '0'){
+              that.form.radio = 1;
+              that.form.link = obj.picLink;
+            }
+            else if(obj.bannerType == '1'){
+              that.form.radio = 2;
+              that.form.link = obj.videoUrl;
+              let arr = obj.videoUrl.split('/');
+              that.fileList =[{
+                name: arr[arr.length-1],
+                size: '',
+              }];
             }
             that.isAddEdit = 2;
             that.isImageState=1;
             that.imgUrl = that.$store.state.picHead + obj.cover;
-            that.dialogTitle = '编辑产品功能';
+            that.dialogTitle = '编辑焦点图';
             that.dialogFormVisible = true;
           }
         });
@@ -287,24 +293,38 @@
         let that = this;
         // 表单验证
         this.$refs[form].validate((valid) => {
-          if (valid) { //验证成功
+          if (valid) { //验证成功bannerType 0：图片；1：视频
+            let videoUrl = '';
+            let picLink = '';
+            let bannerType = 0;
+            if(that.form.radio == 1){
+              bannerType = 0;
+              picLink = that.form.link;
+            }else if (that.form.radio == 2){
+              bannerType = 1;
+              videoUrl = that.form.link;
+            }
             if(that.isAddEdit == 1){
-              contentService.addBanner({name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit success', res);
+              console.log('picUrl', that.form.pic);
+              console.log('videoUrl', videoUrl);
+              console.log('picTitle', that.form.title);
+              console.log('picLink', picLink);
+              console.log('bannerType', bannerType);
+              console.log('sortNum', that.form.order);
+              contentService.addBanner({picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
+                console.log('submit add success', res);
                 if(res.data.success){
                   that.dialogFormVisible = false;
                 }
               });
             }else if(that.isAddEdit == 2){
-              contentService.editBanner({id: that.form.id,name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit success', res);
+              contentService.editBanner({id: that.form.id,picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
+                console.log('submit edit success', res);
                 if(res.data.success){
                   that.dialogFormVisible = false;
                 }
               });
             }
-            that.currentPage = 1;
-            that.page.num = 1;
             that.getList();
           } else {
             console.log('error submit!!');
@@ -312,15 +332,14 @@
           }
         });
       },
-      //删除图片路径
-      delImgUrl () {
+      // 图片操作
+      delImgUrl () {//删除图片路径
         let that = this;
         that.isImageState = 0; // 显示图片上传按钮
         that.imgUrl = ''; // 清空页面显示的图片路径
         that.form.pic = ''; // 清空form表单要提交的图片路径
       },
-      // 图片上传至服务器
-      postToService (base64, width, height) {
+      postToService (base64, width, height) {// 图片上传至服务器
         let that = this;
         //console.log(2);
         pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
@@ -334,8 +353,7 @@
           }
         });
       },
-      // 图片截取输出
-      finish (type) {
+      finish (type) {// 图片截取输出
         let that = this;
         // 输出
         //console.log('截取类型',type);
@@ -347,13 +365,11 @@
           });
         } else {
           this.$refs.cropper.getCropData((data) => {
-            that.postToService(data, 300, 150);
+            that.postToService(data, that.option.autoCropWidth, that.option.autoCropHeight);
           });
         }
       },
-      // 图片上传，打开文件选择器
-      uploadImg (event) {
-        // this.option.img
+      uploadImg (event) {// 图片上传，打开文件选择器
         let that = this;
         let e = event;
         var file = e.target.files[0]
@@ -363,7 +379,7 @@
         }
         var reader = new FileReader()
         reader.onload = (e) => {
-          let data
+          let data;
           if (typeof e.target.result === 'object') {
             // 把Array Buffer转化为blob 如果是base64不需要
             //data = window.URL.createObjectURL(new Blob([e.target.result]))
@@ -378,6 +394,106 @@
         // 转化为blob
         //reader.readAsArrayBuffer(file)
       },
+      // 视频上传
+      uploadVideo (event) {
+        let that = this;
+        let e = event || window.event;
+        let file = e.target.files[0];
+        let fileName = file.name;
+        let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+        let key ='upload/'+that.getNowFormatDate()+'/'+ file.name; // 新文件名称
+        let  suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
+        // 只可以上传一个视频
+        if(that.fileList.length >= 1){
+          this.$alert('只可以上传一个视频', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+          return false;
+        }
+        // 请上传mp4格式的视频
+        if(suffix!='.mp4'){
+          this.$alert('请上传MP4格式的视频', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+          return false;
+        }
+        // 视频小于500mb
+        if(limit < 500){
+          let client = new OSS.Wrapper(that.ossOption);
+          // 上传
+          client.multipartUpload(key, file, {
+            progress: function* (percentage, cpt) {
+              // 上传进度
+              //_this.percentage = percentage
+              //console.log('percentage', percentage);
+              //console.log('cpt', cpt);
+            }
+          }).then((results) => {
+            // 上传完成
+            //console.log(results,'上传完成');
+            that.form.link = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+            let option = {
+              name: fileName,
+              size: Math.floor(limit),
+            }
+            that.fileList.push(option);
+          }).catch((err) => {
+            console.log(err)
+          });
+
+        }else{
+          // 不超过500m
+          this.$alert('上传视频的大小不能超过500mb', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+        }
+        //document.getElementById('uploadVideo')[0].value = '';
+        //document.getElementById('uploadVideo')[0].outerHTML = '';
+      },
+      getYunToken () { // 获取阿里云token
+        let that = this;
+        pluginService.getYunToken().then(function (res) {
+          //console.log('获取阿里云token', res);
+          if(res.data.success){
+            let info = res.data.datas;
+            that.ossOption.accessKeyId = info.accesskeyid;
+            that.ossOption.accessKeySecret = info.accesskeysecret;
+            that.ossOption.stsToken = info.securitytoken;
+          }
+        });
+      },
+      progress (p) {
+        return function (done) {
+          done();
+        };
+      },
+      getNowFormatDate () { //  给上传的视频重命名为当前时间
+        let date = new Date();
+        let seperator1 = "-";
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        let currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+      },
+      delVideo () {// 删除视频
+        let that = this;
+        that.fileList = [];
+        that.form.video = '';
+//          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
+      },
       //弹出框按钮的操作
       // 确认删除
       handleOk () {
@@ -391,7 +507,6 @@
           //console.log('删除', res);
           if(res.data.success){
             rows.splice(index, 1);
-            that.page.num = 1;
             that.getList();
           }
         });
@@ -417,14 +532,14 @@
   .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .el-dialog{z-index:2018;}
   .vue-cropper{height:500px!important;}
-  .upload-img{width:300px;height:188px;position:relative;
-  .image{width:300px;height:150px;}
-  .btn{width:300px;height:150px;position:absolute;top:40px;right:0;bottom:0;left: 0;display:flex;justify-content: center;align-items: center;
+  .upload-img{width:150px;height:138px;position:relative;
+  .image{width:150px;height:100px;}
+  .btn{width:150px;height:100px;position:absolute;top:40px;right:0;bottom:0;left: 0;display:flex;justify-content: center;align-items: center;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     border:1px solid #dcdfe6;
-  .file{width:300px;height:150px;position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;cursor: pointer;opacity:0;}
+  .file{width:150px;height:100px;position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;cursor: pointer;opacity:0;}
   }
   .del{font-size: 20px;position:absolute;top: 30px;right: -8px;z-index:1;/*color:#ddd;*/cursor:pointer;}
   }
@@ -434,4 +549,19 @@
   .container .txt{word-wrap:break-word;}
   .container .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
   .container .txt .price{display:block;}
+  .v-des{line-height:24px;padding:0 8px;margin-top:10px;font-size:12px;color:#999;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;}
+  .video-list{width:600px;
+  .v-des{color:#333;display:flex;justify-content: flex-start; align-items: center;}
+  .el-icon-circle-check{margin-left:10px;cursor:pointer;color:#67c23a;display:block;}
+  .el-icon-close{margin-left:10px;cursor:pointer; display:none;}
+  .v-des:hover{background:#eee;}
+  .v-des:hover .el-icon-circle-check{display:none;}
+  .v-des:hover .el-icon-close{display:block;}
+  }
+  .v-upload-btn{width:80px;height:28px;position:relative;
+  .file{width:80px;height:28px;position:absolute;top:0; left:0;cursor: pointer;opacity:0;}
+  }
 </style>

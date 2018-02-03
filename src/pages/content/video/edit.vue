@@ -140,7 +140,8 @@
           if (valid) { //验证成功
             //alert('submit!');
             //console.log('tijiao', that.form);
-            contentService.addVideoDemo({
+            contentService.editVideoDemo({
+              id: that.$route.params.videoId,
               name: that.form.title,
               cover: that.form.pic,
               video: that.form.video,
