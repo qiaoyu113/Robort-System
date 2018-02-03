@@ -4,7 +4,7 @@
 import axios from 'axios';
 import store from '../vuex/'
 
-axios.defaults.baseURL = 'http://nnkg8k.natappfree.cc';
+axios.defaults.baseURL = 'http://dybzkm.natappfree.cc';
 //axios.defaults.baseURL = 'http://api.qizhi.vjuzhen.com';
 
 let win = typeof window

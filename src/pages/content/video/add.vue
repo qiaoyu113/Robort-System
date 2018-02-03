@@ -28,7 +28,7 @@
           <p class="v-des">请上传mp4格式，且不超过500M</p>
           <div class="video-list">
             <p class="v-des" v-for="(item, key, index) in fileList">
-              <span>{{ item.name }}</span><span style="margin-left:10px;color:#bbb;">{{item.size}}M</span>
+              <span>{{ item.name }}</span><!--<span style="margin-left:10px;color:#bbb;">{{item.size}}M</span>-->
               <i class="el-icon-close" @click="delVideo" v-if="fileList.length > 0"></i>
               <i class="el-icon-circle-check"  v-if="fileList.length > 0"></i>
             </p><!-- v-if="percent<1 && percent>0"-->
@@ -137,21 +137,19 @@
         // 表单验证
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功
-            //alert('submit!');
-              console.log('tijiao', that.form);
+            //console.log('tijiao', that.form);
             contentService.addVideoDemo({
                 name: that.form.title,
                 cover: that.form.pic,
                 video: that.form.video,
                 description: that.form.desc}).then(function (res) {
-                  console.log('submit success', res);
+                  //console.log('submit success', res);
                   if(res.data.success){
-                      //that.dialogFormVisible = false;
                       that.$router.push({name: 'videoDemo'});
                   }
             });
           } else {
-            console.log('error submit!!');
+            //console.log('error submit!!');
             return false;
           }
         });
@@ -230,7 +228,6 @@
         let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
         let key ='upload/'+that.getNowFormatDate()+'/'+ file.name; // 新文件名称
         let  suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
-          console.log('length', that.fileList.length);
           // 只可以上传一个视频
         if(that.fileList.length >= 1){
             this.$alert('只可以上传一个视频', '提示', {
@@ -257,17 +254,16 @@
                 progress: function* (percentage, cpt) {
                     // 上传进度
                     //_this.percentage = percentage
-                    console.log('percentage', percentage);
-                    console.log('cpt', cpt);
+                    //console.log('percentage', percentage);
+                    //console.log('cpt', cpt);
                 }
             }).then((results) => {
                 // 上传完成
-                console.log(results,'上传完成');
+                //console.log(results,'上传完成');
                 that.form.video = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
                   let option = {
                     name: fileName,
                     size: Math.floor(limit),
-                    //url: res.data.datas.myfile
                   }
                   that.fileList.push(option);
             }).catch((err) => {
@@ -304,7 +300,6 @@
       },
       progress (p) {
             return function (done) {
-                console.log(p);
                 done();
             };
       },
