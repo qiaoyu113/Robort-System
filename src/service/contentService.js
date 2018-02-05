@@ -124,6 +124,10 @@ export const contentService = {
     deleteBanner: function (params) {
         return axios.post('/admin/banner/status', qs.stringify(params));
     },
+    // 分类
+    getDicKey: function (params) {
+        return axios.get('/admin/dictionarys/list' + this.getParams(params));
+    },
     // 参数拼接
     getParams: function (param) {
         let url = '';

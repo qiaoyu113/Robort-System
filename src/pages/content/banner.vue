@@ -153,10 +153,6 @@
           pic: [
             { required: true, message: '请上传焦点图', trigger: 'blur' },
           ],
-          title: [
-            { required: true, message: '请输入焦点图名称', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
-          ],
           link: [
             { required: true, message: '请填写链接', trigger: 'blur' }
           ],
@@ -241,8 +237,9 @@
       // 编辑
       doEdit (id) {
         let that = this;
+        that.imgUrl = ''
         contentService.getBanner(id).then(function (res) {
-          console.log('编辑', res);
+          //console.log('编辑', res);
           if(res.data.success){
             let obj = res.data.datas;
             that.form={
@@ -253,9 +250,9 @@
               link: '',
               order: obj.sortNum
             }
+            let imgUrl = that.$store.state.picHead + obj.picUrl;
+            that.imgUrl = imgUrl;
             that.isImageState=1;
-            that.imgUrl = that.$store.state.picHead + obj.picUrl;
-            console.log(that.imgUrl);
             if(obj.bannerType == '0'){
               that.form.radio = 1;
               that.form.link = obj.picLink;
@@ -270,8 +267,6 @@
               }];
             }
             that.isAddEdit = 2;
-            that.isImageState=1;
-            that.imgUrl = that.$store.state.picHead + obj.cover;
             that.dialogTitle = '编辑焦点图';
             that.dialogFormVisible = true;
           }
@@ -305,27 +300,23 @@
               videoUrl = that.form.link;
             }
             if(that.isAddEdit == 1){
-              console.log('picUrl', that.form.pic);
-              console.log('videoUrl', videoUrl);
-              console.log('picTitle', that.form.title);
-              console.log('picLink', picLink);
-              console.log('bannerType', bannerType);
-              console.log('sortNum', that.form.order);
               contentService.addBanner({picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
-                console.log('submit add success', res);
+                //console.log('submit add success', res);
                 if(res.data.success){
                   that.dialogFormVisible = false;
+                  that.getList();
                 }
               });
             }else if(that.isAddEdit == 2){
               contentService.editBanner({id: that.form.id,picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
-                console.log('submit edit success', res);
+                //console.log('submit edit success', res);
                 if(res.data.success){
                   that.dialogFormVisible = false;
+                  that.getList();
                 }
               });
             }
-            that.getList();
+
           } else {
             console.log('error submit!!');
             return false;

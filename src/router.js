@@ -61,6 +61,8 @@ const videoDemoAdd = (resolve) => {require(['./pages/content/video/add.vue'],res
 const videoDemoEdit = (resolve) => {require(['./pages/content/video/edit.vue'],resolve)}
 const aboutUs = (resolve) => {require(['./pages/content/aboutUs.vue'],resolve)}
 const news = (resolve) => {require(['./pages/content/news.vue'],resolve)}
+const newsAdd = (resolve) => {require(['./pages/content/news/add.vue'],resolve)}
+const newsEdit = (resolve) => {require(['./pages/content/news/edit.vue'],resolve)}
 const comment= (resolve) => {require(['./pages/content/comment.vue'],resolve)}
 const banner= (resolve) => {require(['./pages/content/banner.vue'],resolve)}
 
@@ -102,6 +104,8 @@ const routers = [
                {name: 'aboutUs',path:'/content/about',component: aboutUs},
                // 内容管理—》新闻管理
                {name: 'news',path:'/content/news',component: news},
+               {name: 'newsAdd',path:'/content/news/add',component: newsAdd},
+               {name: 'newsEdit',path:'/content/news/edit/:newsId',component: newsEdit},
                // 内容管理—》评论管理
                {name: 'comment',path:'/content/comment',component: comment},
                // 内容管理—》焦点图管理
