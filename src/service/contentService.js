@@ -83,7 +83,7 @@ export const contentService = {
     getIntroduces: function (params) {
         return axios.get('/admin/introductions' + this.getParams(params));
     },
-    addIntroduce: function (params) {
+    editIntroduce: function (params) {
         return axios.post('/admin/introductions', qs.stringify(params));
     },
     // 新闻管理
