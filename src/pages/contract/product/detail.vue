@@ -79,9 +79,9 @@
               label="操作"
               width="140">
         <template slot-scope="scope">
-          <el-button @click="doTop(2,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0">上移</el-button>
-          <el-button @click="onOff(1,scope.row.id)" type="text" size="small" v-if="scope.row.close==true">下移</el-button>
-          <el-button @click="onOff(2,scope.row.id)" type="text" size="small" v-if="scope.row.close==false">移除</el-button>
+          <el-button @click="moveHandle(1,scope.row.id)" type="text" size="small">上移</el-button>
+          <el-button @click="moveHandle(2,scope.row.id)" type="text" size="small">下移</el-button>
+          <el-button @click="moveHandle(3,scope.row.id)" type="text" size="small">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -171,6 +171,29 @@
           oprTyp: 1
         };
         that.centerDialogVisible = true;
+      },
+      // 上移，下移，移除
+      moveHandle (typ, id) {
+        let that = this;
+        if(typ==1){ // 上移
+          contractService.moveUpAndDown({productPkgId: id}).then(function (res) {
+            //console.log(res, '取消置顶');
+            if(res.data.success){
+              that.getList();
+            }else{}
+          });
+        }
+        else if(typ==2){ // 下移
+          contractService.moveUpAndDown({productPkgId: id}).then(function (res) {
+            //console.log(res, '取消置顶');
+            if(res.data.success){
+              that.getList();
+            }else{}
+          });
+        }
+        else if(typ==3){ // 移除
+
+        }
       },
       // 置顶，取消置顶
       doTop (typ, id) {
