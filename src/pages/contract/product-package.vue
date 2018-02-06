@@ -13,36 +13,44 @@
     <el-table
             :data="tableData"
             empty-text="暂无数据"
-            style="width: 100%"><!--prop="name"style="width:40%"style="width:10%"style="width:10%"style="width:10%"              style="width:20%"-->
+            style="width: 100%">
       <el-table-column
-              fixed
               label="产品包名称">
         <template slot-scope="scope">
           <div class="picTxt">
             <div class="img-cover">
-              <img :src="scope.row.info.src" class="image">
+              <img :src="scope.row.cover" class="image">
             </div>
-            <p class="txt">
-              <router-link :to="scope.row.info.link"><span class="mark">置顶</span>{{ scope.row.info.name }}</router-link>
-              <span class="price">￥{{scope.row.info.price}}</span>
-            </p>
+            <div class="txt">
+              <p  @click="toDetail(scope.row.id)"><span class="mark" v-if="scope.row.sortNum > 0">置顶</span>{{ scope.row.name }}</p>
+              <span class="price">￥{{scope.row.price_s}}</span>
+            </div>
           </div>
         </template>
       </el-table-column>
       <el-table-column
-              prop="num"
+              prop="templateNum"
               label="合同数">
       </el-table-column>
       <el-table-column
-              prop="state"
-              label="产品包状态">
+              label="产品包状态"
+              :filters="[{text: '已上架', value: '1'}, {text: '已下架', value: '2'}]"
+              :filter-method="filterHandler">
+        <template slot-scope="scope">
+          <span v-if="scope.row.close==false">已上架</span>
+          <span v-if="scope.row.close==true">已下架</span>
+        </template>
       </el-table-column>
       <el-table-column
-              prop="order"
+              prop="subscribeNum"
               label="订阅量">
       </el-table-column>
       <el-table-column
-              prop="date"
+              prop="watchNum"
+              label="浏览数">
+      </el-table-column>
+      <el-table-column
+              prop="createTime"
               label="创建时间">
       </el-table-column>
       <el-table-column
@@ -53,10 +61,10 @@
           <el-button @click="toDetail(scope.row.id)" type="text" size="small">详情</el-button>
           <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
-          <el-button @click="doTop($event)" type="text" size="small" v-if="isTop==1">取消置顶</el-button>
-          <el-button @click="doTop($event)" type="text" size="small" v-if="isTop==0">置顶</el-button>
-          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==0">上架</el-button>
-          <el-button @click="onOff($event)" type="text" size="small" v-if="isOnline==1">下架</el-button>
+          <el-button @click="doTop(1,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum > 0">取消置顶</el-button>
+          <el-button @click="doTop(2,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0">置顶</el-button>
+          <el-button @click="onOff(1,scope.row.id)" type="text" size="small" v-if="scope.row.close==true">上架</el-button>
+          <el-button @click="onOff(2,scope.row.id)" type="text" size="small" v-if="scope.row.close==false">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,11 +73,11 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            :current-page="currentPage"
+            :page-sizes="[1, 2, 3, 4]"
+            :page-size="page.size"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :total="page.totalCount">
     </el-pagination>
     <!--弹框-->
     <el-dialog
@@ -81,12 +89,14 @@
           <span>{{ dialog.content }}</span>
           <span slot="footer" class="dialog-footer">
             <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
-            <el-button size="mini" type="primary" @click="centerDialogVisible = false">确 定</el-button>
+            <el-button size="mini" type="primary" @click="handleOk">确 定</el-button>
           </span>
     </el-dialog>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {common} from '../../assets/js/common/common'
+  import {contractService} from '../../service/contractService'
   export default {
     props: [],
     data () {
@@ -96,10 +106,20 @@
         dialog: {
           title: '',
           content: '',
-          prodId: 0,
+          rows: '',
+          index: '',
+          id: '',
           oprTyp: 0 //操作类型：1.删除；2.上架；3.下架
         },
         centerDialogVisible: false, // 弹框
+        currentPage: 1,
+        page: {
+          size: 10,
+          num: 1,
+          totalCount: 0,
+          totalPage: 1
+        },
+        query: '',
         tableData: [] //列表数据
       }
     },
@@ -112,59 +132,21 @@
       //获得列表
       getList () {
          let that = this;
-         that.tableData = [
-          {
-            id: 3,
-            info: {
-              //name: '王小虎京东方快速搭建焚枯食淡过凉开水大驾光临对上了可见芬达上看了',
-              name: '王小虎',
-              price: '1.00',
-              link: 'http://crm.shequnyi.cn/',
-              src: '/src/assets/image/demo/1.jpg'
-            },
-            date: '2016-05-03 11:11',
-            num: 10,
-            order: 11000,
-            state: '已下架'
-          }, {
-            id: 2,
-            info: {
-              name: '王小虎',
-              price: '1.00',
-              link: 'http://crm.shequnyi.cn/',
-              src: '/src/assets/image/demo/2.jpg'
-            },
-            date: '2016-05-02 14:00',
-            num: 200333,
-            order: 1542,
-            state: '未开始'
-          },
-          {
-            id: 4,
-            info: {
-              name: '王小虎',
-              price: '1.00',
-              link: 'http://crm.shequnyi.cn/',
-              src: '/src/assets/image/demo/3.jpg'
-            },
-            date: '2016-05-04 11:11',
-            num: 200333,
-            order: 1542,
-            state: '未开始'
-          },
-          {
-            id: 1,
-            info: {
-              name: '王小虎',
-              price: '1.00',
-              link: 'http://crm.shequnyi.cn/',
-              src: '/src/assets/image/demo/4.jpg'
-            },
-            date: '2016-05-01 14:00',
-            num: 200333,
-            order: 1542,
-            state: '进行中'
-          }];
+         that.tableData = []
+         contractService.getProductPackages({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function (res) {
+           //console.log('产品包列表', res);
+           if(res.data.success){
+             let table = res.data.datas;
+             that.page.totalCount = parseInt(table.totalCount);
+             that.page.totalPage = table.totalPage;
+             let newArr = res.data.datas.datas;
+             for(let i=0;i<newArr.length;i++){
+               newArr[i].cover = that.$store.state.picHead + newArr[i].cover;
+               newArr[i].createTime = common.getFormatOfDate(newArr[i].createTime*1, 'yyyy-MM-dd hh:mm');
+               that.tableData.push(newArr[i]);
+             }
+           }else{}
+         });
       },
       //添加产品包
       add () {
@@ -187,44 +169,114 @@
         let that = this;
         that.dialog = {
           title: '删除提示',
-          content: '删除后该产品包将在列表中移除，同时不会在前台展示，已购买的用户可以继续使用，确定将该产品包删除吗？'
+          content: '删除后该产品包将在列表中移除，同时不会在前台展示，已购买的用户可以继续使用，确定将该产品包删除吗？',
+          rows: rows,
+          index: index,
+          id: id,
+          oprTyp: 1
         };
         that.centerDialogVisible = true;
-        rows.splice(index, 1);
       },
-      // 置顶
-      doTop (event) {
-        let obj = event.currentTarget; // 当前对象
-        if(obj.innerHTML == '置顶'){
-          obj.innerHTML = '取消置顶';
-        }else{
-          obj.innerHTML = '置顶';
+      // 置顶，取消置顶
+      doTop (typ, id) {
+        let that = this;
+        if(typ==1){ // 取消置顶
+          contractService.isCancelStick({productPkgId: id}).then(function (res) {
+            //console.log(res, '取消置顶');
+            if(res.data.success){
+              that.getList();
+            }else{}
+          });
+        }
+        else if(typ==2){ // 置顶
+          contractService.isStick({productPkgId: id}).then(function (res) {
+            //console.log(res, '置顶');
+            if(res.data.success){
+              that.getList();
+            }else{}
+          });
         }
       },
-      //上架
-      onOff (event) {
+      //上架，下架
+      onOff (typ, id) {
         let that = this;
-        let obj = event.currentTarget; // 当前对象
-        console.log(obj.innerHTML)
-        if(obj.innerHTML == '上架'){
+        if(typ == 1){
           that.dialog = {
+            oprTyp: 2,
+            id: id,
             title: '上架提示',
             content: '确定上架吗？'
           };
           that.centerDialogVisible = true;
-          obj.innerHTML = '下架';
-        }else{
+        }
+        else if(typ == 2){
           that.dialog = {
+            oprTyp: 3,
+            id: id,
             title: '下架提示',
             content: '下架后该产品包将不会在前台展示，已购买的用户可以继续使用，确定下架吗？'
           };
           that.centerDialogVisible = true;
-          obj.innerHTML = '上架';
         }
+      },
+      // 分页
+      handleSizeChange (val) {
+        //console.log(`每页 ${val} 条`);
+        let that = this;
+        that.page.size = val;
+        that.getList();
+      },
+      handleCurrentChange (val) {
+        // 当前页，就是当前点击的那一页
+        let that = this;
+        that.currentPage = val;
+        that.page.num = val;
+        that.getList();
+      },
+      filterTag(value, row) {
+        return row.tag === value;
+      },
+      filterHandler(value, row, column) {
+        const property = column['property'];
+        return row[property] === value;
       },
       //弹出框按钮的操作
       // 确认
-      handleOk (done) {
+      handleOk () {
+        let that = this;
+        let typ = that.dialog.oprTyp;
+        let id = that.dialog.id;
+        if(typ == 1){
+          let rows = that.dialog.rows;
+          let index = that.dialog.index;
+          contractService.deleteProductPackage(id).then(function (res) {
+            console.log('删除', res);
+            if(res.data.success){
+              that.centerDialogVisible = false;
+              rows.splice(index, 1);
+              that.page.num = 1;
+              that.getList();
+            }
+          });
+        }
+        else if(typ == 2){
+          contractService.isOnline(id, {close: false}).then(function (res) {
+            //console.log('上架', res);
+            if(res.data.success){
+              that.centerDialogVisible = false;
+              that.getList();
+            }else{}
+          });
+        }
+        else if(typ == 3){
+          contractService.isOnline(id, {close: true}).then(function (res) {
+            //console.log('下架', res);
+            if(res.data.success){
+              that.centerDialogVisible = false;
+              that.getList();
+            }else{}
+          });
+        }
 
       },
       // 关闭

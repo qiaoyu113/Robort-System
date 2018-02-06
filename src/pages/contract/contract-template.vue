@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <!--切换选项卡-->
+    <el-tabs v-model="tabIndex">
+      <el-tab-pane label="合同模板" name="1"></el-tab-pane>
+      <el-tab-pane label="试用合同模板" name="2"></el-tab-pane>
+    </el-tabs>
     <!--按钮、搜索-->
     <p class="opr">
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合同模板</el-button>
@@ -50,7 +55,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-      <el-pagination
+    <el-pagination
               background
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -59,7 +64,7 @@
               :page-size="page.size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="page.totalCount" v-if="tableData.length>0">
-      </el-pagination>
+    </el-pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -82,6 +87,7 @@
     props: [],
     data () {
       return {
+        tabIndex: '1', // tab默认显示第一个
         isTop: 0, // 是否显示置顶按钮
         dialog: {
           title: '',

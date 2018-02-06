@@ -1,11 +1,15 @@
 <template>
   <div class="container">
-    <!--面包屑-->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ name: 'productPackage' }">产品包</el-breadcrumb-item>
-      <el-breadcrumb-item>产品包详情</el-breadcrumb-item>
-    </el-breadcrumb>
-    <!--详情-->
+    <!--按钮、搜索-->
+    <p class="opr">
+      <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建产品包</el-button>
+      <el-input
+              placeholder="搜索产品包名称"
+              v-model="input23" size="mini" class="right">
+        <i slot="suffix" class="el-input__icon el-icon-search"></i>
+      </el-input>
+    </p>
+    <!--表格-->
     <el-table
             :data="tableData"
             empty-text="暂无数据"
@@ -26,7 +30,7 @@
       </el-table-column>
       <el-table-column
               prop="templateNum"
-              label="合同模板名称">
+              label="合同数">
       </el-table-column>
       <el-table-column
               label="产品包状态"
@@ -39,52 +43,42 @@
       </el-table-column>
       <el-table-column
               prop="subscribeNum"
-              label="价格">
+              label="订阅量">
+      </el-table-column>
+      <el-table-column
+              prop="watchNum"
+              label="浏览数">
+      </el-table-column>
+      <el-table-column
+              prop="createTime"
+              label="创建时间">
       </el-table-column>
       <el-table-column
               fixed="right"
               label="操作"
               width="140">
         <template slot-scope="scope">
+          <el-button @click="toDetail(scope.row.id)" type="text" size="small">详情</el-button>
+          <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
+          <el-button @click="doTop(1,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum > 0">取消置顶</el-button>
+          <el-button @click="doTop(2,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0">置顶</el-button>
           <el-button @click="onOff(1,scope.row.id)" type="text" size="small" v-if="scope.row.close==true">上架</el-button>
           <el-button @click="onOff(2,scope.row.id)" type="text" size="small" v-if="scope.row.close==false">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!--按钮、搜索-->
-    <p class="opr">
-      <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">添加合同模板</el-button>
-      <el-input
-              placeholder="搜索名称"
-              v-model="input23" size="mini" class="right">
-        <i slot="suffix" class="el-input__icon el-icon-search"></i>
-      </el-input>
-    </p>
-    <!--表格-->
-    <el-table
-            :data="tableData"
-            empty-text="暂无数据"
-            style="width: 100%">
-      <el-table-column
-              prop = 'title'
-              label="合同模板名称">
-      </el-table-column>
-      <el-table-column
-              prop="createTime"
-              label="添加时间">
-      </el-table-column>
-      <el-table-column
-              fixed="right"
-              label="操作"
-              width="140">
-        <template slot-scope="scope">
-          <el-button @click="doTop(2,scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0">上移</el-button>
-          <el-button @click="onOff(1,scope.row.id)" type="text" size="small" v-if="scope.row.close==true">下移</el-button>
-          <el-button @click="onOff(2,scope.row.id)" type="text" size="small" v-if="scope.row.close==false">移除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!--分页-->
+    <el-pagination
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 2, 3, 4]"
+            :page-size="page.size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.totalCount">
+    </el-pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -138,9 +132,8 @@
       //获得列表
       getList () {
         let that = this;
-        that.tableData = [];
-        let pkgId = '';
-        contractService.getTemplates({pageNo: that.page.num, pageSize: that.page.size, name: that.query, productPkgId: pkgId}).then(function (res) {
+        that.tableData = []
+        contractService.getProductPackages({pageNo: that.page.num, pageSize: that.page.size, name: that.query}).then(function (res) {
           //console.log('产品包列表', res);
           if(res.data.success){
             let table = res.data.datas;
@@ -158,6 +151,18 @@
       //添加产品包
       add () {
         this.$router.push({name: 'productAdd'});
+      },
+      // 详情
+      toDetail (id) {
+        let that = this;
+        that.$route.params.prodId = id;
+        that.$router.push({name: 'productDetail'});
+      },
+      // 编辑
+      doEdit (id) {
+        let that = this;
+        that.$route.params.prodId = id;
+        that.$router.push({name: 'productEdit'});
       },
       // 删除
       doDelete (id, index, rows) {
@@ -227,6 +232,13 @@
         that.currentPage = val;
         that.page.num = val;
         that.getList();
+      },
+      filterTag(value, row) {
+        return row.tag === value;
+      },
+      filterHandler(value, row, column) {
+        const property = column['property'];
+        return row[property] === value;
       },
       //弹出框按钮的操作
       // 确认

@@ -47,6 +47,7 @@ const error = (resolve) => {require(['./pages/error.vue'],resolve)}
 const productAdd = (resolve) => {require(['./pages/contract/product/add.vue'],resolve)}
 const productEdit = (resolve) => {require(['./pages/contract/product/edit.vue'],resolve)}
 const productDetail = (resolve) => {require(['./pages/contract/product/detail.vue'],resolve)}
+const productScan = (resolve) => {require(['./pages/contract/product/scan.vue'],resolve)}
 const productPackage = (resolve) => {require(['./pages/contract/product-package.vue'],resolve)}
 const customService = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
 const contractTemplateAdd = (resolve) => {require(['./pages/contract/template/add.vue'],resolve)}
@@ -85,10 +86,11 @@ const routers = [
                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
                // 合同管理
                // 产品包
+               {name: 'productPackage',path:'/contract/product',component: productPackage},
                {name: 'productAdd',path:'/contract/product/add',component: productAdd},
                {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
-               {name: 'productPackage',path:'/contract/product',component: productPackage},
+               {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
                {name: 'customService',path:'/contract/services',component: customService},
                // 模板
                {name: 'contractTemplateAdd',path:'/contract/template/add',component: contractTemplateAdd},

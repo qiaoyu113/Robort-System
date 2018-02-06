@@ -28,8 +28,8 @@ export const contractService = {
     isCancelStick: function (params) { // 取消置顶
         return axios.put('/admin/productpkgs/disstick', qs.stringify(params));
     },
-    isOnline: function (params) { // 上架、下架
-        return axios.put('/admin/productpkgs/close/', qs.stringify(params));
+    isOnline: function (id, params) { // 上架、下架
+        return axios.put('/admin/productpkgs/close/' + id, qs.stringify(params));
     },
     contractPackageAndTemplate: function (params) {
         return axios.put('/admin/productpkgs/addtemplates', qs.stringify(params));
@@ -61,6 +61,10 @@ export const contractService = {
     },
     getPackage: function (params) { // 获取产品包信息
         return axios.get('/admin/productpkgs/list' + this.getParams(params));
+    },
+    // 演示视频下拉菜单
+    getVideoDemo: function (params) {
+        return axios.get('/admin/demovideos/list' + this.getParams(params));
     },
     getParams: function (param) {
         let url = '';
