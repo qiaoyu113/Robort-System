@@ -69,6 +69,9 @@
         -webkit-box-orient: vertical;
     }
     /* 弹层样式重置 */
+    .el-table th{background:#f5f7fa!important;}
+    .el-table td{font-size:14px;color:#333!important;}
+    .el-pagination{margin-top:20px;text-align:right;}
     .v-modal{display:none!important;}
     .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
 </style>

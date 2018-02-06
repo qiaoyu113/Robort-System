@@ -9,8 +9,8 @@
       <el-tab-pane label="更多信息" name="5"></el-tab-pane>
     </el-tabs>
     <!---->
-    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
-      <el-form-item label="标题" prop="title">
+    <el-form :model="form" :rules="rules" ref="form" label-width="140px">
+      <el-form-item :label="textTitle" prop="content">
         <el-input v-model="form.content" type="textarea" resize="none" :rows="8" class="iptLength"></el-input>
       </el-form-item>
       <el-form-item label="视频链接" v-if="isShowLink">
@@ -40,7 +40,8 @@
             { required: true, message: '请输入内容', trigger: 'blur' },
           ]
         }, //表单验证
-        isShowLink: 0 // 是否显示视频链接
+        isShowLink: 0, // 是否显示视频链接
+        textTitle: '合通机器人使命', // 文本框标题
       }
     },
     components: {},
@@ -62,7 +63,7 @@
               that.tabIndex = '' + obj.type; // 显示对应选项卡
               that.form = {
                 id: obj.id,
-                content: obj.description,
+                content: obj.description.replace(/@@@@/g,'\n\r'),
                 link: obj.videoLink
               }
             }
@@ -76,11 +77,13 @@
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功bannerType 0：图片；1：视频
             let typ = parseInt(that.tabIndex);
-            contentService.editIntroduce({id: that.form.id, description: that.form.content, videoLink: that.form.link, type: typ}).then(function (res) {
-              console.log('编辑', res);
+            let desc = that.form.content.replace(/\n/g, '@@@@');
+            contentService.editIntroduce({id: that.form.id, description: desc, videoLink: that.form.link, type: typ}).then(function (res) {
+              //console.log('编辑', res);
               if(res.data.success){
-                //that.dialogFormVisible = false;
-                //that.getList();
+                  that.$message({
+                      type: 'success',
+                      message: '保存成功'});
               }
             });
           } else {
@@ -94,9 +97,20 @@
       tabIndex (cur, old){
         let that = this;
         let tab = parseInt(cur);
-        if(tab==1 || tab==4){
+        if(tab==1){
+          that.textTitle = '合同机器人使命';
           that.isShowLink = 0;
-        }else{
+        }if(tab==2){
+          that.textTitle = '解决方案';
+          that.isShowLink = 1;
+        }if(tab==3){
+          that.textTitle = '技术合作伙伴';
+          that.isShowLink = 1;
+        }if(tab==4){
+          that.textTitle = '内容合作伙伴';
+          that.isShowLink = 0;
+        }if(tab==5){
+          that.textTitle = '更多信息';
           that.isShowLink = 1;
         }
         that.form = {
@@ -112,4 +126,5 @@
 <style lang="less">
   .container{padding: 20px;}
   .iptLength{width: 600px;}
+  .textLength{width:100%;}
 </style>

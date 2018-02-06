@@ -107,6 +107,7 @@
                                     <el-menu-item index="合作伙伴"><router-link to="/content/partner">合作伙伴</router-link></el-menu-item>
                                     <el-menu-item index="产品功能"><router-link to="/content/product">产品功能</router-link></el-menu-item>
                                     <el-menu-item index="演示视频"><router-link to="/content/video">演示视频</router-link></el-menu-item>
+                                    <el-menu-item index="HotDocs代表用户"><router-link to="/content/hotdocs">HotDocs代表用户</router-link></el-menu-item>
                                     <el-menu-item index="关于我们"><router-link to="/content/about">关于我们</router-link></el-menu-item>
                                     <el-menu-item index="新闻管理"><router-link to="/content/news">新闻管理</router-link></el-menu-item>
                                     <!--<el-menu-item index="评论管理"><router-link to="/content/comment">评论管理</router-link></el-menu-item>-->

@@ -74,10 +74,10 @@ export const contentService = {
         return axios.put('/admin/hotusers', qs.stringify(params));
     },
     deleteHotUser: function (params) { // 删除代表人员
-        return axios.delete('/admin/hotusers' + params);
+        return axios.delete('/admin/hotusers/' + params);
     },
     getHotUser: function (params) { // 获得代表人员详情
-        return axios.get('/admin/hotusers' + params);
+        return axios.get('/admin/hotusers/' + params);
     },
     // 关于我们
     getIntroduces: function (params) {

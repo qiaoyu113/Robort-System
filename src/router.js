@@ -59,6 +59,9 @@ const productFunc = (resolve) => {require(['./pages/content/product.vue'],resolv
 const videoDemo = (resolve) => {require(['./pages/content/video.vue'],resolve)}
 const videoDemoAdd = (resolve) => {require(['./pages/content/video/add.vue'],resolve)}
 const videoDemoEdit = (resolve) => {require(['./pages/content/video/edit.vue'],resolve)}
+const HotDocs = (resolve) => {require(['./pages/content/hotDocs.vue'],resolve)}
+const HotDocsAdd = (resolve) => {require(['./pages/content/docs/add.vue'],resolve)}
+const HotDocsEdit = (resolve) => {require(['./pages/content/docs/edit.vue'],resolve)}
 const aboutUs = (resolve) => {require(['./pages/content/aboutUs.vue'],resolve)}
 const news = (resolve) => {require(['./pages/content/news.vue'],resolve)}
 const newsAdd = (resolve) => {require(['./pages/content/news/add.vue'],resolve)}
@@ -100,6 +103,10 @@ const routers = [
                {name: 'videoDemo',path:'/content/video',component: videoDemo},
                {name: 'videoDemoAdd',path:'/content/video/add',component: videoDemoAdd},
                {name: 'videoDemoEdit',path:'/content/video/edit/:videoId',component: videoDemoEdit},
+               // 内容管理—》HotDocs代表用户
+               {name: 'HotDocs',path:'/content/hotdocs',component: HotDocs},
+               {name: 'HotDocsAdd',path:'/content/hotdocs/add',component: HotDocsAdd},
+               {name: 'HotDocsEdit',path:'/content/hotdocs/edit/:hotDocsId',component: HotDocsEdit},
                // 内容管理—》关于我们
                {name: 'aboutUs',path:'/content/about',component: aboutUs},
                // 内容管理—》新闻管理
@@ -107,7 +114,7 @@ const routers = [
                {name: 'newsAdd',path:'/content/news/add',component: newsAdd},
                {name: 'newsEdit',path:'/content/news/edit/:newsId',component: newsEdit},
                // 内容管理—》评论管理
-               {name: 'comment',path:'/content/comment',component: comment},
+               //{name: 'comment',path:'/content/comment',component: comment},
                // 内容管理—》焦点图管理
                {name: 'banner',path:'/content/banner',component: banner},
 
