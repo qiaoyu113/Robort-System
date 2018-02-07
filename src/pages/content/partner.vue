@@ -1,17 +1,16 @@
 <template>
   <div class="container">
     <!--切换选项卡-->
-    <el-tabs v-model="tabIndex" @tab-click="handleClick">
-      <el-tab-pane label="白标合作伙伴" name="first"></el-tab-pane>
-      <el-tab-pane label="全球合作伙伴" name="second"></el-tab-pane>
-      <el-tab-pane label="国内战略合作伙伴" name="third"></el-tab-pane>
+    <el-tabs v-model="tabIndex">
+      <el-tab-pane label="白标合作伙伴" name="1"></el-tab-pane>
+      <el-tab-pane label="全球合作伙伴" name="2"></el-tab-pane>
     </el-tabs>
     <!--按钮、搜索-->
     <p class="opration-bar">
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合作伙伴</el-button>
       <el-input
               placeholder="搜索名称"
-              v-model="input23" size="mini" class="right normal">
+              v-model="query" size="mini" class="right normal">
         <i slot="suffix" class="el-input__icon el-icon-search"></i>
       </el-input>
     </p>
@@ -86,7 +85,7 @@
     props: [],
     data () {
       return {
-        tabIndex: 'first',
+        tabIndex: '1',
         pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；
         isTop: 0, // 是否显示置顶按钮
         dialog: {

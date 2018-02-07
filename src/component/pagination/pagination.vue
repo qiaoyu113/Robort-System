@@ -5,23 +5,23 @@
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-sizes="[1, 2, 3, 4]"
-          :page-size="page.size"
+          :page-size="options.size"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="pages.totalCount">
+          :total="options.totalCount">
   </el-pagination>
 </template>
 <script type="text/ecmascript-6">
   export default {
-    props: ['pages'],
+    props: ['options'],
     data () {
       return {
         currentPage: 1,
-        page: {
-          size: 10,
-          num: 1,
-          totalCount: 0,
-          totalPage: 1
-        }
+//        page: {
+//          size: 10,
+//          num: 1,
+//          totalCount: 0,
+//          totalPage: 1
+//        }
       }
     },
     components: {},

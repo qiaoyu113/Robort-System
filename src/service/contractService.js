@@ -20,7 +20,10 @@ export const contractService = {
         return axios.get('/admin/productpkgs/' + params);
     },
     moveUpAndDown: function (params) { // 上移、下移
-        return axios.delete('/admin/productpkgs/up_down', qs.stringify(params));
+        return axios.post('/admin/productpkgs/up_down', qs.stringify(params));
+    },
+    removePkgTemplate: function (params) { // 移除
+        return axios.delete('/admin/productpkgs/removetemplate' + this.getParams(params));
     },
     isStick: function (params) { // 置顶
         return axios.put('/admin/productpkgs/stick', qs.stringify(params));
@@ -31,12 +34,15 @@ export const contractService = {
     isOnline: function (id, params) { // 上架、下架
         return axios.put('/admin/productpkgs/close/' + id, qs.stringify(params));
     },
-    contractPackageAndTemplate: function (params) {
+    contractPackageAndTemplate: function (params) { // 产品包添加模板
         return axios.put('/admin/productpkgs/addtemplates', qs.stringify(params));
+    },
+    getScanNum: function (params) {
+        return axios.get('/admin/users/watch' + this.getParams(params));
     },
     // 合同模板
     getTemplates: function (params) { // 获取模板列表
-        return axios.get('/admin/templates/' + this.getParams(params));
+        return axios.get('/admin/templates' + this.getParams(params));
     },
     addOneTemplate: function (params) { // 添加一个模板
         return axios.post('/admin/templates', qs.stringify(params));
@@ -49,6 +55,9 @@ export const contractService = {
     },
     getOneTemplate: function (params) { // 获取一个模板信息
         return axios.get('/admin/templates/' + params);// id
+    },
+    getTemplateAll: function (params) {
+        return axios.get('/admin/templates/list' + this.getParams(params));
     },
     isOnlineOfTemplate: function (id, params) {
         return axios.put('/admin/templates/close/' + id , qs.stringify(params));// id

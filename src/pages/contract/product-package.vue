@@ -22,7 +22,7 @@
               <img :src="scope.row.cover" class="image">
             </div>
             <div class="txt">
-              <p  @click="toDetail(scope.row.id)"><span class="mark" v-if="scope.row.sortNum > 0">置顶</span>{{ scope.row.name }}</p>
+              <p @click="toDetail(scope.row.id)" class="titleUnderLine"><span class="mark" v-if="scope.row.sortNum > 0">置顶</span>{{ scope.row.name }}</p>
               <span class="price">￥{{scope.row.price_s}}</span>
             </div>
           </div>
@@ -30,12 +30,16 @@
       </el-table-column>
       <el-table-column
               prop="templateNum"
+              width="130"
               label="合同数">
       </el-table-column>
       <el-table-column
+              prop="close"
               label="产品包状态"
-              :filters="[{text: '已上架', value: '1'}, {text: '已下架', value: '2'}]"
-              :filter-method="filterHandler">
+              width="130"
+              :filters="[{text: '已上架', value: false}, {text: '已下架', value: true}]"
+              :filter-method="filterTag"
+              filter-placement="bottom-end">
         <template slot-scope="scope">
           <span v-if="scope.row.close==false">已上架</span>
           <span v-if="scope.row.close==true">已下架</span>
@@ -43,11 +47,17 @@
       </el-table-column>
       <el-table-column
               prop="subscribeNum"
+              width="130"
               label="订阅量">
       </el-table-column>
       <el-table-column
-              prop="watchNum"
+              width="130"
               label="浏览数">
+          <template slot-scope="scope">
+            <p @click="toScanDetail(scope.row.id)" class="titleUnderLine" v-if="scope.row.watchNum>0">{{ scope.row.watchNum }}</p>
+            <p v-else>{{ scope.row.watchNum }}</p>
+            <!--<p @click="toScanDetail(scope.row.id)" class="titleUnderLine">{{ scope.row.watchNum }}</p>-->
+          </template>
       </el-table-column>
       <el-table-column
               prop="createTime"
@@ -71,6 +81,7 @@
     <!--分页-->
     <el-pagination
             background
+            v-if="page.totalCount > page.size"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -158,6 +169,11 @@
         that.$route.params.prodId = id;
         that.$router.push({name: 'productDetail'});
       },
+      toScanDetail (id) {
+          let that = this;
+          that.$route.params.prodId = id;
+          that.$router.push({name: 'productScan'});
+      },
       // 编辑
       doEdit (id) {
         let that = this;
@@ -234,11 +250,8 @@
         that.getList();
       },
       filterTag(value, row) {
-        return row.tag === value;
-      },
-      filterHandler(value, row, column) {
-        const property = column['property'];
-        return row[property] === value;
+         //console.log('Handler value', value, 'row', row);
+         return row.close === value;
       },
       //弹出框按钮的操作
       // 确认
@@ -294,8 +307,7 @@
   .el-table th{background:#f5f7fa!important;}
   .el-table td{font-size:14px;color:#333!important;}
   .el-pagination{margin-top:20px;text-align:right;}
-  .v-modal{z-index:2000!important;}
-  .el-dialog{z-index:2018;}
+  .el-table__empty-block{height:300px;}
   .container{padding: 20px;}
   .container .opr{margin:40px auto 20px;overflow:hidden;}
   .container .opr .left{}
@@ -306,4 +318,5 @@
   .container .picTxt .txt{word-wrap:break-word;}
   .container .picTxt .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
   .container .picTxt .txt .price{display:block;}
+  .titleUnderLine:hover{color:#66b1ff;text-decoration: underline;cursor:pointer;}
 </style>
