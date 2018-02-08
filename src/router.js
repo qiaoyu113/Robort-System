@@ -56,6 +56,7 @@ const contractTemplate = (resolve) => {require(['./pages/contract/contract-templ
 // 内容管理
 const partner = (resolve) => {require(['./pages/content/partner.vue'],resolve)}
 const partnerAdd = (resolve) => {require(['./pages/content/partner/add.vue'],resolve)}
+const partnerEdit = (resolve) => {require(['./pages/content/partner/edit.vue'],resolve)}
 const productFunc = (resolve) => {require(['./pages/content/product.vue'],resolve)}
 const videoDemo = (resolve) => {require(['./pages/content/video.vue'],resolve)}
 const videoDemoAdd = (resolve) => {require(['./pages/content/video/add.vue'],resolve)}
@@ -84,21 +85,22 @@ const routers = [
                {name: 'file',path:'/setup/file',component: file},
                {name: 'label',path:'/setup/label',component: label},
                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
-               // 合同管理
-               // 产品包
+               // 合同管理—》产品包
                {name: 'productPackage',path:'/contract/product',component: productPackage},
                {name: 'productAdd',path:'/contract/product/add',component: productAdd},
                {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
                {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
                {name: 'customService',path:'/contract/services',component: customService},
-               // 模板
+               // 合同管理—》模板
                {name: 'contractTemplateAdd',path:'/contract/template/add',component: contractTemplateAdd},
                {name: 'contractTemplateEdit',path:'/contract/template/edit/:templateId',component: contractTemplateEdit},
                {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
+               // 合同管理—》定制服务
                // 内容管理—》合作伙伴
                {name: 'partner',path:'/content/partner',component: partner},
                {name: 'partnerAdd',path:'/content/partner/:partnerTyp/add',component: partnerAdd},
+               {name: 'partnerEdit',path:'/content/partner/:partnerTyp/edit/:partnerId',component: partnerEdit},
                // 内容管理—》产品功能
                {name: 'productFunc',path:'/content/product',component: productFunc},
                // 内容管理—》演示视频

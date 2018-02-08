@@ -20,7 +20,7 @@ export const contentService = {
         return axios.put('/admin/partners/stick', qs.stringify(params));
     },
     getPartner: function (params) {
-        return axios.get('/admin/partners' + params);
+        return axios.get('/admin/partners/' + params);
     },
     deletePartner: function (params) {
         return axios.delete('/admin/partners/' + params);
@@ -127,6 +127,14 @@ export const contentService = {
     // 分类
     getDicKey: function (params) {
         return axios.get('/admin/dictionarys/list' + this.getParams(params));
+    },
+    // 获得产品包
+    getPackage: function (params) { // 获取产品包信息
+        return axios.get('/admin/productpkgs/list' + this.getParams(params));
+    },
+    // 合同模板
+    getTemplates: function (params) {
+        return axios.get('/admin/templates/list' + this.getParams(params));
     },
     // 参数拼接
     getParams: function (param) {

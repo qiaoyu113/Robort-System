@@ -11,8 +11,8 @@
           <el-button type="primary" size="mini">上传文件</el-button>
           <input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
         </div>
-        <!--<p class="des">1. 建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg</p>-->
-        <!--<p class="des">2. 说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。</p>-->
+        <p v-if="isShowDes==true" class="des">1. 建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg</p>
+        <p v-if="isShowDes==true" class="des">2. 说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。</p>
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@
       return {
         isImageState: 0, // 显示删除图片图标
         imgUrl: '', // 图片显示路径
+        isShowDes: false,
       }
     },
     components: {},
