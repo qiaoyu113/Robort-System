@@ -3,9 +3,8 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
       <el-form-item label="合同模板名称" prop="title" size="mini">
         <el-input v-model="ruleForm.title" class="iptLength"></el-input>
-        <el-checkbox v-model="ruleForm.isTry">设为试用模板</el-checkbox>
       </el-form-item>
-      <el-form-item label="简介" prop="desc">
+      <el-form-item label="宣传语" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none"></el-input>
       </el-form-item>
       <el-form-item label="选择分类" prop="typ"  size="mini">
@@ -19,17 +18,20 @@
         </el-select>
       </el-form-item>
       <el-form-item label="选择合同模板" prop="template"  size="mini">
-        <el-select v-model="ruleForm.template" placeholder="请选择"><!--@change="templateItem(item)"-->
+        <el-select v-model="ruleForm.template" placeholder="请选择">
           <el-option v-for="(item, key, index) in hotDog" :label="item.DisplayName" :value="item.Id" :key="key"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="合同模板详情" prop="detail">
-        <el-input type="textarea" v-model="ruleForm.detail" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
       <el-form-item label="添加到产品包" prop="packages"  size="mini">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="简介" prop="detail">
+        <el-input type="textarea" v-model="ruleForm.detail" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+      </el-form-item>
+      <el-form-item label="目录" prop="list">
+        <el-input type="textarea" v-model="ruleForm.list" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>

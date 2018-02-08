@@ -7,8 +7,8 @@
     </el-tabs>
     <!--按钮、搜索-->
     <p class="opr">
-      <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合同模板</el-button>
-      <!--<el-button type="primary" icon="el-icon-refresh" size="mini" class="right" @click="" plain>同步最新模板</el-button>-->
+      <el-button v-if="tabIndex=='1'" type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合同模板</el-button>
+      <el-button v-if="tabIndex=='2'" type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建试用模板</el-button>
       <el-input
               placeholder="搜索合同模板标题"
               v-model="query" size="mini" class="right middle" @enter.keyup="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
@@ -23,21 +23,32 @@
             empty-text="暂无数据"
             @selection-change="handleSelectionChange"
             style="width: 100%">
-      <!--<el-table-column type="selection" width="30"></el-table-column>-->
       <el-table-column
               prop="title"
               label="合同模板名称">
       </el-table-column>
-      <el-table-column
-              prop="typ"
-              label="分类">
-          <el-select placeholder="请选择">
-              <el-option label="dddd" value="dddddd"></el-option>
-          </el-select>
-      </el-table-column>
+      <!--<el-table-column-->
+              <!--prop="typ"-->
+              <!--label="分类"-->
+              <!--width="60"-->
+              <!--:filters="[{text: '已上架', value: false}, {text: '已下架', value: true}]"-->
+              <!--:filter-method="filterTag"-->
+              <!--filter-placement="bottom-end">-->
+        <!--<template slot-scope="scope">-->
+          <!--&lt;!&ndash;<span v-if="scope.row.close==false">已上架</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<span v-if="scope.row.close==true">已下架</span>&ndash;&gt;-->
+        <!--</template>-->
+      <!--</el-table-column>-->
       <el-table-column
               prop="packages"
               label="所在产品包">
+      </el-table-column>
+      <el-table-column
+              prop="date"
+              label="浏览数">
+        <template slot-scope="scope">
+
+        </template>
       </el-table-column>
       <el-table-column
               prop="date"
@@ -49,22 +60,13 @@
         <template slot-scope="scope">
           <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
-          <el-button @click="online(scope.row.id)" type="text" size="small" v-if="scope.row.close== true" class="el-btn-no">上架</el-button>
-          <el-button @click="offline(scope.row.id)" type="text" size="small" v-if="scope.row.close== false" class="el-btn-no">下架</el-button>
+          <el-button @click="online(scope.row.id)" type="text" size="small" v-if="scope.row.close== true & tabIndex == '1'" class="el-btn-no">上架</el-button>
+          <el-button @click="offline(scope.row.id)" type="text" size="small" v-if="scope.row.close== false & tabIndex == '1'" class="el-btn-no">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
-              background
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[1, 2, 3, 4]"
-              :page-size="page.size"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="page.totalCount" v-if="tableData.length>0">
-    </el-pagination>
+    <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -81,6 +83,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import pagination from '../../component/pagination/pagination.vue'
   import {contractService} from '../../service/contractService'
   import {common} from '../../assets/js/common/common'
   export default {
@@ -102,17 +105,17 @@
         multipleSelection: [], //列表数据
         cPackage: [], //产品包信息
         currentPage: 1, // 分页
-        page: {
+        myPagination: {
           size: 1,
           num: 1,
           totalCount: 0,
-          totalPage: 0
+          totalPage: 1
         }, // 分页
         query: '',
         productPkgId: '',
       }
     },
-    components: {},
+    components: {pagination},
     mounted () {
       let that = this;
       that.getPackage();
@@ -123,13 +126,20 @@
       getList () {
         let that = this;
         that.tableData = [];
-        contractService.getTemplates({pageNo: that.page.num, pageSize: that.page.size, name: that.query, productPkgId: that.productPkgId}).then(function (res) {
-           //console.log('模板列表', res);
+        let flag = false;
+        if(that.tabIndex == '1'){
+          flag = false;
+        }
+        else if(that.tabIndex == '2'){
+          flag = true;
+        }
+        contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
+          console.log('模板列表', res);
           if(res.data.success){
+            let table = res.data.datas;
+            that.myPagination.totalCount = parseInt(table.totalCount);
+            that.myPagination.totalPage = table.totalPage;
             let array = res.data.datas.datas;
-            let record = res.data.datas;
-            that.page.totalCount = parseInt(record.totalCount);
-            that.page.totalPage = record.totalPage;
             for(let i=0;i<array.length;i++){
               let obj = {
                 id: array[i].id,
@@ -148,6 +158,18 @@
             }
           }else{}
         });
+      },
+      // 分页
+      sizeChange (val) {
+        let that = this;
+        that.myPagination.size = val;
+        that.getList();
+      },
+      currentChange (val) {
+        // 当前页，就是当前点击的那一页
+        let that = this;
+        that.myPagination.num = val;
+        that.getList();
       },
       // 获得产品包名称
       getPackage () {
@@ -175,6 +197,8 @@
       },
       //添加合同模板
       add () {
+        let that = this;
+        that.$route.params.templateTyp = that.tabIndex;
         this.$router.push({name: 'contractTemplateAdd'});
       },
       // 编辑
@@ -260,6 +284,18 @@
                   done();
                 })
                 .catch(_ => {});
+      }
+    },
+    watch: {
+      tabIndex (cur, old){
+        let that = this;
+        if(cur == '1'){
+          that.getList();
+        }
+        else if(cur == '2'){
+          that.getList();
+        }
+        return cur;
       }
     }
   }

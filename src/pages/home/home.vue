@@ -86,6 +86,17 @@
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
+                                    index="9" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-setting"></i>
+                                    <span>系统设置</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="字典设置"><router-link to="/system/classify">字典设置</router-link></el-menu-item>
+                                    <el-menu-item index="帐号设置"><router-link to="/system/account">帐号设置</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
                                     index="7" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
                                     <i class="el-icon-document"></i>

@@ -25,12 +25,8 @@ Vue.component('z-home', backhome)
 
 
 // 定义组件
-
 const short = (resolve) => {require(['./pages/short.vue'],resolve)}
 const home = (resolve) => {require(['./pages/home/home.vue'],resolve)}
-// 直播
-const live = (resolve) => {require(['./pages/home/home.vue'],resolve)}
-const liveDetails = (resolve) => {require(['./pages/home/home.vue'],resolve)}
 // 设置
 const jurisdiction = (resolve) => {require(['./pages/setup/jurisdiction.vue'],resolve)}
 const integral = (resolve) => {require(['./pages/setup/integral.vue'],resolve)}
@@ -49,10 +45,11 @@ const productEdit = (resolve) => {require(['./pages/contract/product/edit.vue'],
 const productDetail = (resolve) => {require(['./pages/contract/product/detail.vue'],resolve)}
 const productScan = (resolve) => {require(['./pages/contract/product/scan.vue'],resolve)}
 const productPackage = (resolve) => {require(['./pages/contract/product-package.vue'],resolve)}
-const customService = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
 const contractTemplateAdd = (resolve) => {require(['./pages/contract/template/add.vue'],resolve)}
 const contractTemplateEdit = (resolve) => {require(['./pages/contract/template/edit.vue'],resolve)}
 const contractTemplate = (resolve) => {require(['./pages/contract/contract-template.vue'],resolve)}
+const contractServices = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
+const contractServiceDetail = (resolve) => {require(['./pages/contract/services/detail.vue'],resolve)}
 // 内容管理
 const partner = (resolve) => {require(['./pages/content/partner.vue'],resolve)}
 const partnerAdd = (resolve) => {require(['./pages/content/partner/add.vue'],resolve)}
@@ -70,7 +67,9 @@ const newsAdd = (resolve) => {require(['./pages/content/news/add.vue'],resolve)}
 const newsEdit = (resolve) => {require(['./pages/content/news/edit.vue'],resolve)}
 const comment= (resolve) => {require(['./pages/content/comment.vue'],resolve)}
 const banner= (resolve) => {require(['./pages/content/banner.vue'],resolve)}
-
+// 系统设置
+const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve)}
+const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -85,18 +84,22 @@ const routers = [
                {name: 'file',path:'/setup/file',component: file},
                {name: 'label',path:'/setup/label',component: label},
                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},
+               // 系统管理—》分类
+               {name: 'sysClassify',path:'/system/classify',component: sysClassify},
+               {name: 'sysAccount',path:'/system/account',component: sysAccount},
                // 合同管理—》产品包
                {name: 'productPackage',path:'/contract/product',component: productPackage},
                {name: 'productAdd',path:'/contract/product/add',component: productAdd},
                {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
                {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
-               {name: 'customService',path:'/contract/services',component: customService},
                // 合同管理—》模板
-               {name: 'contractTemplateAdd',path:'/contract/template/add',component: contractTemplateAdd},
-               {name: 'contractTemplateEdit',path:'/contract/template/edit/:templateId',component: contractTemplateEdit},
+               {name: 'contractTemplateAdd',path:'/contract/template/:templateTyp/add',component: contractTemplateAdd},
+               {name: 'contractTemplateEdit',path:'/contract/template/:templateTyp/edit/:templateId',component: contractTemplateEdit},
                {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
                // 合同管理—》定制服务
+               {name: 'contractServices',path:'/contract/service',component: contractServices},
+               {name: 'contractServiceDetail',path:'/contract/service/detail/:serviceId',component: contractServiceDetail},
                // 内容管理—》合作伙伴
                {name: 'partner',path:'/content/partner',component: partner},
                {name: 'partnerAdd',path:'/content/partner/:partnerTyp/add',component: partnerAdd},
