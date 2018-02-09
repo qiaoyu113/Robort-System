@@ -124,7 +124,7 @@
           if (valid) { // 验证成功
             if(that.form.addOrEdit == 0){
               systemService.addClassify({name: that.form.name, type: that.form.typ}).then(function (res) {
-                console.log('add', res);
+                //console.log('add', res);
                 if(res.data.success){
                   that.formDialogVisible = false;
                   that.getList();
@@ -133,7 +133,7 @@
             }
             if(that.form.addOrEdit == 1){
               systemService.editClassify({id: that.form.id, name: that.form.name, type: that.form.typ}).then(function (res) {
-                console.log('edit 修改分类', res);
+                //console.log('edit 修改分类', res);
                 if(res.data.success){
                   that.formDialogVisible = false;
                   that.getList();
@@ -197,7 +197,7 @@
         let that = this;
         let id = that.dialog.id;
         systemService.deleteClassify({id: id}).then(function (res) {
-          console.log('删除', res);
+          //console.log('删除', res);
           if(res.data.success){
             that.centerDialogVisible = false;
             that.getList();

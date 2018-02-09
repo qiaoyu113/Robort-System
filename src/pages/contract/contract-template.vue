@@ -24,37 +24,36 @@
             @selection-change="handleSelectionChange"
             style="width: 100%">
       <el-table-column
-              prop="title"
+              prop="name"
+              width="200"
               label="合同模板名称">
       </el-table-column>
-      <!--<el-table-column-->
-              <!--prop="typ"-->
-              <!--label="分类"-->
-              <!--width="60"-->
-              <!--:filters="[{text: '已上架', value: false}, {text: '已下架', value: true}]"-->
-              <!--:filter-method="filterTag"-->
-              <!--filter-placement="bottom-end">-->
-        <!--<template slot-scope="scope">-->
-          <!--&lt;!&ndash;<span v-if="scope.row.close==false">已上架</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<span v-if="scope.row.close==true">已下架</span>&ndash;&gt;-->
-        <!--</template>-->
-      <!--</el-table-column>-->
       <el-table-column
-              prop="packages"
+              prop="className"
+              label="分类"
+              width="140"
+              :filters="filterList"
+              :filter-method="filterTag"
+              filter-placement="bottom-end">
+      </el-table-column>
+      <el-table-column
+              prop="productPkgName"
               label="所在产品包">
       </el-table-column>
       <el-table-column
-              prop="date"
+              width="80"
               label="浏览数">
         <template slot-scope="scope">
-
+          <p>{{scope.row.watchNum}}</p>
         </template>
       </el-table-column>
       <el-table-column
-              prop="date"
+              prop="createTime"
+              width="180"
               label="创建时间">
       </el-table-column>
       <el-table-column
+              fixed="right"
               label="操作"
               width="90">
         <template slot-scope="scope">
@@ -103,6 +102,7 @@
         centerDialogVisible: false, // 弹框
         tableData: [], //列表数据
         multipleSelection: [], //列表数据
+        filterList:[],
         cPackage: [], //产品包信息
         currentPage: 1, // 分页
         myPagination: {
@@ -120,6 +120,7 @@
       let that = this;
       that.getPackage();
       that.getList();
+      that.getTemplateType();
     },
     methods: {
       //获得列表,分类筛选
@@ -141,20 +142,13 @@
             that.myPagination.totalPage = table.totalPage;
             let array = res.data.datas.datas;
             for(let i=0;i<array.length;i++){
-              let obj = {
-                id: array[i].id,
-                title: array[i].name,
-                typ: array[i].className,
-                packages: '——',
-                date: common.getFormatOfDate(array[i].createTime*1, 'yyyy-MM-dd hh:mm'),
-                close: array[i].close //是否下架
-              };
+              array[i].createTime = common.getFormatOfDate(array[i].createTime*1, 'yyyy-MM-dd hh:mm');
               for(let j=0;j<that.cPackage.length;j++){
                 if(that.cPackage.id == array[i].productPkgId) {
-                   obj.packages = that.cPackage.name;
-                }
+                   array[i].productPkgName = that.cPackage.name;
+                } //productPkgName
               }
-              that.tableData.push(obj);
+              that.tableData.push(array[i]);
             }
           }else{}
         });
@@ -180,6 +174,26 @@
           }else{}
         });
       },
+      // 获取合同模板分类
+      getTemplateType () {
+        let that = this;
+        contractService.getTemplateType({type: 2}).then(function (res) {
+          console.log('分类', res);//{text: '已上架', value: false}, {text: '已下架', value: true}
+          if(res.data.success){
+            let array = res.data.datas;
+            for(let i=0; array.length;i++){
+              let obj = {
+                text: array[i].name,
+                value: array[i].name
+              }
+              that.filterList.push(obj);
+            }
+           // that.filterList = [];
+          }else{}
+        });
+      },
+      // 筛选
+      filterTag () {},
       // 分页
       handleSizeChange (val) {
         //console.log(`每页 ${val} 条`);

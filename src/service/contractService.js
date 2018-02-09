@@ -62,14 +62,28 @@ export const contractService = {
     isOnlineOfTemplate: function (id, params) {
         return axios.put('/admin/templates/close/' + id , qs.stringify(params));// id
     },
-    getTemplateType: function (params) { // 获取模板分类
-        return axios.get('/admin/dictionarys/list' + this.getParams(params));
+    // 定制服务
+    getServicesInfo: function (params) { // pageNo,pageSize,status:0.待审核1.审核通过2.审核未通过,phone
+        return axios.get('/admin/varifyinfos' + this.getParams(params));
+    },
+    getServiceOne: function (params) {// id
+        return axios.get('/admin/varifyinfos/' + params);
+    },
+    agreeService: function (params) {
+        return axios.put('/admin/varifyinfos/agree', qs.stringify(params));
+    },
+    refuseService: function (params) {
+        return axios.put('/admin/varifyinfos/refuse', qs.stringify(params));
     },
     getHotDogsTemplate: function (params) { // 获得HotDog模板
        return axios.get('/admin/hotdocs/templates' + this.getParams(params));
     },
     getPackage: function (params) { // 获取产品包信息
         return axios.get('/admin/productpkgs/list' + this.getParams(params));
+    },
+    // 合同模板分类
+    getTemplateType: function (params) {
+        return axios.get('/admin/dictionarys/list' + this.getParams(params));
     },
     // 演示视频下拉菜单
     getVideoDemo: function (params) {
