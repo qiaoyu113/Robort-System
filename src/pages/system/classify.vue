@@ -4,7 +4,13 @@
     <div class="classify">
       <p class="title">新闻分类</p>
       <div class="content">
-        <span class="item" v-for="item in newsList" :key="item.id">{{item.name}}</span>
+        <span class="item" v-for="item in newsList" :key="item.id">
+          {{item.name}}
+          <span class="itemEdit">
+            <i class="el-icon-edit" @click="doEdit(item.id)"></i>
+            <i class="el-icon-delete" @click="doDelete(item.id)"></i>
+          </span>
+        </span>
         <span class="item" @click="add(1)"><i class="el-icon-plus"></i></span>
       </div>
     </div>
@@ -15,16 +21,11 @@
         <span class="item" v-for="item in templateListList" :key="item.id">
           {{item.name}}
           <span class="itemEdit">
-            <i class="el-icon-edit"></i>
-            <i class="el-icon-delete"></i>
+            <i class="el-icon-edit" @click="doEdit(item.id)"></i>
+            <i class="el-icon-delete" @click="doDelete(item.id)"></i>
           </span>
         </span>
-        <span class="item" @click="add(2)"><i class="el-icon-plus"></i>
-          <span class="itemEdit">
-            <i class="el-icon-edit" @click="doEdit(id)"></i>
-            <i class="el-icon-delete" @click="doDelete(id)"></i>
-          </span>
-        </span>
+        <span class="item" @click="add(2)"><i class="el-icon-plus"></i></span>
       </div>
     </div>
     <!--内容弹框-->
@@ -69,11 +70,13 @@
         form: {
           id: '',
           name: '',
-          typ: 0
+          typ: 0, // 判断是新闻还是模板
+          addOrEdit: 0, // 默认添加
         },
         rules: {
           name: [
-            { required: true, message: '请输入分类名称', trigger: 'blur' }
+            { required: true, message: '请输入分类名称', trigger: 'blur' },
+            { min: 0, max: 5, message: '分类名称的字数需在5字以内', trigger: 'blur' }
           ],
         },
         dialog: {
@@ -119,7 +122,7 @@
         let that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
-            if(that.form.typ == 1){
+            if(that.form.addOrEdit == 0){
               systemService.addClassify({name: that.form.name, type: that.form.typ}).then(function (res) {
                 console.log('add', res);
                 if(res.data.success){
@@ -128,9 +131,9 @@
                 }else{}
               });
             }
-            if(that.form.typ == 2){
+            if(that.form.addOrEdit == 1){
               systemService.editClassify({id: that.form.id, name: that.form.name, type: that.form.typ}).then(function (res) {
-                console.log('edit', res);
+                console.log('edit 修改分类', res);
                 if(res.data.success){
                   that.formDialogVisible = false;
                   that.getList();
@@ -149,7 +152,8 @@
         that.form = {
           id: '',
           name: '',
-          typ: 0
+          typ: 0,
+          addOrEdit: 0 // 添加
         };
         if(id==1){
           that.form.typ = 1;
@@ -164,13 +168,14 @@
       doEdit (id) {
         let that = this;
         systemService.getOneClassify(id).then(function (res) {
-          console.log('edit',res);
+          //console.log('edit',res);
           if(res.data.success){
             let obj = res.data.datas;
             that.form = {
               id: obj.id,
               name: obj.name,
-              typ: obj.type
+              typ: obj.type,
+              addOrEdit: 1 //编辑
             }
             that.formDialogVisible = true;
           }else{}
@@ -191,7 +196,7 @@
       handleOk () {
         let that = this;
         let id = that.dialog.id;
-        systemService.deleteClassify(id).then(function (res) {
+        systemService.deleteClassify({id: id}).then(function (res) {
           console.log('删除', res);
           if(res.data.success){
             that.centerDialogVisible = false;
@@ -225,7 +230,7 @@
           .el-icon-plus{font-size:18px;line-height:30px;}
           .itemEdit{
              position:absolute;
-             width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:1;background:rgba(0,0,0,.3);
+             width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:1;background:rgba(244,244,244,.9);
             -webkit-border-radius:30px;
             -moz-border-radius:30px;
             border-radius: 30px;

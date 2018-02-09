@@ -20,7 +20,7 @@ export const systemService = {
         return axios.get('/admin/dictionarys/' + params);
     },
     deleteClassify: function (params) {
-        return axios.delete('/admin/dictionarys/' + params);
+        return axios.delete('/admin/dictionarys'+ this.getParams(params));
     },
     // 参数拼接
     getParams: function (param) {
