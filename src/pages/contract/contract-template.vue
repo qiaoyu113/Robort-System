@@ -16,54 +16,98 @@
       </el-input>
     </p>
     <!--表格-->
-    <el-table
-            ref="multipleTable"
-            :data="tableData"
-            tooltip-effect="dark"
-            empty-text="暂无数据"
-            @selection-change="handleSelectionChange"
-            style="width: 100%">
-      <el-table-column
-              prop="name"
-              width="200"
-              label="合同模板名称">
-      </el-table-column>
-      <el-table-column
-              prop="className"
-              label="分类"
-              width="140"
-              :filters="filterList"
-              :filter-method="filterTag"
-              filter-placement="bottom-end">
-      </el-table-column>
-      <el-table-column
-              prop="productPkgName"
-              label="所在产品包">
-      </el-table-column>
-      <el-table-column
-              width="80"
-              label="浏览数">
-        <template slot-scope="scope">
-          <p>{{scope.row.watchNum}}</p>
-        </template>
-      </el-table-column>
-      <el-table-column
-              prop="createTime"
-              width="180"
-              label="创建时间">
-      </el-table-column>
-      <el-table-column
-              fixed="right"
-              label="操作"
-              width="90">
-        <template slot-scope="scope">
-          <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
-          <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
-          <el-button @click="online(scope.row.id)" type="text" size="small" v-if="scope.row.close== true & tabIndex == '1'" class="el-btn-no">上架</el-button>
-          <el-button @click="offline(scope.row.id)" type="text" size="small" v-if="scope.row.close== false & tabIndex == '1'" class="el-btn-no">下架</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div v-if="tabIndex == '1' ">
+      <el-table key="btable"
+              ref="multipleTable"
+              :data="tableData"
+              tooltip-effect="dark"
+              empty-text="暂无数据"
+              @selection-change="handleSelectionChange"
+              style="width: 100%">
+        <el-table-column
+                prop="name"
+                width="200"
+                label="合同模板名称">
+        </el-table-column>
+        <el-table-column
+                prop="className"
+                label="分类"
+                width="140"
+                :filters="filterList"
+                :filter-method="filterTag"
+                filter-placement="bottom-end">
+        </el-table-column>
+        <el-table-column
+                prop="productPkgName"
+                label="所在产品包">
+        </el-table-column>
+        <el-table-column
+                width="80"
+                label="浏览数">
+          <template slot-scope="scope">
+            <p @click="toScanDetail(scope.row.id)" class="titleUnderLine" v-if="scope.row.watchNum>0">{{ scope.row.watchNum }}</p>
+            <p v-else>{{ scope.row.watchNum }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+                prop="createTime"
+                width="180"
+                label="发布时间">
+        </el-table-column>
+        <el-table-column
+                fixed="right"
+                label="操作"
+                width="90">
+          <template slot-scope="scope">
+            <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
+            <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
+            <el-button @click="online(scope.row.id)" type="text" size="small" v-if="scope.row.close== true" class="el-btn-no">上架</el-button>
+            <el-button @click="offline(scope.row.id)" type="text" size="small" v-if="scope.row.close== false" class="el-btn-no">下架</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div v-if="tabIndex == '2' ">
+      <el-table key="atable"
+              ref="multipleTable"
+              :data="tableData2"
+              tooltip-effect="dark"
+              empty-text="暂无数据"
+              @selection-change="handleSelectionChange"
+              style="width: 100%">
+        <el-table-column
+                prop="name"
+                width="200"
+                label="合同模板名称">
+        </el-table-column>
+        <el-table-column
+                prop="productPkgName"
+                label="本地化产品包">
+        </el-table-column>
+        <el-table-column
+                width="80"
+                label="浏览数">
+          <template slot-scope="scope">
+            <p @click="toScanDetail(scope.row.id)" class="titleUnderLine" v-if="scope.row.watchNum>0">{{ scope.row.watchNum }}</p>
+            <p v-else>{{ scope.row.watchNum }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+                prop="createTime"
+                width="180"
+                label="发布时间">
+        </el-table-column>
+        <el-table-column
+                fixed="right"
+                label="操作"
+                width="90">
+          <template slot-scope="scope">
+            <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
+            <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <!--分页-->
     <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
@@ -101,6 +145,7 @@
         },
         centerDialogVisible: false, // 弹框
         tableData: [], //列表数据
+        tableData2: [], //列表数据
         multipleSelection: [], //列表数据
         filterList:[],
         cPackage: [], //产品包信息
@@ -118,12 +163,28 @@
     components: {pagination},
     mounted () {
       let that = this;
-      that.getPackage();
-      that.getList();
-      that.getTemplateType();
+      if(that.tabIndex == '1'){
+        that.getList();
+        that.getTemplateType();//下拉分类
+      }
+      if(that.tabIndex == '2'){
+        that.getList2();
+      }
     },
     methods: {
       //获得列表,分类筛选
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
       getList () {
         let that = this;
         that.tableData = [];
@@ -143,12 +204,31 @@
             let array = res.data.datas.datas;
             for(let i=0;i<array.length;i++){
               array[i].createTime = common.getFormatOfDate(array[i].createTime*1, 'yyyy-MM-dd hh:mm');
-              for(let j=0;j<that.cPackage.length;j++){
-                if(that.cPackage.id == array[i].productPkgId) {
-                   array[i].productPkgName = that.cPackage.name;
-                } //productPkgName
-              }
               that.tableData.push(array[i]);
+            }
+          }else{}
+        });
+      },
+      getList2 () {
+        let that = this;
+        that.tableData2 = [];
+        let flag = false;
+        if(that.tabIndex == '1'){
+          flag = false;
+        }
+        else if(that.tabIndex == '2'){
+          flag = true;
+        }
+        contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
+          console.log('模板列表', res);
+          if(res.data.success){
+            let table = res.data.datas;
+            that.myPagination.totalCount = parseInt(table.totalCount);
+            that.myPagination.totalPage = table.totalPage;
+            let array = res.data.datas.datas;
+            for(let i=0;i<array.length;i++){
+              array[i].createTime = common.getFormatOfDate(array[i].createTime*1, 'yyyy-MM-dd hh:mm');
+              that.tableData2.push(array[i]);
             }
           }else{}
         });
@@ -157,43 +237,46 @@
       sizeChange (val) {
         let that = this;
         that.myPagination.size = val;
-        that.getList();
+        if(that.tabIndex == '1'){
+          that.getList();
+        }
+        if(that.tabIndex == '2'){
+          that.getList2();
+        }
       },
       currentChange (val) {
         // 当前页，就是当前点击的那一页
         let that = this;
         that.myPagination.num = val;
-        that.getList();
-      },
-      // 获得产品包名称
-      getPackage () {
-        let that = this;
-        contractService.getPackage().then(function (res) {
-          if(res.data.success){
-            that.cPackage = res.data.datas;
-          }else{}
-        });
+        if(that.tabIndex == '1'){
+          that.getList();
+        }
+        if(that.tabIndex == '2'){
+          that.getList2();
+        }
       },
       // 获取合同模板分类
       getTemplateType () {
         let that = this;
         contractService.getTemplateType({type: 2}).then(function (res) {
-          console.log('分类', res);//{text: '已上架', value: false}, {text: '已下架', value: true}
+          console.log('分类', res);
           if(res.data.success){
             let array = res.data.datas;
-            for(let i=0; array.length;i++){
+            for(let i=0;i<array.length;i++){
+              let vName = array[i].name;
               let obj = {
-                text: array[i].name,
-                value: array[i].name
-              }
+                text: vName,
+                value: vName
+              };
               that.filterList.push(obj);
             }
-           // that.filterList = [];
           }else{}
         });
       },
       // 筛选
-      filterTag () {},
+      filterTag (value, row) {
+        return row.close === value;
+      },
       // 分页
       handleSizeChange (val) {
         //console.log(`每页 ${val} 条`);
@@ -218,6 +301,7 @@
       // 编辑
       doEdit (id) {
         let that = this;
+        that.$route.params.templateTyp = that.tabIndex;
         that.$route.params.templateId = id;
         that.$router.push({name: 'contractTemplateEdit'});
       },
@@ -255,6 +339,12 @@
             oprTyp: 3
           };
           that.centerDialogVisible = true;
+      },
+      // 浏览详情
+      toScanDetail (id) {
+        let that = this;
+        that.$route.params.templateId = id;
+        that.$router.push({name: 'contractTemplateScan'});
       },
       //弹出框按钮的操作
       // 确认
@@ -307,7 +397,7 @@
           that.getList();
         }
         else if(cur == '2'){
-          that.getList();
+          that.getList2();
         }
         return cur;
       }
@@ -328,13 +418,5 @@
     }
     .el-btn-no{margin-left:0!important;}
   }
-  /*.container .opr{margin:40px auto 20px;overflow:hidden;}*/
-  /*.container .opr .left{}*/
-  /*.container .opr .right{width:250px;float:right;}*/
-  /*.container .picTxt{display:flex;justify-content:center;align-items:center;}*/
-  /*.container .picTxt .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}*/
-  /*.container .picTxt .img-cover .image{max-width:100px;max-height:80px;width:auto;height:auto;}*/
-  /*.container .picTxt .txt{word-wrap:break-word;}*/
-  /*.container .picTxt .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}*/
-  /*.container .picTxt .txt .price{display:block;}*/
+  .titleUnderLine:hover{color:#66b1ff;text-decoration: underline;cursor:pointer;}
 </style>

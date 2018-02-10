@@ -47,6 +47,7 @@ const productScan = (resolve) => {require(['./pages/contract/product/scan.vue'],
 const productPackage = (resolve) => {require(['./pages/contract/product-package.vue'],resolve)}
 const contractTemplateAdd = (resolve) => {require(['./pages/contract/template/add.vue'],resolve)}
 const contractTemplateEdit = (resolve) => {require(['./pages/contract/template/edit.vue'],resolve)}
+const contractTemplateScan = (resolve) => {require(['./pages/contract/template/scan.vue'],resolve)}
 const contractTemplate = (resolve) => {require(['./pages/contract/contract-template.vue'],resolve)}
 const contractServices = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
 const contractServiceDetail = (resolve) => {require(['./pages/contract/services/detail.vue'],resolve)}
@@ -96,6 +97,7 @@ const routers = [
                // 合同管理—》模板
                {name: 'contractTemplateAdd',path:'/contract/template/:templateTyp/add',component: contractTemplateAdd},
                {name: 'contractTemplateEdit',path:'/contract/template/:templateTyp/edit/:templateId',component: contractTemplateEdit},
+               {name: 'contractTemplateScan',path:'/contract/template/scan/:templateId',component: contractTemplateScan},
                {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
                // 合同管理—》定制服务
                {name: 'contractServices',path:'/contract/service',component: contractServices},

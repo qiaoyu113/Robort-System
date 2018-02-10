@@ -1,35 +1,42 @@
 <template>
   <div class="container">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-      <el-form-item label="合同模板名称" prop="title" size="mini">
-        <el-input v-model="ruleForm.title" class="iptLength"></el-input>
-        <el-checkbox v-model="ruleForm.isTry">设为试用模板</el-checkbox>
+      <el-form-item label="合同模板名称" prop="name" size="mini">
+        <el-input v-model="ruleForm.name" class="iptLength"></el-input>
       </el-form-item>
-      <el-form-item label="简介" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none"></el-input>
+      <el-form-item label="宣传语" prop="slogan">
+        <el-input type="textarea" v-model="ruleForm.slogan" class="iptLength" resize="none"></el-input>
       </el-form-item>
-      <el-form-item label="选择分类" prop="typ"  size="mini">
-        <el-select v-model="ruleForm.typ" placeholder="请选择">
-          <el-option :label="item.name" :value="item" v-for="(item, key, index) in bType" :key="key"></el-option>
+      <el-form-item label="选择分类" prop="classify"  size="mini" v-if="templateType == 1">
+        <el-select v-model="ruleForm.classify" placeholder="请选择">
+          <el-option v-for="(item, key, index) in bType" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="选择国家" prop="country"  size="mini">
+      <el-form-item label="选择国家" prop="country"  size="mini" v-if="templateType == 1">
         <el-select v-model="ruleForm.country" placeholder="请选择">
           <el-option v-for="(value, key, index) in optionCountry" :label="value" :value="value" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="选择合同模板" prop="template"  size="mini">
-        <el-select v-model="ruleForm.template" placeholder="请选择"><!--@change="templateItem(item)"-->
+      <el-form-item label="选择合同模板" prop="hotTemplateId"  size="mini">
+        <el-select v-model="ruleForm.hotTemplateId" placeholder="请选择">
           <el-option v-for="(item, key, index) in hotDog" :label="item.DisplayName" :value="item.Id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="合同模板详情" prop="detail">
-        <el-input type="textarea" v-model="ruleForm.detail" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
-      </el-form-item>
-      <el-form-item label="添加到产品包" prop="packages"  size="mini">
+      <el-form-item label="添加到产品包" prop="packages"  size="mini" v-if="templateType == 1">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="关联产品包" prop="packages"  size="mini" v-if="templateType == 2">
+        <el-select v-model="ruleForm.packages" placeholder="请选择">
+          <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="简介" prop="description">
+        <el-input type="textarea" v-model="ruleForm.description" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+      </el-form-item>
+      <el-form-item label="目录" prop="catalogue">
+        <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
@@ -41,47 +48,57 @@
   import {world} from '../../../service/worldService'
   import {contractService} from '../../../service/contractService'
 
-  let myEditor;// 富文本编辑器
+  let myEditor, myEditor2;// 富文本编辑器
 
   export default {
     props: [],
     data () {
       return {
+        templateType: 1, // 合同模板 or 试用模板
         optionCountry: '', // 国家下拉列表
         hotDog: '', // hotDog模板下拉列表
         hotDogObj: '',
         bType: '', // 所属分类下拉列表
         cPackage: '', // 产品包下拉列表
         ruleForm: {
-          title: '',
-          isTry: false,
-          desc: '',
-          typ: '',
-          country: '',
-          template: '',
-          detail: '',
-          packages: ''
+          id: '',
+          name: '', // 模板名称
+          slogan: '', // 宣传语
+          classify: null, // 分类
+          country: '', // 国家
+          hotTemplateId: '', // 模板
+          packages: '', // 添加到产品包,关联到产品包
+          description: '', // 简介
+          catalogue: '', // 目录
+          price_s: '', // 价格
+          isTry: false // 是否为试用模板
         },
         rules: {
-          title: [
+          name: [
             { required: true, message: '请输入合同模板名称', trigger: 'blur' },
             { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
           ],
-          desc: [
-            { required: true, message: '请填写简介', trigger: 'blur' },
+          slogan: [
+            { required: true, message: '请填写宣传语', trigger: 'blur' },
             { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
           ],
-          typ: [
+          classify: [
             { required: true, message: '请选择分类', trigger: 'change' }
           ],
           country: [
             { required: true, message: '请选择国家', trigger: 'change' }
           ],
-          template: [
+          hotTemplateId: [
             { required: true, message: '请选择模板', trigger: 'change' }
           ],
-          detail: [
-            { required: true, message: '请填写合同模板详情', trigger: 'blur' }
+          packages: [
+            { required: true, message: '请选择产品包', trigger: 'change' }
+          ],
+          description: [
+            { required: true, message: '请填写合同模板简介', trigger: 'blur' }
+          ],
+          catalogue: [
+            { required: true, message: '请填写合同模板目录', trigger: 'blur' }
           ]
         }
       }
@@ -89,6 +106,13 @@
     components: {},
     mounted () {
       let that = this;
+      that.templateType = parseInt(that.$route.params.templateTyp);
+      if(that.templateType==1){
+        that.ruleForm.isTry = false;
+      }
+      else if(that.templateType==2){
+        that.ruleForm.isTry = true;
+      }
       that.editor(); // 初始化富文本编辑器
       that.getOneTemplate(); // 得到信息
       that.getTemplateType(); // 分类
@@ -100,19 +124,36 @@
     methods: {
       submitForm(formName) {
         let that = this;
-        that.ruleForm.detail = myEditor.getData();
+        that.ruleForm.description = myEditor.getData();
+        that.ruleForm.catalogue = myEditor2.getData();
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
-            //alert('submit!');
+            let pakName = '';
+            let className = '';
+            for(let i=0;i<that.bType.length;i++){
+              if(that.ruleForm.classify == that.bType[i].id){
+                className = that.bType[i].name;
+              }
+            }
+            for(let i=0;i<that.cPackage.length;i++){
+              if(that.ruleForm.packages == that.cPackage[i].id){
+                pakName = that.cPackage[i].name;
+              }
+            }
+            //console.log('ruleForm', that.ruleForm);
             contractService.editOneTemplate({id: that.$route.params.templateId,
-              name: that.ruleForm.title,
-              description: that.ruleForm.desc,
-              content: that.ruleForm.detail,
-              classId: that.ruleForm.typ.id,
-              className: that.ruleForm.typ.name,
+              name: that.ruleForm.name,
+              slogan: that.ruleForm.slogan,
+              classId: that.ruleForm.classify,
+              className: className,
               country: that.ruleForm.country,
-              hotTemplateId: that.ruleForm.template,
-              productPkgId: that.ruleForm.packages, tryUse: that.ruleForm.isTry}).then(function (res) {
+              hotTemplateId: that.ruleForm.hotTemplateId,
+              productPkgId: that.ruleForm.packages,
+              connProductPkgId: that.ruleForm.packages,
+              productPkgName: pakName,
+              description: that.ruleForm.description,
+              catalogue: that.ruleForm.catalogue,
+              price_s: that.ruleForm.price_s, tryUse: that.ruleForm.isTry}).then(function (res) {
               //console.log(res, '添加一个模板信息');
               if(res.data.success){
                 that.$router.push({name: 'contractTemplate'}); //
@@ -129,30 +170,30 @@
         let that = this;
         let id = that.$route.params.templateId;
         contractService.getOneTemplate(id).then(function (res) {
-          console.log('ma', res);
+          //console.log('ma', res);
           if(res.data.success){
             let obj = res.data.datas;
             that.ruleForm = {
-              title: obj.name,
-              isTry: obj.tryUse,
-              desc: obj.description,
-              typ: {
-                id: obj.classId,
-                name: obj.className
-              },
-              country: obj.country,
-              template: obj.hotTemplateId,
-              //detail: '',
-              packages: obj.productPkgId
+              name: obj.name, // 模板名称
+              slogan: obj.slogan, // 宣传语
+              classify: obj.classId, // 分类
+              country: obj.country, // 国家
+              hotTemplateId: obj.hotTemplateId, // 模板
+              packages: obj.productPkgId, // 添加到产品包,关联到产品包
+              description: obj.description, // 简介
+              catalogue: obj.catalogue, // 目录
+              price_s: obj.price_s, // 价格
+              isTry: obj.tryUse
             }
-            myEditor.setData(obj.content);
+            myEditor.setData(obj.description);
+            myEditor2.setData(obj.catalogue);
           }else{}
         });
       },
       // 获取模板分类
       getTemplateType () {
         let that = this;
-        contractService.getTemplateType({type: 3}).then(function (res) {
+        contractService.getTemplateType({type: 2}).then(function (res) {
           //console.log('模板所属分类', res);
           if(res.data.success){
             that.bType = res.data.datas;
@@ -209,7 +250,23 @@
                     { name: 'editing', items: [ 'Scayt' ] }
                   ]
                 } );
+        myEditor2 = CKEDITOR.replace("list",{
+          toolbar: [
+            { name: 'document', items: [ 'Print' ] },
+            { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+            { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+            { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
+            { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+            { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+            { name: 'links', items: [ 'Link', 'Unlink' ] },
+            { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+            { name: 'insert', items: [ 'Image', 'Table' ] },
+            { name: 'tools', items: [ 'Maximize' ] },
+            { name: 'editing', items: [ 'Scayt' ] }
+          ]
+        });
         myEditor.setData("");
+        myEditor2.setData("");
       },
     }
   }
