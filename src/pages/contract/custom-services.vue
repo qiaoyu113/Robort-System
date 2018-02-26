@@ -8,13 +8,13 @@
     <!--显示模板-->
     <div class="pos">
       <el-radio-group v-model="tabPosition" style="margin-bottom:20px;" size="small">
-        <el-badge :value="12" class="item">
+        <el-badge class="item">
           <el-radio-button label="pass" >审核通过的</el-radio-button>
         </el-badge>
-        <el-badge :value="1" class="item">
+        <el-badge :value="dealCount" class="item">
           <el-radio-button label="ready">待审核</el-radio-button>
         </el-badge>
-        <el-badge :value="5" class="item">
+        <el-badge class="item">
           <el-radio-button label="cancel">审核未通过</el-radio-button>
         </el-badge>
       </el-radio-group>
@@ -32,27 +32,27 @@
             :data="tableData"
             style="width: 100%">
       <el-table-column
-              prop="date"
+              prop="createTime"
               label="提交时间"
               width="180">
       </el-table-column>
       <el-table-column
-              prop="date"
+              prop="templateName"
               label="合同模板"
               width="180">
       </el-table-column>
       <el-table-column
-              prop="date"
+              prop="name"
               label="联系人"
               width="120">
       </el-table-column>
       <el-table-column
-              prop="name"
+              prop="phone"
               label="手机号"
               width="180">
       </el-table-column>
       <el-table-column
-              prop="address"
+              prop="description"
               label="需求描述">
       </el-table-column>
       <el-table-column
@@ -63,9 +63,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--分页-->
+    <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import pagination from '../../component/pagination/pagination.vue'
+  import {common} from '../../assets/js/common/common'
   import {contractService} from '../../service/contractService'
 
   export default {
@@ -73,9 +77,11 @@
     data () {
       return {
         tabIndex: '1', // 1:资讯律师； 2.合同校审；
-        tabPosition: 'pass', // pass 审核通过的，ready 待审核，cancel 审核未通过
+        tabPosition: 'ready', // pass 审核通过的，ready 待审核，cancel 审核未通过
         status: 0, // 审核状态
         query: '', // 查询条件
+        dealCount: 0, // 待审核服务个数
+        tableData: [],
         myPagination: {
           size:1,
           num: 1,
@@ -84,25 +90,66 @@
         },
       }
     },
-    components: {},
+    components: {pagination},
     mounted () {
       let that = this;
       that.getList();
+      that.getReadyCount();
     },
     methods: {
       getList() {
         let that = this;
-        contractService.getServicesInfo({pageNo: that.myPagination.num, pageSize: that.myPagination.size, status: that.status, phone: that.query}).then(function (res) {
-          console.log('列表', res);
+        contractService.getServicesInfo({pageNo: that.myPagination.num, pageSize: that.myPagination.size, status: that.status, phone: that.query, type: parseInt(that.tabIndex)}).then(function (res) {
+          //console.log('列表', res);
           if(res.data.success){
+            let data = res.data.datas;
+            that.myPagination.totalCount = data.totalCount!=null ? parseInt(data.totalCount): 0;
+            that.myPagination.totalPage = data.totalPage;
+            let newArr = data.datas;
+            for(let i=0;i<newArr.length;i++){
+              newArr[i].createTime = common.getFormatOfDate(newArr[i].createTime*1, 'yyyy-MM-dd hh:mm')
+            }
+            that.tableData = newArr;
           }else{}
         });
       },
+      toDetail(id) {
+         let that = this;
+         that.$route.params.serviceId = id;
+         that.$router.push({name: 'contractServiceDetail'});
+      },
       handleClick(tab, event) {
         console.log(tab, event);
+      },
+      // 分页
+      sizeChange (val) {
+        let that = this;
+        that.myPagination.size = val;
+        that.getList();
+      },
+      currentChange (val) {
+        // 当前页，就是当前点击的那一页
+        let that = this;
+        that.myPagination.num = val;
+        that.getList();
+      },
+      // 查询待审核个数
+      getReadyCount () {
+        let that = this;
+        contractService.getServicesInfo({pageNo: 1, pageSize: 10, status: 0, phone: '', type: parseInt(that.tabIndex)}).then(function (res) {
+          if(res.data.success){
+            let data = res.data.datas;
+            that.dealCount = data.totalCount!=null ? parseInt(data.totalCount): 0;
+          }else{}
+        });
       }
     },
     watch: {
+      tabIndex (cur, old) {
+        let that = this;
+        that.tabIndex = cur;
+        that.getList();
+      },
       tabPosition (cur, old){
         let that = this;
         if(cur == 'pass'){ // 审核通过的

@@ -36,6 +36,11 @@
                 :filters="filterList"
                 :filter-method="filterTag"
                 filter-placement="bottom-end">
+            <template slot-scope="scope">
+                <span>{{scope.row.className}}</span>
+                <!--<span v-if="scope.row.close==false">已上架</span>-->
+                <!--<span v-if="scope.row.close==true">已下架</span>-->
+            </template>
         </el-table-column>
         <el-table-column
                 prop="productPkgName"
@@ -275,7 +280,7 @@
       },
       // 筛选
       filterTag (value, row) {
-        return row.close === value;
+        return row.className === value;
       },
       // 分页
       handleSizeChange (val) {

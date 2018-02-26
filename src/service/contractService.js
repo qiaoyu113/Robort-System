@@ -66,7 +66,7 @@ export const contractService = {
     getServicesInfo: function (params) { // pageNo,pageSize,status:0.待审核1.审核通过2.审核未通过,phone
         return axios.get('/admin/varifyinfos' + this.getParams(params));
     },
-    getServiceOne: function (params) {// id
+    getServiceOne: function (params) {// id 获得服务详情
         return axios.get('/admin/varifyinfos/' + params);
     },
     agreeService: function (params) {

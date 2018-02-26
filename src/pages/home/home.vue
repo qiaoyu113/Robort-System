@@ -163,7 +163,7 @@
             }
         },
         mounted () {
-            localStorage.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMeWFiOW8gOWni-W4puS9oOmjniIsInVzZXJJZCI6IjEiLCJwbGF0Zm9ybSI6IlBDSDUiLCJwZXJtaXNzaW9ucyI6WyJYVEdMOlFVRVJZIl0sImV4cCI6MTUxODg1MjgwNiwibmJmIjoxNTE4MjQ4MDA2fQ.9Of-937kGgCbVo28T3WO68zLCYILNFzHHp13AjSU650';
+            localStorage.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMeWFiOW8gOWni-W4puS9oOmjniIsInVzZXJJZCI6IjEiLCJwbGF0Zm9ybSI6IlBDSDUiLCJwZXJtaXNzaW9ucyI6WyJYVEdMOlFVRVJZIl0sImV4cCI6MTUyMDIxNTkxNSwibmJmIjoxNTE5NjExMTE1fQ.mY7gXKxW1dZGKYi8bjN_3rvk05kDhq6dltlQZc_gB7k';
         },
         methods: {
             handleOpen(key, keyPath) {
