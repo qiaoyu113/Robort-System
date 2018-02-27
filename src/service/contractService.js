@@ -81,6 +81,10 @@ export const contractService = {
     getPackage: function (params) { // 获取产品包信息
         return axios.get('/admin/productpkgs/list' + this.getParams(params));
     },
+    // 合同接口
+    contractInfo: function (params) {
+        return axios.get('/admin/contracts/' + params);
+    },
     // 合同模板分类
     getTemplateType: function (params) {
         return axios.get('/admin/dictionarys/list' + this.getParams(params));
