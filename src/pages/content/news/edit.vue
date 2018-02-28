@@ -36,7 +36,7 @@
     props: [],
     data () {
       return {
-        demoList: [{name: '分类一', id: '1'}], // 演示视频下拉列表
+        demoList: [], // 演示视频下拉列表
         ruleForm: {
           id: '',
           title: '', // 新闻名称
@@ -101,7 +101,7 @@
               className: that.ruleForm.selItem.name,
               cover: that.ruleForm.cover,
               type: 1}).then(function (res) {
-              console.log(res, '编辑一个新闻');
+              //console.log(res, '编辑一个新闻');
               if(res.data.success){
                 that.$router.push({name: 'news'}); //
               }else{}
@@ -118,7 +118,7 @@
         contentService.getDicKey({type: 1}).then(function (res) {
           //console.log('分类', res);
           if(res.data.success){
-            //that.demoList = res.data.datas;
+            that.demoList = res.data.datas;
           }else{}
         });
       },
