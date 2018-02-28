@@ -43,11 +43,36 @@ export default {
     props: [],
     data () {
         return {
-            myOption: {autoCropWidth: 300, autoCropHeight: 200},
-            uploadOrg: {
-                limit: 1
+            myOption: {
+                // 只有自动截图开启 宽度高度才生效
+                autoCropWidth: 900,
+                autoCropHeight: 600,
+                // 开启宽度和高度比例
+                fixedNumber: [3, 2],
+                // 描述文字一
+                des: '建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg',
+                // 描述文字二
+                des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
             },
-            uploadOrgBanner: { limit: 1 },
+            uploadOrg: {
+                limit: 1,
+                imgWidth: 300,
+                imgHeight: 150,
+                // 描述文字一
+                des: '建议尺寸为300x150，不大于1m，支持.png .jpg .jpeg',
+                // 描述文字二
+                des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+
+            },
+            uploadOrgBanner: {
+                limit: 1,
+                imgWidth: 1440,
+                imgHeight: 140,
+                // 描述文字一
+                des: '建议尺寸为1440x140，不大于2m，支持.png .jpg .jpeg',
+                // 描述文字二
+                des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+            },
             demoList: [], // 演示视频下拉列表
             ruleForm: {
                 id: '',

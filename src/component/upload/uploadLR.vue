@@ -9,14 +9,15 @@
       <div class="right">
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
-          <input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
+          <input v-show="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
+          <input v-show="isImageState===1" type="button" class="file">
         </div>
-        <p class="des">1. 建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg</p>
-        <p class="des">2. 说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。</p>
+        <p class="des">1. {{options.des}}</p>
+        <p class="des">2. {{options.des2}}</p>
       </div>
     </div>
     <!--截图-->
-    <el-dialog title="" :visible.sync="dialogCropperVisible">
+    <el-dialog title="" :visible.sync="dialogCropperVisible" show-close="true">
       <vue-cropper
               ref="cropper"
               :img="option.img"
@@ -25,12 +26,13 @@
               :info="option.info"
               :canScale="option.canScale"
               :autoCrop="option.autoCrop"
-              :autoCropWidth="option.autoCropWidth"
-              :autoCropHeight="option.autoCropHeight"
+              :autoCropWidth="options.autoCropWidth"
+              :autoCropHeight="options.autoCropHeight"
               :fixed="option.fixed"
-              :fixedNumber="option.fixedNumber"
+              :fixedNumber="options.fixedNumber"
       ></vue-cropper>
       <span slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="dialogCropperVisible=false">取消</el-button>
             <el-button size="mini" type="primary" @click="finish('base64')">确 定</el-button>
       </span>
     </el-dialog>
@@ -41,25 +43,20 @@
   import {pluginService} from '../../service/pluginService'
 
   export default {
-    //props: ['options', 'isImageState', 'imgUrl'],
     props: ['options'],
     data () {
       return {
         option: {
           img: '',
           info: true,
-          size: 0.8,
+          size: 1,
           outputType: 'jpeg',
-          //outputType: 'jpeg || png || webp',
           canScale: false,
           autoCrop: true,
-          // 只有自动截图开启 宽度高度才生效
-          //autoCropWidth: 900,
-          //autoCropHeight: 600,
           // 开启宽度和高度比例
-          fixed: true,
-          fixedNumber: [3, 2]
+          fixed: true
         }, //截图
+        dialogCropperVisible: false, // 是否显示
         isImageState: 0, // 显示删除图片图标
         imgUrl: '', // 图片显示路径
       }
@@ -78,12 +75,12 @@
       postToService (base64, width, height) {
         let that = this;
         pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
-          //console.log('截取的图片', res);
+          console.log('截取的图片', res);
           if(res.data.success){
             that.$emit('getPictureUrl', res.data.datas);
-            that.imgUrl = that.$store.state.picHead + res.data.datas;
-            that.isImageState=1;
             that.dialogCropperVisible = false;
+            that.imgUrl = that.$store.state.picHead + res.data.datas;
+            that.isImageState = 1;
           }
         });
       },
@@ -100,22 +97,24 @@
           });
         } else {
           this.$refs.cropper.getCropData((data) => {
-            //that.postToService(data, that.option.autoCropWidth, that.option.autoCropHeight);
             that.postToService(data, that.options.autoCropWidth, that.options.autoCropHeight);
           });
         }
       },
       // 图片上传，打开文件选择器
       uploadImg (event) {
-        // this.option.img
         let that = this;
+        // 清空 文件选择器
+        var obj = document.getElementById("uploads") ;
+        obj.outerHTML = obj.outerHTML;
+        //
         let e = event;
         var file = e.target.files[0]
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
           alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
           return false
         }
-        var reader = new FileReader()
+        var reader = new FileReader();
         reader.onload = (e) => {
           let data
           if (typeof e.target.result === 'object') {
@@ -146,8 +145,8 @@
 <style lang="less">
   .el-dialog{margin:0 auto 50px!important;}
   .vue-cropper{height: 60%!important;;}
-  .picUpload{display: flex; justify-content: space-between;align-items: center;
-    .right{margin-left:10px;
+  .picUpload{display: flex; justify-content: flex-start;align-items: center;
+    .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}
     }
     .thumb-zone{width:150px;height:100px;position:relative;

@@ -49,7 +49,15 @@ export default {
       countryList: [], // 国家数组
       templateList: [], // 合同模板数组
       pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；partnerTyp
-      uploadOrg: {limit: 1},
+      uploadOrg: {
+        limit: 1,
+        imgWidth: 300,
+        imgHeight: 150,
+        // 描述文字一
+        des: '建议尺寸为300x150，不大于1m，支持.png .jpg .jpeg',
+        // 描述文字二
+        des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+      },
       ruleForm: {
         name: '', // 伙伴名称
         imgUrl: '', // 图片
@@ -215,7 +223,6 @@ export default {
     .iptFormLen{
       width: 600px;
     }
-    .picUpload{display: flex; justify-content: space-between;align-items: center;}
     .flexStart .upload-btn{margin-left:0;}
     .cke_chrome{width: 600px;}
   }

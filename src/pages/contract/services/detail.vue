@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <!--面包屑-->
+    <el-breadcrumb separator="/" class="breadMargin">
+        <el-breadcrumb-item :to="{ name: 'contractServices' }" class="blueFont">定制服务</el-breadcrumb-item>
+        <el-breadcrumb-item>服务详情</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="detail">
       <p class="title">服务详情</p>
       <p class="des"><label class="label">提交时间：</label>{{info.createTime}}</p>
@@ -7,8 +12,9 @@
       <p class="des bottomMargin"><label class="label">联系人手机号：</label>{{info.phone}}</p>
       <p class="title">合同模板</p>
       <p class="des">员工期权授予协议</p><!--员工期权授予协议.docx-->
-      <p class="des">生成文件：<span class="link">员工期权授予协议.docx<a class="download" >下载</a></span></p>
-      <p class="des bottomMargin">第一次合同校审文件：<span class="link">员工期权授予协议.docx<a class="download">下载</a></span></p>
+      <p class="des">生成文件：<span class="link">{{ downloadList.tName }}.docx<a class="download" :href="downloadList.url" download target="_blank">下载</a></span></p>
+      <p class="des" v-for="(item, index, key) in downloadList.urls">第{{ index + 1}}次合同校审文件：<span class="link">{{ downloadList.tName }}.docx<a class="download" :href="item" download target="_blank">下载</a></span></p>
+      <p class="des bottomMargin"></p>
       <p class="title">需求描述</p>
       <p class="des bottomMargin">{{info.description}}</p>
       <div class="btns" v-if="info.status == 0">
@@ -17,8 +23,8 @@
       </div>
       <div class="results" v-else>
         <p class="title">审核结果</p>
-        <p class="des" v-if="info.status == 1"><span style="margin-right: 20px;">已通过</span><span>通过时间：{{info.varifyTime}}</span></p>
-        <p class="des" v-if="info.status == 2"><span  style="margin-right: 20px;">已拒绝</span><span>拒绝时间：{{info.varifyTime}}</span></p>
+        <p class="des" v-if="info.status == 1"><span style="margin-right: 20px;color:#67c23a;">已通过</span><span>通过时间：{{info.varifyTime}}</span></p>
+        <p class="des" v-if="info.status == 2"><span  style="margin-right: 20px;color:#f56c6c;">已拒绝</span><span>拒绝时间：{{info.varifyTime}}</span></p>
         <p class="des">{{info.resultInfo}}</p>
         <p class="des" v-if="info==1">附件<span class="link">员工期权授予协议.docx<a class="download">下载</a></span></p>
       </div>
@@ -59,6 +65,11 @@
           typ: 1, // 1,通过；2.拒绝；
         },
         info: '', // 详情对象
+        downloadList: {
+          tName: '',
+          url: '',
+          urls: []
+        }, // 下载列表
         form: {
           id: '',
           reason: '',
@@ -110,16 +121,28 @@
             if(obj.varifyTime!=null){
               obj.varifyTime = common.getFormatOfDate(vTime, 'yyyy-MM-dd hh:mm');
             }
-            that.getTemplate(res.data.datas.templateId);
+            that.contractInfo(res.data.datas.contractId);
             that.info = res.data.datas;
             that.form.id = res.data.datas.id;
           }else{}
         });
       },
-      getTemplate (id) {
+      contractInfo (id) {
         let that = this;//, id = that.$route.params.serviceId;
-        contractService.getOneTemplate(id).then(function (res) {
+        contractService.contractInfo(id).then(function (res) {
           console.log('获取合同1',res);
+          if(res.data.success){
+            let obj = res.data.datas;
+            that.downloadList = {
+              tName: obj.templateName,
+              url: that.$store.state.picHead + obj.url,
+            };
+            let newArr = obj.urls;
+            for(let i=0;i<newArr.length;i++){
+              newArr[i] = that.$store.state.picHead + newArr[i];
+            }
+            that.downloadList.urls = newArr;
+          }else{}
         });
       },
       submitForm (formName) {
@@ -171,6 +194,10 @@
       .label{display:block;float:left;}
       .bottomMargin{margin-bottom: 40px;}
       .btns{}
+    }
+    .breadMargin{margin-bottom: 20px;}
+    .blueFont{
+      .el-breadcrumb__inner{color: #4EAAFE!important;}
     }
   }
 </style>

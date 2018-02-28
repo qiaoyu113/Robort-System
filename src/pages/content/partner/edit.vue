@@ -49,7 +49,15 @@
         countryList: [], // 国家数组
         templateList: [], // 合同模板数组
         pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；partnerTyp
-        uploadOrg: {limit: 1},
+        uploadOrg: {
+          limit: 1,
+          imgWidth: 300,
+          imgHeight: 150,
+          // 描述文字一
+          des: '建议尺寸为300x150，不大于1m，支持.png .jpg .jpeg',
+          // 描述文字二
+          des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+        },
         ruleForm: {
           id: '', // 唯一标识
           name: '', // 伙伴名称
@@ -160,6 +168,7 @@
       // 获得封面图路径
       myPicUrl (val) {
         let that = this;
+        console.log('dee',val)
         that.ruleForm.imgUrl = val;// 封面图
       },
       // 获取一个合作伙伴
@@ -173,15 +182,16 @@
             that.ruleForm = {
               id: obj.id, // 唯一标识
               name: obj.name, // 伙伴名称
-              imgUrl: that.$store.state.picHead + obj.cover, // 图片
+              imgUrl:obj.cover, // 图片
               pkg: obj.productPackageId, // 产品包关联
               country: obj.country, // 国家关联
               template: obj.templateId, // 合同模板关联
               phoneNo: obj.phone, // 联系方式
               detail: obj.description // 简介
             }
-            that.$refs.upOrg.imgUrl = that.ruleForm.imgUrl;
+            that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
             that.$refs.upOrg.isImageState = 1;
+            //console.log('借鉴', obj.description);
             myEditor.setData(obj.description);
           }else{}
         });
@@ -244,7 +254,6 @@
   .iptFormLen{
     width: 600px;
   }
-  .picUpload{display: flex; justify-content: space-between;align-items: center;}
   .flexStart .upload-btn{margin-left:0;}
   .cke_chrome{width: 600px;}
   }

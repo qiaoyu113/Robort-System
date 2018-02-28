@@ -162,9 +162,7 @@
                 titleName:'',
             }
         },
-        mounted () {
-            localStorage.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMeWFiOW8gOWni-W4puS9oOmjniIsInVzZXJJZCI6IjEiLCJwbGF0Zm9ybSI6IlBDSDUiLCJwZXJtaXNzaW9ucyI6WyJYVEdMOlFVRVJZIl0sImV4cCI6MTUyMDIxNTkxNSwibmJmIjoxNTE5NjExMTE1fQ.mY7gXKxW1dZGKYi8bjN_3rvk05kDhq6dltlQZc_gB7k';
-        },
+        mounted () {},
         methods: {
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);

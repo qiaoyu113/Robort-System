@@ -12,7 +12,7 @@
                 <!--滑动验证-->
                 <div id="captcha-box"></div>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm2')" class="loginBtn">提交</el-button>
                 </el-form-item>
             </el-form>
             <el-checkbox v-model="checked">记住密码</el-checkbox>
@@ -22,6 +22,7 @@
 
 <script>
     import {commonService} from '../../service/commonService'
+    import {loginService} from '../../service/loginService'
     export default {
         data() {
             let checkUser = (rule, value, callback) => {
@@ -40,6 +41,7 @@
             };
             return {
                 checked: true,
+                geetestInfo: {},
                 ruleForm2: {
                     pass: '',
                     geetesst: false,
@@ -71,6 +73,7 @@
                     captchaObj.appendTo(captchaBox);
                     captchaObj.onSuccess(function () {
                         let result = captchaObj.getValidate();
+                        that.geetestInfo = result;
                         commonService.postGaptchas({challenge:result.geetest_challenge,validate:result.geetest_validate,seccode:result.geetest_seccode}).then(function(res){
                             if(res.data.message == 'success'){
                                 that.geetesst = true;
@@ -84,12 +87,20 @@
             submitForm(formName) {
                 let that = this
                 that.$refs[formName].validate((valid) => {
-                    let geetesst = that.geetesst
+                    let geetesst = that.geetesst;
+                    console.log('geetesst', geetesst);
                     if (valid) {
                         if(geetesst){
                             that.$notify({
                                 title: '登陆成功',
                                 type: 'success'
+                            });
+                            loginService.login({account: that.ruleForm2.user, password: that.ruleForm2.pass, platform: 'PCH5',challenge: that.geetestInfo.geetest_challenge, validate: that.geetestInfo.geetest_validate, seccode: that.geetestInfo.geetest_seccode}).then(function (res) {
+                                console.log('登录成功', res);
+                                if(res.data.success){
+                                    localStorage.token = res.data.datas;
+                                    that.$router.push({name: 'home'});
+                                }else{}
                             });
                         }else {
                             that.$notify({
@@ -151,7 +162,7 @@
     background:none;
     color:#fff;
 }
-.el-button--primary{
+.loginBtn{
     width:100%;
 }
 .el-form-item:last-child .el-form-item__content{
