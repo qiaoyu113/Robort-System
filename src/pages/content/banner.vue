@@ -70,6 +70,7 @@
               :fixedNumber="option.fixedNumber"
       ></vue-cropper>
       <span slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="dialogCropperVisible=false">取 消</el-button>
             <el-button size="mini" type="primary" @click="finish('base64')">确 定</el-button>
       </span>
     </el-dialog>
@@ -173,11 +174,11 @@
           canScale: true,
           autoCrop: true,
           // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 900,
-          autoCropHeight: 600,
+          autoCropWidth: 1440,
+          autoCropHeight: 560,
           // 开启宽度和高度比例
           fixed: true,
-          fixedNumber: [3, 2]
+          fixedNumber: [18, 7]
         }, //截图
         isImageState: 0, // 显示图片区域 or 显示上传图片按钮区域
         imgUrl: '', // 图片显示路径

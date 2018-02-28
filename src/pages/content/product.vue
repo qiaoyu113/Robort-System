@@ -78,6 +78,7 @@
               :fixedNumber="option.fixedNumber"
       ></vue-cropper>
       <span slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="dialogCropperVisible=false">取 消</el-button>
             <el-button size="mini" type="primary" @click="finish('base64')">确 定</el-button>
       </span>
     </el-dialog>
@@ -163,8 +164,8 @@ import {contentService} from '../../service/contentService'
           canScale: true,
           autoCrop: true,
           // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 300,
-          autoCropHeight: 150,
+          autoCropWidth: 600,
+          autoCropHeight: 300,
           // 开启宽度和高度比例
           fixed: true,
           fixedNumber: [2, 1]
@@ -349,6 +350,9 @@ import {contentService} from '../../service/contentService'
       uploadImg (event) {
         // this.option.img
         let that = this;
+        // 清空 文件选择器
+        var obj = document.getElementById("uploads") ;
+        obj.outerHTML = obj.outerHTML;
         let e = event;
         var file = e.target.files[0]
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {

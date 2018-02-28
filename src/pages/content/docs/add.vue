@@ -5,7 +5,7 @@
         <el-input v-model="ruleForm.author" class="iptLength"></el-input>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
-        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
+        <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upOrg"></upload-original>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -14,7 +14,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import uploadImg from '../../../component/upload/uploadLR.vue'
+  import uploadOriginal from '../../../component/upload/uploadOriginal.vue'
   import {contentService} from '../../../service/contentService'
 
   export default {
@@ -34,13 +34,18 @@
             { required: true, message: '请上传图片', trigger: 'blur' }
           ],
         },
-        myOption: {
-          autoCropWidth: 300,
-          autoCropHeight: 200
-        }
+        uploadOrg: {
+          limit: 1,
+          imgWidth: 300,
+          imgHeight: 150,
+          // 描述文字一
+          des: '建议尺寸为300x150，不大于1m，支持.png .jpg .jpeg',
+          // 描述文字二
+          des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+        },
       }
     },
-    components: {'upload-img': uploadImg},
+    components: {'upload-original': uploadOriginal},
     mounted () {},
     methods: {
       submitForm(formName) {

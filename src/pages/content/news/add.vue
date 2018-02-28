@@ -64,8 +64,15 @@
           ]
         },
         myOption: {
-          autoCropWidth: 300,
-          autoCropHeight: 200
+          // 只有自动截图开启 宽度高度才生效
+          autoCropWidth: 900,
+          autoCropHeight: 600,
+          // 开启宽度和高度比例
+          fixedNumber: [3, 2],
+          // 描述文字一
+          des: '建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg',
+          // 描述文字二
+          des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
         }
       }
     },
