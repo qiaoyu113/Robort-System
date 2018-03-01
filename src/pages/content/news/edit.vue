@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item label="分类" prop="selItem"  size="mini">
         <el-select v-model="ruleForm.selItem" placeholder="请选择">
-          <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item" :key="key"></el-option>
+          <el-option  v-for="item in demoList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="新闻详情" prop="detail">
@@ -36,7 +36,7 @@
     props: [],
     data () {
       return {
-        demoList: [], // 演示视频下拉列表
+        demoList: [], // 分类下拉列表
         ruleForm: {
           id: '',
           title: '', // 新闻名称
@@ -91,14 +91,22 @@
         that.ruleForm.detail = myEditor.getData();
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
+            // 根据classID获得className
+            let className = '';
+            for(let i=0;i<that.demoList.length;i++){
+              if(that.demoList[i].id === that.ruleForm.selItem){
+                className = that.demoList[i].name;
+              }
+            }
+            // 表单
             contentService.editNews({
               id: that.ruleForm.id,
               name: that.ruleForm.title,
               author: that.ruleForm.author,
               description: that.ruleForm.desc,
               content: that.ruleForm.detail,
-              classId: that.ruleForm.selItem.id,
-              className: that.ruleForm.selItem.name,
+              classId: that.ruleForm.selItem,
+              className: className,
               cover: that.ruleForm.cover,
               type: 1}).then(function (res) {
               //console.log(res, '编辑一个新闻');
@@ -142,10 +150,7 @@
               title: obj.name, // 新闻名称
               author: obj.author, // 作者
               cover: obj.cover, // 封面图
-              selItem: {
-                id: obj.classId,
-                name: obj.className
-              }, // 分类
+              selItem: obj.classId,
               detail: obj.content, // 详情
               desc: obj.description // 简介
             }

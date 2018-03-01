@@ -12,7 +12,7 @@
     </el-form-item>
     <el-form-item label="分类" prop="selItem"  size="mini">
       <el-select v-model="ruleForm.selItem" placeholder="请选择">
-        <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item" :key="key"></el-option>
+        <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item.id" :key="key"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="新闻详情" prop="detail">
@@ -88,15 +88,20 @@
         that.ruleForm.detail = myEditor.getData();
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
-            console.log('that.ruleForm.selItem',that.ruleForm.selItem);
-            console.log('that.ruleForm.selItem.id',that.ruleForm.selItem.id);
-            console.log('that.ruleForm.selItem.name',that.ruleForm.selItem.name);
+            // 根据classID获得className
+            let className = '';
+            for(let i=0;i<that.demoList.length;i++){
+              if(that.demoList[i].id === that.ruleForm.selItem){
+                className = that.demoList[i].name;
+              }
+            }
+            // 表单
             contentService.addNews({name: that.ruleForm.title,
               author: that.ruleForm.author,
               description: that.ruleForm.desc,
               content: that.ruleForm.detail,
-              classId: that.ruleForm.selItem.id,
-              className: that.ruleForm.selItem.name,
+              classId: that.ruleForm.selItem,
+              className: className,
               cover: that.ruleForm.cover,
               type: 1}).then(function (res) {
               //console.log(res, '添加一个新闻');
