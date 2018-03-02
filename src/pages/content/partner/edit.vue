@@ -123,9 +123,9 @@
             let id = that.ruleForm.id;
             let name = that.ruleForm.name;
             let cover = that.ruleForm.imgUrl;
-            let productPackageId = '';
-            let templateId = '';
-            let country = '';
+            let productPackageId = that.ruleForm.pkg;
+            let templateId = that.ruleForm.template;
+            let country = that.ruleForm.country;
             let prov = '';
             let provCode = '';
             let city = '';
@@ -191,7 +191,6 @@
             }
             that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
             that.$refs.upOrg.isImageState = 1;
-            //console.log('借鉴', obj.description);
             myEditor.setData(obj.description);
           }else{}
         });
