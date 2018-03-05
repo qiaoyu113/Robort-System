@@ -70,6 +70,8 @@
                   };
               }
               function getfile() {
+                  that.options.imgWidth = that.options.imgWidth || image.width
+                  that.options.imgHeight = that.options.imgHeight || image.height
                   that.naturalWidth = image.width;
                   that.naturalHeight = image.height;
                   if(that.naturalWidth == that.options.imgWidth && that.naturalHeight== that.options.imgHeight){
