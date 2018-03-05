@@ -120,9 +120,9 @@ export default {
         if (valid) { // 验证成功
           let name = that.ruleForm.name;
           let cover = that.ruleForm.imgUrl;
-          let productPackageId = '';
-          let templateId = '';
-          let country = '';
+          let productPackageId = that.ruleForm.pkg;
+          let templateId = that.ruleForm.template;
+          let country = that.ruleForm.country;
           let prov = '';
           let provCode = '';
           let city = '';
