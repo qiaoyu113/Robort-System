@@ -10,8 +10,9 @@
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
             <!--<input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >-->
-          <input v-if="isImageState===1" type="button" class="file">
-          <input v-if="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
+            <input v-if="isImageState==1" type="button" class="file">
+            <input  v-show="isImageState==0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
+
         </div>
         <p class="des">1. {{options.des}}</p>
         <p class="des">2. {{options.des2}}</p>
@@ -55,39 +56,49 @@
           reader.onload = function (e) {
              imgFile = e.target.result;
               let image = new Image();
-              image.src = imgFile;
-              that.naturalWidth = image.width;
-              that.naturalHeight = image.height;
-
-//              console.log('真实宽', that.naturalWidth);
-//              console.log('真实高', that.naturalHeight);
-//              console.log('限制宽', that.options.imgWidth);
-//              console.log('限制高', that.options.imgHeight);
-              if(that.naturalWidth == that.options.imgWidth && that.naturalHeight== that.options.imgHeight){
-                  if(limit <= that.options.limit){
-                      let formData = new FormData();
-                      formData.append('myFile', file);
-                      pluginService.uploadFile(formData).then(function (res) {
-                          //console.log('上传的图片', res);
-                          if(res.data.success){
-                              that.$emit('getPictureUrl', res.data.datas.myFile);
-                              that.imgUrl = that.$store.state.picHead + res.data.datas.myFile;
-                              that.isImageState=1;
-                              // 清空 文件选择器
-                              var obj = document.getElementById("uploads") ;
-                              obj.outerHTML = '';
-                          }
-                      });
-                  }else{
+              image.src = imgFile;// 判断是否有缓存
+              if(image.complete){
+                  // 打印
+//                  alert('from:complete : width:'+image.width+',height:'+image.height);
+                  getfile()
+              }else{
+                  // 加载完成执行
+                  image.onload = function(){
+                      // 打印
+//                      alert('from:onload : width:'+image.width+',height:'+image.height);
+                      getfile()
+                  };
+              }
+              function getfile() {
+                  that.naturalWidth = image.width;
+                  that.naturalHeight = image.height;
+                  if(that.naturalWidth == that.options.imgWidth && that.naturalHeight== that.options.imgHeight){
+                      if(limit <= that.options.limit){
+                          let formData = new FormData();
+                          formData.append('myFile', file);
+                          pluginService.uploadFile(formData).then(function (res) {
+                              //console.log('上传的图片', res);
+                              if(res.data.success){
+                                  that.$emit('getPictureUrl', res.data.datas.myFile);
+                                  that.imgUrl = that.$store.state.picHead + res.data.datas.myFile;
+                                  that.isImageState=1;
+                                  // 清空 文件选择器
+                                  var obj = document.getElementById("uploads") ;
+                                  obj.value = '';
+                              }
+                          });
+                      }else{
+                          that.$message({
+                              type: 'error',
+                              message: '上传图片大小不能超过'+ that.options.limit + 'M'});
+                      }
+                  }
+                  else{
                       that.$message({
                           type: 'error',
-                          message: '上传图片大小不能超过'+ that.options.limit + 'M'});
+                          message: '请上传宽高为' + that.options.imgWidth +'*' + that.options.imgHeight + '的图片'});
                   }
-              }
-              else{
-                  that.$message({
-                      type: 'error',
-                      message: '请上传宽高为' + that.options.imgWidth +'*' + that.options.imgHeight + '的图片'});
+
               }
               // -------------------
           };

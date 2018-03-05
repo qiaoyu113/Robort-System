@@ -4,7 +4,7 @@
 import axios from 'axios';
 import store from '../vuex/'
 
-axios.defaults.baseURL = 'http://6fpqir.natappfree.cc';
+axios.defaults.baseURL = 'http://2uqhqk.natappfree.cc';
 //axios.defaults.baseURL = 'http://api.qizhi.vjuzhen.com';
 
 let win = typeof window
@@ -31,9 +31,9 @@ axios.interceptors.response.use(function (response) {
     // 对token过期的跳转登录页面
     if (response.data.code == 510100 && !(response.config.url.indexOf('cdks/login')>0)){
         if(isClient){
-            localStorage.clear();
-            localStorage.redirectUrl = location.href
-            location.href = location.origin+'/login/'
+            // localStorage.clear();
+            // localStorage.redirectUrl = location.href
+            // location.href = location.origin+'/login/'
         }
     }
     return response;
