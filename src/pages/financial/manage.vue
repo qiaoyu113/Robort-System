@@ -49,13 +49,13 @@
                 <el-table-column
                         label="银行">
                     <template slot-scope="scope">
-                        <span>{{bankInfo.bankName}}</span>
+                        <span v-if="bankInfo">{{bankInfo.bankName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="银行卡号">
                     <template slot-scope="scope">
-                        <span>{{certificate.bankCardNo}}</span>
+                        <span v-if="bankInfo">{{bankInfo.bankCardNo}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
