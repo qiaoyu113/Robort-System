@@ -149,7 +149,7 @@ export default {
             cityCode: cityCode,
             phone: phone,
             description: description}).then(function (res) {
-            console.log('添加一个合作伙伴', res);
+            //console.log('添加一个合作伙伴', res);
             if(res.data.success){
               that.$router.push({name: 'partner'});
             }

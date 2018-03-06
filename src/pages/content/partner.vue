@@ -102,10 +102,10 @@
       getList () {
         let that = this;
         let typ = parseInt(that.tabIndex);
-        console.log('tabIndex', typ);
+        //console.log('tabIndex', typ);
         that.tableData = [];
         contentService.getPartners({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, type: typ}).then(function(res){
-          console.log('partners', res);
+          //console.log('partners', res);
           if(res.data.success){
             let table = res.data.datas;
             that.myPagination.totalCount = parseInt(table.totalCount);
@@ -183,7 +183,7 @@
         let rows = that.dialog.rows;
         let index = that.dialog.index;
         contentService.deletePartner(id).then(function (res) {
-          console.log('删除', res);
+          //console.log('删除', res);
           if(res.data.success){
             that.centerDialogVisible = false;
             rows.splice(index, 1);

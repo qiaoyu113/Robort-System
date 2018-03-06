@@ -22,12 +22,12 @@
           <el-option v-for="(item, key, index) in hotDog" :label="item.DisplayName" :value="item.Id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="添加到产品包" prop="packages"  size="mini" v-if="templateType == 1">
+      <el-form-item label="添加到产品包" size="mini" v-if="templateType == 1">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="关联产品包" prop="packages"  size="mini" v-if="templateType == 2">
+      <el-form-item label="关联产品包" size="mini" v-if="templateType == 2">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
@@ -90,9 +90,9 @@
           hotTemplateId: [
             { required: true, message: '请选择模板', trigger: 'change' }
           ],
-          packages: [
-            { required: true, message: '请选择产品包', trigger: 'change' }
-          ],
+//          packages: [
+//            { required: true, message: '请选择产品包', trigger: 'change' }
+//          ],
           description: [
             { required: true, message: '请填写合同模板简介', trigger: 'blur' }
           ],

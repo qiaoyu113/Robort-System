@@ -154,7 +154,7 @@
               cityCode: cityCode,
               phone: phone,
               description: description}).then(function (res) {
-              console.log('编辑一个合作伙伴', res);
+              //console.log('编辑一个合作伙伴', res);
               if(res.data.success){
                 that.$router.push({name: 'partner'});
               }
@@ -176,7 +176,7 @@
         let that = this;
         let id = that.$route.params.partnerId;
         contentService.getPartner(id).then(function (res) {
-          console.log('获得一个', res);
+          //console.log('获得一个', res);
           if(res.data.success){
             let obj = res.data.datas;
             that.ruleForm = {
