@@ -29,9 +29,10 @@
                     border
                     style="width: 100%">
                 <el-table-column
-                        prop="createTime"
                         label="申请时间">
-
+                    <template slot-scope="scope">
+                        <span>{{createTime | dateFormate}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="phone"
@@ -46,12 +47,16 @@
                         label="申请金额">
                 </el-table-column>
                 <el-table-column
-                        prop="bankInfo"
                         label="银行">
+                    <template slot-scope="scope">
+                        <span>{{bankInfo.bankName}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="certificate"
                         label="银行卡号">
+                    <template slot-scope="scope">
+                        <span>{{certificate.bankCardNo}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="操作">
