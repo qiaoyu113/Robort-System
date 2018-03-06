@@ -6,6 +6,7 @@ import VueLazyload from 'vue-lazyload'
 
 import App from './App.vue'
 import './mixin/directive';
+import './mixin/filter';
 
 // 开启debug
 Vue.config.debug = true

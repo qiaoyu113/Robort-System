@@ -16,34 +16,34 @@
                 <div @click="exportwallets()" class="el-button el-button--primary el-button--mini right20 mt10">导出记录</div>
             </div>
             <el-table
-                    :data="userlist"
+                    :data="wallets"
                     border
                     style="width: 100%">
                 <el-table-column
-                        prop="create"
+                        prop="createTime"
                         label="创建时间">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="orderNo"
                         label="订单号">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="typeTitle"
                         label="名称">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="flowAmount"
                         label="收入">
                 </el-table-column>
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <a href="">详情</a>
+                        <a :href="'./orders/'+scope.row.orderNo">详情</a>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <div class="block">
+        <div class="block" v-if="total > params.pageSize">
             <el-pagination
                     @size-change="changeSize"
                     @current-change="changePage"
@@ -66,7 +66,7 @@
             return {
                 wallets:[],
                 params:{
-                    query:"null",
+                    query:null,
                     pageNo:1,
                     pageSize:10,
                 },
@@ -121,8 +121,7 @@
                 let that = this
                 financialService.getwallets(this.params).then(function (res) {
                     that.wallets = res.data.datas.datas
-                    that.total = res.data.datas.totalCount
-                    console.log(that.wallets);
+                    that.total = res.data.datas.totalCount*1
                 })
             },
             changePage:function (page) {
@@ -135,8 +134,6 @@
                 that.params.pageSize = size
                 that.getwallets()
             },
-
-
         },
 
     }

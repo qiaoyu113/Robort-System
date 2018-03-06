@@ -51,7 +51,7 @@ export const financialService = {
     getParam: function(param){
         let url = '';
         for(let key in param){
-            if(param[key] !== null){
+            if(param[key] !== null && param[key] != ''){
                 url ? url += '&'+key+'='+param[key] : url += key+'='+param[key]
             }
         }

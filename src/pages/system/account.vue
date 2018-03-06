@@ -128,7 +128,7 @@
                     if(that.userForm.hostLogo){
                         that.userForm.imgUrl = that.$store.state.picHead+that.userForm.hostLogo
                         that.$refs.upOrg.imgUrl = that.userForm.imgUrl;
-//                        that.$refs.upOrg.isImageState = 1;
+                        that.$refs.upOrg.isImageState = 1;
                     }
                     that.id=that.list.id
 
@@ -136,7 +136,6 @@
             },
             getPictureUrl:function(url){
                 let that=this;
-                console.log(url,111);
                 if(url){
                     that.userForm.hostLogo = url
                 } else {

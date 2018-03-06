@@ -29,11 +29,12 @@
                     border
                     style="width: 100%">
                 <el-table-column
-                        prop="create"
+                        prop="createTime"
                         label="申请时间">
+
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="phone"
                         label="申请人账号">
                 </el-table-column>
                 <el-table-column
@@ -41,27 +42,27 @@
                         label="姓名">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="applyMoney"
                         label="申请金额">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="bankInfo"
                         label="银行">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="certificate"
                         label="银行卡号">
                 </el-table-column>
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <a href="">查看</a>
+                        <a :href="'./refund/'+scope.row.id">查看</a>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <div class="block">
-            <el-pagination
+            <el-pagination v-if="total>params.pageSize"
                     @size-change="changeSize"
                     @current-change="changePage"
                     :current-page="1"
@@ -86,7 +87,6 @@
                 params:{
                     pageNo:1,
                     pageSize:10,
-                    type:3,
                     phone:'',
                     status:'0'
                 },
@@ -134,8 +134,7 @@
                 that.params.status=that.tabPosition
                 financialService.getvarifyinfos(that.params).then(function (res) {
                     that.orders = res.data.datas.datas
-                    that.total = res.data.datas.totalCount
-
+                    that.total = res.data.datas.totalCount*1
                 })
             },
             changePage:function (page) {

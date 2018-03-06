@@ -35,43 +35,49 @@
                     border
                     style="width: 100%">
                 <el-table-column
-                        prop="create"
+                        prop="orderNo"
                         label="订单号">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="user[0].name"
                         label="姓名">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="user[0].phone"
                         label="手机">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="orderTitle"
                         label="商品名称">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="amount"
                         label="金额（元）">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
                         label="交易时间">
+                    <template slot-scope="scope">
+                        <span>{{createTime | dateFormate}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="name"
                         label="支付方式">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.channelId=='ALIPAY_PC'||scope.row.channelId=='ALIPAY_MOBILE'||scope.row.channelId=='ALIPAY_WAP'||scope.row.channelId=='ALIPAY_QR'">微信支付</span>
+                        <span v-if="scope.row.channelId=='WX_JSAPI'||scope.row.channelId=='WX_NATIVE'||scope.row.channelId=='WX_APP'||scope.row.channelId=='WX_MWEB'">支付宝</span>
+                        <span v-if="scope.row.channelId=='IAP'">苹果支付</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <a href="">详情</a>
+                        <a :href="scope.row.orderNo">详情</a>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <div class="block">
-            <el-pagination
+            <el-pagination v-if="total>params.pageSize"
                     @size-change="changeSize"
                     @current-change="changePage"
                     :current-page="1"
@@ -95,10 +101,10 @@
                 tabIndex:"1",
                 timeRange:'',
                 params:{
-                    query:"null",
+                    query:null,
                     pageNo:1,
                     pageSize:10,
-                    orderType:12,
+//                    orderType:12,
                     timeType:1,
                     searchKey:'',
                     startTime:'',
@@ -146,8 +152,8 @@
                 let that = this
                 financialService.getOders(that.params).then(function (res) {
                     that.orders = res.data.datas.datas
-                    that.total = res.data.datas.totalCount
-                    console.log(res);
+                    that.total = res.data.datas.totalCount*1
+                    console.log(that.total);
                 })
             },
             changePage:function (page) {

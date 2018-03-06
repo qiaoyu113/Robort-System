@@ -72,6 +72,8 @@ const banner= (resolve) => {require(['./pages/content/banner.vue'],resolve)}
 const manage= (resolve) => {require(['./pages/financial/manage.vue'],resolve)}
 const accounts= (resolve) => {require(['./pages/financial/accounts.vue'],resolve)}
 const orders= (resolve) => {require(['./pages/financial/orders.vue'],resolve)}
+const refund= (resolve) => {require(['./pages/financial/refund.vue'],resolve)}
+const orderDetail= (resolve) => {require(['./pages/financial/order-detail.vue'],resolve)}
 // 系统设置
 const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve)}
 const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
@@ -138,6 +140,8 @@ const routers = [
                {name: 'manage',path:'/financial/manage',component: manage},
                {name: 'accounts',path:'/financial/accounts',component: accounts},
                {name: 'orders',path:'/financial/orders',component: orders},
+               {name: 'order-detail',path:'/financial/orders/:orderid',component: orderDetail},
+               {name: 'refund',path:'/financial/refund/:orderid',component: refund},
 
 
 
