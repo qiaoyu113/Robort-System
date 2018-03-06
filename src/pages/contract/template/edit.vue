@@ -27,7 +27,7 @@
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="关联产品包" size="mini" v-if="templateType == 2">
+      <el-form-item label="关联产品包" prop="packages" size="mini" v-if="templateType == 2">
         <el-select v-model="ruleForm.packages" placeholder="请选择">
           <el-option v-for="(item, key, index) in cPackage" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>

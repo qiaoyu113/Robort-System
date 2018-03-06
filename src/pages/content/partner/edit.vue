@@ -215,7 +215,7 @@
       // 获得合同模板
       getTemplate () {
         let that = this;
-        contentService.getTemplates().then(function (res) {
+        contentService.getTemplatesAll().then(function (res) {
           //console.log('合同模板', res);
           if(res.data.success){
             that.templateList = res.data.datas;

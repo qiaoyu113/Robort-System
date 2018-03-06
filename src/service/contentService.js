@@ -136,6 +136,9 @@ export const contentService = {
     getTemplates: function (params) {
         return axios.get('/admin/templates/list' + this.getParams(params));
     },
+    getTemplatesAll: function (params) {
+        return axios.get('/admin/templates/listall' + this.getParams(params));
+    },
     // 参数拼接
     getParams: function (param) {
         let url = '';
