@@ -3,7 +3,7 @@
         <div class="message">
             <div class="title">
                 <span class="el-tabs__item">发站内信</span>
-                <div class="el-button el-button--primary el-button--mini right20 mt10" @click="getMessages(1)">发送记录</div>
+                <div class="el-button el-button--primary el-button--mini right20 mt10" @click="getMessages()">发送记录</div>
             </div>
             <el-form :model="form">
                 <el-form-item label="发送范围：" :label-width="formLabelWidth" required>
@@ -54,7 +54,7 @@
                                :page-sizes="[10, 20, 50,100]"
                                :page-size="10"
                                layout="total, sizes, prev, pager, next, jumper"
-                               :total="total">
+                               :total="total*1">
                 </el-pagination>
             </div>
         </div>
@@ -122,9 +122,8 @@
                 }
 
             },
-            getMessages:function(no){
+            getMessages:function(){
                 let that = this
-                no ? this.params.pageNo = no :''
                 that.showList = true
                 userService.getMessages(that.params).then(function (res) {
 //                    console.log(res);
@@ -135,6 +134,7 @@
             closelist:function(){
                 let that = this
                 that.showList = false
+                that.params.pageNo = 1
             },
             getUserGroups:function(){
                 let that = this
