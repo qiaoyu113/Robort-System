@@ -41,6 +41,13 @@ export const financialService = {
         window.location.href= api + "/admin/export/order"
         // return axios.get('/admin/export/wallet');
     },
+    /*获取订单详情*/
+    getOdersNo: function (params) {
+        return axios.get('/admin/orders/orderNo'+ this.getParam(params));
+    },
+    getuserId: function (params) {
+        return axios.get('/admin/users/'+ params);
+    },
     /* 提现审核 */
     getvarifyinfos: function (params) {
         return axios.get('/admin/varifyinfos'+ this.getParam(params));

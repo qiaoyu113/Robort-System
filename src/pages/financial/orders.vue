@@ -71,7 +71,7 @@
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <a :href="scope.row.orderNo">详情</a>
+                        <a :href="'./orders/'+scope.row.orderNo">详情</a>
                     </template>
                 </el-table-column>
             </el-table>
@@ -154,6 +154,7 @@
                     that.orders = res.data.datas.datas
                     that.total = res.data.datas.totalCount*1
                     console.log(that.total);
+                     console.log(res);
                 })
             },
             changePage:function (page) {
