@@ -122,7 +122,7 @@
                                     <span>用户管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="用户管理">用户管理</el-menu-item>
+                                    <el-menu-item index="用户管理"><router-link to="/users">用户管理</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
