@@ -19,7 +19,7 @@
             <input class="radio" type="radio" name="audit"/>拒绝
             <br>
             <div >
-                <span class="mar">备注：</span>
+                <span class="mar" v-if='orders.description==null'>备注：</span>
                 <textarea  rows="3" cols="30"></textarea>
             </div>
             <div  v-if='orders.description'>
