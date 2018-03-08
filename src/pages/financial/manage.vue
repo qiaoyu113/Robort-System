@@ -140,6 +140,7 @@
                 financialService.getvarifyinfos(that.params).then(function (res) {
                     that.orders = res.data.datas.datas
                     that.total = res.data.datas.totalCount*1
+                    console.log(res)
                 })
             },
             changePage:function (page) {

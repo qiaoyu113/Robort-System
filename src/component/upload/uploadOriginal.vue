@@ -14,8 +14,8 @@
             <input  v-show="isImageState==0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
 
         </div>
-        <p class="des">1. {{options.des}}</p>
-        <p class="des">2. {{options.des2}}</p>
+        <p class="des" v-if='options.des'>1. {{options.des}}</p>
+        <p class="des" v-if='options.des2'>2. {{options.des2}}</p>
       </div>
     </div>
   </div>

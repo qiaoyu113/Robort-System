@@ -141,7 +141,7 @@ const routers = [
                {name: 'accounts',path:'/financial/accounts',component: accounts},
                {name: 'orders',path:'/financial/orders',component: orders},
                {name: 'order-detail',path:'/financial/orders/:orderNo',component: orderDetail},
-               {name: 'refund',path:'/financial/refund/:orderid',component: refund},
+               {name: 'refund',path:'/financial/refund/:orderId',component: refund},
 
 
 

@@ -55,6 +55,9 @@ export const financialService = {
     passvarifyinfo: function () {
         return axios.get('/admin/varifyinfos'+ this.getParam(params));
     },
+    getvarifydetail:function(params) {
+        return axios.get('/admin/varifyinfos/'+ params);
+    },
     getParam: function(param){
         let url = '';
         for(let key in param){
