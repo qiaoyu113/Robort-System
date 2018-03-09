@@ -7,7 +7,7 @@
             <div class="info">
                 <div class="mar">姓名：{{users.name}}</div>
                 <div class="mar">手机：{{users.phone}}</div>
-                <div class="mar">微信昵称：天真无邪</div>
+                <div class="mar">微信昵称：  </div>
             </div>
             <div class="bicinfo">
                 <div class="title">基本信息</div>
@@ -20,7 +20,7 @@
             <div class="bicinfo">
                 <div class="title">访问记录</div>
                 <div class="bor"></div>
-                <div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{users.numItem.collectNum}}次</div>
+                <div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>
                 <div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>
                 <div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>
             </div>
@@ -29,8 +29,8 @@
         <div class="buyerinfo">
             <div class="title">用户轨迹</div>
             <div class="mar">订阅产品包：5个</div>
-            <div class="mar">生成合同：{{users.numItem.contractNum}}次</div>
-            <div class="mar">消费金额：{{users.numItem.consumeMoney}}元</div>
+            <div class="mar">生成合同：{{numItem.contractNum}}次</div>
+            <div class="mar">消费金额：{{numItem.consumeMoney}}元</div>
             <div class="bor"></div>
             <div class="box1 clearfix">
                 <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
@@ -57,14 +57,12 @@ export default {
         name: 'app',
         data: function () {
             return {
-                addFlag: 0,
-                total: 0,
                 groups: [],
                 users: '',
                 userNum:0,
-                moveto:'',
                 selectUsers:[],
                 id:this.$route.params.userId,
+                numItem:'',
             }
         },
         computed: {
@@ -82,6 +80,7 @@ export default {
                 userService.getUsers(that.id).then(function (res) {
                     console.log(res.data)
                     that.users = res.data.datas
+                    that.numItem = res.data.datas.numItem
                 })
             },
         },
