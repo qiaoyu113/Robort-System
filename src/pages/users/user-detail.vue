@@ -77,7 +77,7 @@ export default {
             
             getUsers: function (id) {
                 let that = this
-                userService.getUsers(that.id).then(function (res) {
+                userService.getUserInfo(that.id).then(function (res) {
                     console.log(res.data)
                     that.users = res.data.datas
                     that.numItem = res.data.datas.numItem

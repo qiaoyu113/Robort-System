@@ -48,7 +48,6 @@ export default {
                 orders:'',
                 uploadOrg: {
                     limit:1,
-                   
                 },
                 picUrl:'',
                 imgUrl:'',
