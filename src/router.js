@@ -79,6 +79,9 @@ const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve
 const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
 // 站内信
 const messages= (resolve) => {require(['./pages/message/messages.vue'],resolve)}
+// 用户管理
+const usersList= (resolve) => {require(['./pages/users/user-list.vue'],resolve)}
+const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -142,8 +145,9 @@ const routers = [
                {name: 'orders',path:'/financial/orders',component: orders},
                {name: 'order-detail',path:'/financial/orders/:orderNo',component: orderDetail},
                {name: 'refund',path:'/financial/refund/:orderId',component: refund},
-
-
+               // 用户管理
+               {name: 'users',path:'/users',component: usersList},
+               {name: 'user-detail',path:'/users/:userId',component: userDetail},
 
            ]
        },
