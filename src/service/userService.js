@@ -22,9 +22,6 @@ export const userService = {
         return axios.delete('/admin/groups'+ this.getParam(params));
     },
     /* 获取用户组组员信息 */
-    getUsers: function (params) {
-        return axios.get('/admin/users/'+ this.getParam(params));
-    },
     getGroupUsers: function (params) {
         return axios.get("/admin/groups/"+params.id+"/users/"+ this.getParam(params));
     },
@@ -48,8 +45,8 @@ export const userService = {
     getMessages: function (params) {
         return axios.get('/admin/innerletters/'+ this.getParam(params));
     },
-    getUsers:function(params){
-        return axios.get('/admin/users/'+ params);
+    getUsers: function (params) {
+        return axios.get('/admin/users/'+ this.getParam(params));
     },
     getParam: function(param){
         let url = '';

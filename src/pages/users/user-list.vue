@@ -178,7 +178,7 @@
             getGroups: function () {
                 let that = this
                 userService.getUserGroups(that.params).then(function (res) {
-                    console.log(res)
+//                    console.log(res)
                     that.groups = res.data.datas
                 })
             },
@@ -186,7 +186,7 @@
             getUsers: function () {
                 let that = this
                 userService.getUsers(that.params).then(function (res) {
-                    console.log(res)
+//                    console.log(res)
                     that.users = res.data.datas.datas
                     that.userNum = res.data.datas.totalCount * 1
                     that.total = res.data.datas.totalCount * 1
@@ -196,7 +196,7 @@
             getGroupUsers: function () {
                 let that = this
                 userService.getGroupUsers(that.params).then(function (res) {
-                    console.log(res)
+//                    console.log(res)
                     that.users = res.data.datas.datas
                     that.total = res.data.datas.totalCount * 1
                 })
