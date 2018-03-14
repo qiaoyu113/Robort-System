@@ -30,19 +30,19 @@ Vue.filter('dateFormate', function (value) {
     // else if(weekC>=1){
     // 	result="" + parseInt(weekC) + "周前";
     // }
-    if(dayC>1){
+    // if(dayC>1){
         result = common.getFormatOfDate(value*1, 'yyyy-MM-dd');
-    }
-    else if(dayC==1){ //文章信息流时间显示
-        result=""+ "昨天";
-    }
-    else if(hourC>=1){
-        result=""+ parseInt(hourC) +"小时前";
-    }
-    else if(minC>=1){
-        result=""+ parseInt(minC) +"分钟前";
-    }else
-        result="刚刚";
+    // }
+    // else if(dayC==1){ //文章信息流时间显示
+    //     result=""+ "昨天";
+    // }
+    // else if(hourC>=1){
+    //     result=""+ parseInt(hourC) +"小时前";
+    // }
+    // else if(minC>=1){
+    //     result=""+ parseInt(minC) +"分钟前";
+    // }else
+    //     result="刚刚";
     return result;
 })
 

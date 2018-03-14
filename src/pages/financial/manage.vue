@@ -31,7 +31,7 @@
                 <el-table-column
                         label="申请时间">
                     <template slot-scope="scope">
-                        <span>{{createTime | dateFormate}}</span>
+                        <span>{{scope.row.createTime | dateFormate}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -49,13 +49,13 @@
                 <el-table-column
                         label="银行">
                     <template slot-scope="scope">
-                        <span v-if="bankInfo">{{bankInfo.bankName}}</span>
+                        <span v-if="scope.row.bankInfo">{{scope.row.bankInfo.bankName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="银行卡号">
                     <template slot-scope="scope">
-                        <span v-if="bankInfo">{{bankInfo.bankCardNo}}</span>
+                        <span v-if="scope.row.bankInfo">{{scope.row.bankInfo.bankCardNo}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

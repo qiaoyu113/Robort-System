@@ -4,7 +4,8 @@
 import axios from './axios.js'
 import store from '../vuex/'
 import qs from 'qs'
-const api = "http://6fpqir.natappfree.cc"
+// const api = "http://6fpqir.natappfree.cc"
+const api = 'http://39.106.114.64:8097';
 
 export const financialService = {
     api: {},
