@@ -14,67 +14,6 @@
                                 @close="handleClose"
                                 text-color="#BFCBD9"
                                 active-text-color="#FF9E40">
-                            <!--<el-submenu
-                                    index="1" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-menu"></i>
-                                    <span>运营管理</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="电话委托"><router-link :to="{name:'operPhone'}">电话委托</router-link></el-menu-item>
-                                    <el-menu-item index="超级用户"><router-link :to="{name:'operPhone'}">超级用户</router-link></el-menu-item>
-                                    <el-menu-item index="修改流拍"><router-link :to="{name:'operPhone'}">修改流拍</router-link></el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
-                            <el-submenu
-                                    index="2" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-menu"></i>
-                                    <span>拍品管理</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="组管理">组管理</el-menu-item>
-                                    <el-menu-item index="专题管理">专题管理</el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
-                            <el-submenu
-                                    index="3" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-menu"></i>
-                                    <span>订单管理</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="全部订单">全部订单</el-menu-item>
-                                    <el-menu-item index="售后订单">售后订单</el-menu-item>
-                                    <el-menu-item index="物流管理">物流管理</el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
-                                    index="5" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-menu"></i>
-                                    <span>资金管理</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="交易记录">交易记录</el-menu-item>
-                                    <el-menu-item index="审核">审核</el-menu-item>
-                                    <el-menu-item index="银行卡流水">银行卡流水</el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
-                            <el-submenu
-                                    index="6" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-setting"></i>
-                                    <span>设置</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="权限设置"><router-link to="/setup/jurisdiction">权限设置</router-link></el-menu-item>
-                                    <el-menu-item index="积分设置"><router-link to="/setup/integral">积分设置</router-link></el-menu-item>
-                                    <el-menu-item index="会员设置"><router-link to="/setup/member">会员设置</router-link></el-menu-item>
-                                    <el-menu-item index="文档设置"><router-link to="/setup/file">文档设置</router-link></el-menu-item>
-                                    <el-menu-item index="标签设置"><router-link to="/setup/label">标签设置</router-link></el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>-->
-
                             <el-submenu
                                     index="7" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
@@ -170,9 +109,9 @@
                         <div class="rightHome"><a href="www.baidu.com">网站首页</a></div>
                         <div class="User">
                             <div class="UserImg">
-                                <img class="image" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=12867320,655225767&fm=27&gp=0.jpg"/>
+                                <img class="image" :src="adminPhoto"/>
                             </div>
-                            <div class="name">吴彦祖</div>
+                            <div class="name">{{adminName}}</div>
                         </div>
                     </div>
                 </div>
@@ -186,15 +125,20 @@
 </template>
 
 <script>
+    import {financialService} from '../../service/financialService.js'
     export default {
         name: 'app',
         data: function (){
             return {
                 active:true,
                 titleName:'',
+                adminPhoto: '',
+                adminName: ''
             }
         },
-        mounted () {},
+        mounted () {
+            this.getAdminInfo();
+        },
         methods: {
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
@@ -205,6 +149,19 @@
             select(key,keyPath,indexPath){
                 console.log(key,keyPath,indexPath._uid);
                 this.titleName = key
+            },
+            getAdminInfo () {
+                let that=this;
+                financialService.getAdminInfo().then(function(res){
+                    //console.log('当前管理员信息', res);
+                    if(res.data.code == 200){
+                        let obj = res.data.datas;
+                        that.adminPhoto = that.$store.state.picHead + obj.hostLogo;
+                        that.adminName = obj.hostName;
+                    }else{
+                        that.$message.error(res.data.message);
+                    }
+                })
             }
         }
     }

@@ -145,7 +145,7 @@ import {contentService} from '../../service/contentService'
           ],
           intro: [
             { required: true, message: '请填写产品功能简介', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
+            { min: 0, max: 30, message: '长度在60个字符以内', trigger: 'blur' }
           ],
           order: [
             { required: true, message: '请选择排序号', trigger: 'change' }
