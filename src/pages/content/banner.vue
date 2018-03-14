@@ -54,42 +54,17 @@
             <el-button size="mini" type="primary" @click="handleOk">确 定</el-button>
           </span>
     </el-dialog>
-    <!--截图-->
-    <el-dialog title="" :visible.sync="dialogCropperVisible">
-      <vue-cropper
-              ref="cropper"
-              :img="option.img"
-              :outputSize="option.size"
-              :outputType="option.outputType"
-              :info="option.info"
-              :canScale="option.canScale"
-              :autoCrop="option.autoCrop"
-              :autoCropWidth="option.autoCropWidth"
-              :autoCropHeight="option.autoCropHeight"
-              :fixed="option.fixed"
-              :fixedNumber="option.fixedNumber"
-      ></vue-cropper>
-      <span slot="footer" class="dialog-footer">
-            <el-button size="mini" @click="dialogCropperVisible=false">取 消</el-button>
-            <el-button size="mini" type="primary" @click="finish('base64')">确 定</el-button>
-      </span>
-    </el-dialog>
     <!--新增-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="上传主显图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
-          <div class="upload-img" v-model="form.pic">
-            <img id="uploadImage" class="image" v-show="isImageState==1" :src="imgUrl">
-            <div class="btn" v-show="isImageState==0"><i class="el-icon-plus"></i>
-              <input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
-            </div>
-            <i class="el-icon-circle-close del" v-show="isImageState==1" @click="delImgUrl"></i>
+          <div class="upload-img">
+            <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upOrgs"></upload-original>
           </div>
         </el-form-item>
         <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
           <el-input v-model="form.title" auto-complete="off"></el-input>
         </el-form-item>
-
         <el-form-item label="" :label-width="formLabelWidth" prop="link">
           <el-radio-group v-model="form.radio">
             <el-radio :label="1">跳转链接</el-radio>
@@ -119,6 +94,8 @@
             <el-option label="3" value="3"></el-option>
             <el-option label="4" value="4"></el-option>
             <el-option label="5" value="5"></el-option>
+            <el-option label="6" value="6"></el-option>
+            <el-option label="7" value="7"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -130,7 +107,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import VueCropper from 'vue-cropper'
+  import uploadOriginal from '../../component/upload/uploadOriginal.vue'
   import {common} from '../../assets/js/common/common'
   import {pluginService} from '../../service/pluginService'
   import {contentService} from '../../service/contentService'
@@ -166,22 +143,15 @@
           index: -1,
           id: ''
         },// 删除使用
-        option: {
-          img: '',
-          info: true,
-          size: 1,
-          outputType: 'jpeg',
-          canScale: true,
-          autoCrop: true,
-          // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 1440,
-          autoCropHeight: 560,
-          // 开启宽度和高度比例
-          fixed: true,
-          fixedNumber: [18, 7]
-        }, //截图
-        isImageState: 0, // 显示图片区域 or 显示上传图片按钮区域
-        imgUrl: '', // 图片显示路径
+        uploadOrg: {
+          limit: 5,
+          imgWidth: 1440,
+          imgHeight: 560,
+          // 描述文字一
+          des: '建议尺寸为1440x560，或者图片尺寸为18:7，不大于5m，支持.png .jpg .jpeg',
+          // 描述文字二
+          des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+        },
         fileList: [], // 视频
         ossOption: { // oss上传
           region: 'oss-cn-shanghai',
@@ -196,7 +166,7 @@
         tableData: [] //列表数据
       }
     },
-    components: { 'vue-cropper': VueCropper},
+    components: { 'upload-original': uploadOriginal},
     mounted () {
       let that = this;
       that.getList();
@@ -230,15 +200,13 @@
           order: ''
         };
         that.isAddEdit = 1;
-        that.isImageState = 0;
-        that.imgUrl = '';
+
         that.dialogTitle = '新增焦点图';
         that.dialogFormVisible = true;
       },
       // 编辑
       doEdit (id) {
         let that = this;
-        that.imgUrl = ''
         contentService.getBanner(id).then(function (res) {
           //console.log('编辑', res);
           if(res.data.success){
@@ -250,10 +218,11 @@
               radio: 1,
               link: '',
               order: obj.sortNum
-            }
-            let imgUrl = that.$store.state.picHead + obj.picUrl;
-            that.imgUrl = imgUrl;
-            that.isImageState=1;
+            };
+            setTimeout(function () {
+            that.$refs.upOrgs.imgUrl = that.$store.state.picHead + obj.picUrl;
+            that.$refs.upOrgs.isImageState = 1;
+            },1);
             if(obj.bannerType == '0'){
               that.form.radio = 1;
               that.form.link = obj.picLink;
@@ -324,67 +293,10 @@
           }
         });
       },
-      // 图片操作
-      delImgUrl () {//删除图片路径
+      // 获取图片路径
+      myPicUrl (cur) {
         let that = this;
-        that.isImageState = 0; // 显示图片上传按钮
-        that.imgUrl = ''; // 清空页面显示的图片路径
-        that.form.pic = ''; // 清空form表单要提交的图片路径
-      },
-      postToService (base64, width, height) {// 图片上传至服务器
-        let that = this;
-        //console.log(2);
-        pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
-          //console.log('截取的图片', res);
-          if(res.data.success){
-            that.form.pic = res.data.datas;
-            //document.getElementById('uploadImage').src = that.$store.state.picHead + res.data.datas;
-            that.imgUrl = that.$store.state.picHead + res.data.datas;
-            that.isImageState=1;
-            that.dialogCropperVisible = false;
-          }
-        });
-      },
-      finish (type) {// 图片截取输出
-        let that = this;
-        // 输出
-        //console.log('截取类型',type);
-        if (type === 'blob') {
-          this.$refs.cropper.getCropBlob((data) => {
-            // blob:http://localhost:8090/1dd58c90-3625-4e27-8daf-fa2c8dbd6c7f
-            //var test = window.open('')
-            //test.location.href = window.URL.createObjectURL(data)
-          });
-        } else {
-          this.$refs.cropper.getCropData((data) => {
-            that.postToService(data, that.option.autoCropWidth, that.option.autoCropHeight);
-          });
-        }
-      },
-      uploadImg (event) {// 图片上传，打开文件选择器
-        let that = this;
-        let e = event;
-        var file = e.target.files[0]
-        if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
-          return false
-        }
-        var reader = new FileReader()
-        reader.onload = (e) => {
-          let data;
-          if (typeof e.target.result === 'object') {
-            // 把Array Buffer转化为blob 如果是base64不需要
-            //data = window.URL.createObjectURL(new Blob([e.target.result]))
-          } else {
-            data = e.target.result
-          }
-          that.option.img = data; //赋值到图片截取弹出层
-          that.dialogCropperVisible = true; //确定弹出图片截取层
-        }
-        // 转化为base64
-        reader.readAsDataURL(file);
-        // 转化为blob
-        //reader.readAsArrayBuffer(file)
+        that.form.pic = cur;
       },
       // 视频上传
       uploadVideo (event) {
@@ -524,16 +436,8 @@
   .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .el-dialog{z-index:2018;}
   .vue-cropper{height:500px!important;}
-  .upload-img{width:150px;height:138px;position:relative;
-  .image{width:150px;height:100px;}
-  .btn{width:150px;height:100px;position:absolute;top:40px;right:0;bottom:0;left: 0;display:flex;justify-content: center;align-items: center;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    border:1px solid #dcdfe6;
-  .file{width:150px;height:100px;position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;cursor: pointer;opacity:0;}
-  }
-  .del{font-size: 20px;position:absolute;top: 30px;right: -8px;z-index:1;/*color:#ddd;*/cursor:pointer;}
+  .upload-img{height:138px;
+    .picUpload{float:left;}
   }
   .container{padding: 20px;}
   .container .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}

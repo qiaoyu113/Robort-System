@@ -8,7 +8,7 @@
     <el-table
             :data="tableData"
             empty-text="暂无数据"
-            style="width: 100%"><!--prop="name"style="width:40%"style="width:10%"style="width:10%"style="width:10%"              style="width:20%"-->
+            style="width: 100%">
       <el-table-column
               fixed
               label="宣传图">
