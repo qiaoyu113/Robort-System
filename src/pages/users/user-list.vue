@@ -391,7 +391,7 @@
             padding: 20px 20px 0 40px;
             .search {
                 float: right;
-                width: 360px;
+                width: 380px;
             }
             .search_l, .add, .search_r {
                 display: inline-block;
