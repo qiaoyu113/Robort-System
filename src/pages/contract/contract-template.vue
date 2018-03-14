@@ -201,7 +201,7 @@
           flag = true;
         }
         contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
-          console.log('模板列表', res);
+          //console.log('模板列表', res);
           if(res.data.success){
             let table = res.data.datas;
             that.myPagination.totalCount = parseInt(table.totalCount);
@@ -225,7 +225,7 @@
           flag = true;
         }
         contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
-          console.log('模板列表', res);
+          //console.log('模板列表', res);
           if(res.data.success){
             let table = res.data.datas;
             that.myPagination.totalCount = parseInt(table.totalCount);
@@ -264,7 +264,7 @@
       getTemplateType () {
         let that = this;
         contractService.getTemplateType({type: 2}).then(function (res) {
-          console.log('分类', res);
+          //console.log('分类', res);
           if(res.data.success){
             let array = res.data.datas;
             for(let i=0;i<array.length;i++){
