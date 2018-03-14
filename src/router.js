@@ -68,9 +68,20 @@ const newsAdd = (resolve) => {require(['./pages/content/news/add.vue'],resolve)}
 const newsEdit = (resolve) => {require(['./pages/content/news/edit.vue'],resolve)}
 const comment= (resolve) => {require(['./pages/content/comment.vue'],resolve)}
 const banner= (resolve) => {require(['./pages/content/banner.vue'],resolve)}
+// 财务
+const manage= (resolve) => {require(['./pages/financial/manage.vue'],resolve)}
+const accounts= (resolve) => {require(['./pages/financial/accounts.vue'],resolve)}
+const orders= (resolve) => {require(['./pages/financial/orders.vue'],resolve)}
+const refund= (resolve) => {require(['./pages/financial/refund.vue'],resolve)}
+const orderDetail= (resolve) => {require(['./pages/financial/order-detail.vue'],resolve)}
 // 系统设置
 const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve)}
 const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
+// 站内信
+const messages= (resolve) => {require(['./pages/message/messages.vue'],resolve)}
+// 用户管理
+const usersList= (resolve) => {require(['./pages/users/user-list.vue'],resolve)}
+const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -126,8 +137,17 @@ const routers = [
                //{name: 'comment',path:'/content/comment',component: comment},
                // 内容管理—》焦点图管理
                {name: 'banner',path:'/content/banner',component: banner},
-
-
+               // 站内信
+               {name: 'messages',path:'/message/messages',component: messages},
+               // 财务
+               {name: 'manage',path:'/financial/manage',component: manage},
+               {name: 'accounts',path:'/financial/accounts',component: accounts},
+               {name: 'orders',path:'/financial/orders',component: orders},
+               {name: 'order-detail',path:'/financial/orders/:orderNo',component: orderDetail},
+               {name: 'refund',path:'/financial/refund/:orderId',component: refund},
+               // 用户管理
+               {name: 'users',path:'/users',component: usersList},
+               {name: 'user-detail',path:'/users/:userId',component: userDetail},
 
            ]
        },

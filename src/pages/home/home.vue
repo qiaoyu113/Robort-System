@@ -14,7 +14,7 @@
                                 @close="handleClose"
                                 text-color="#BFCBD9"
                                 active-text-color="#FF9E40">
-                            <el-submenu
+                            <!--<el-submenu
                                     index="1" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
                                     <i class="el-icon-menu"></i>
@@ -49,17 +49,6 @@
                                     <el-menu-item index="物流管理">物流管理</el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
-                            <el-submenu
-                                    index="4" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-menu"></i>
-                                    <span>用户管理</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="全部用户">全部用户</el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
-                            <el-submenu
                                     index="5" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
                                     <i class="el-icon-menu"></i>
@@ -84,18 +73,8 @@
                                     <el-menu-item index="文档设置"><router-link to="/setup/file">文档设置</router-link></el-menu-item>
                                     <el-menu-item index="标签设置"><router-link to="/setup/label">标签设置</router-link></el-menu-item>
                                 </el-menu-item-group>
-                            </el-submenu>
-                            <el-submenu
-                                    index="9" background-color="#304156" text-color="#fff" active-text-color="#fff">
-                                <template slot="title">
-                                    <i class="el-icon-setting"></i>
-                                    <span>系统设置</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="字典设置"><router-link to="/system/classify">字典设置</router-link></el-menu-item>
-                                    <el-menu-item index="帐号设置"><router-link to="/system/account">帐号设置</router-link></el-menu-item>
-                                </el-menu-item-group>
-                            </el-submenu>
+                            </el-submenu>-->
+
                             <el-submenu
                                     index="7" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
@@ -125,13 +104,66 @@
                                     <el-menu-item index="焦点图管理"><router-link to="/content/banner">焦点图管理</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
+                            <el-submenu
+                                    index="1" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-menu"></i>
+                                    <span>渠道管理</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="自建渠道"><router-link to="/share/index">自建渠道</router-link></el-menu-item>
+                                    <el-menu-item index="用户渠道"><router-link to="/content/users">用户渠道</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
+                                    index="4" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-menu"></i>
+                                    <span>用户管理</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="用户管理"><router-link to="/users">用户管理</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
+                                    index="2" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-menu"></i>
+                                    <span>消息管理</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="站内信"><router-link to="/message/messages">站内信</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
+                                    index="3" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-menu"></i>
+                                    <span>财务管理</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="提现审核"><router-link to="/financial/manage">提现审核</router-link></el-menu-item>
+                                    <el-menu-item index="账户总览"><router-link to="/financial/accounts">账户总览</router-link></el-menu-item>
+                                    <el-menu-item index="订单管理"><router-link to="/financial/orders">订单管理</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
+                                    index="9" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="el-icon-setting"></i>
+                                    <span>系统设置</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="字典设置"><router-link to="/system/classify">字典设置</router-link></el-menu-item>
+                                    <el-menu-item index="帐号设置"><router-link to="/system/account">帐号设置</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
                         </el-menu>
                     </el-col>
                 </el-row>
             </div>
-
             <!-- 右侧主内容区 -->
-            <div  class="main-right" >
+            <div  class="main-right">
                 <div class="right-top">
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">

@@ -31,7 +31,9 @@
              appService.putToken()
              }
              }*/
-            appService.onBridgeReady();
+            if(!appService.checkLogin()){
+                this.$router.push({name:'login'})
+            }
         },
         methods: {
         }
