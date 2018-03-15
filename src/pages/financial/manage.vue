@@ -3,13 +3,13 @@
         <!--切换选项卡-->
         <div class="pos">
             <el-radio-group v-model="tabPosition" style="margin-bottom:20px;" size="small">
-                <el-badge class="item" @click="clear()">
+                <el-badge class="item">
                     <el-radio-button label="1">审核通过的</el-radio-button>
                 </el-badge>
-                <el-badge :value="dealCount" class="item" @click="clear()">
+                <el-badge :value="dealCount" class="item">
                     <el-radio-button label="0">待审核</el-radio-button>
                 </el-badge>
-                <el-badge class="item" @click="clear()">
+                <el-badge class="item">
                     <el-radio-button label="2">审核未通过</el-radio-button>
                 </el-badge>
             </el-radio-group>
@@ -19,7 +19,7 @@
                 <div class="search-phone right20">
                     <el-input
                             placeholder="订单号/手机号" size="mini"
-                            v-model="params.phone" class="right20">
+                            v-model="params.phone" class="right20" @keyup.enter.native="search">
                         <i slot="suffix" class="el-input__icon el-icon-search" @click="search()" ></i>
                     </el-input>
                 </div>
@@ -87,7 +87,7 @@
         name: 'app',
         data: function (){
             return {
-                wallets:[],
+                orders:[],
                 tabPosition:"0",
                 params:{
                     pageNo:1,
@@ -128,19 +128,14 @@
         mounted(){
             this.getvarifyinfos()
         },
-        watch : {
-            tabPosition(cur){
-                this.clear()
-            }
-        },
         methods: {
             getvarifyinfos:function(){
                 let that = this
-                that.params.status=that.tabPosition
+                that.params.status=that.tabPosition;
                 financialService.getvarifyinfos(that.params).then(function (res) {
                     that.orders = res.data.datas.datas
                     that.total = res.data.datas.totalCount*1
-                    console.log(res)
+                    //console.log(res)
                 })
             },
             changePage:function (page) {
@@ -157,20 +152,26 @@
                 let that = this
                 that.getvarifyinfos()
             },
-            clear:function () {
-                let that = this
+            clearInfo:function () {
+                let that = this;
                 that.params={
                     pageNo:1,
                     pageSize:10,
                     type:3,
                     phone:'',
                     status:that.tabPosition
-                }
+                };
+                that.orders = [];
                 that.getvarifyinfos()
             },
 
         },
-
+        watch : {
+            tabPosition(cur, old){
+                this.tabPosition = cur;
+                this.clearInfo()
+            }
+        },
     }
 </script>
 

@@ -92,6 +92,7 @@
 
 
 <script>
+    import {filter} from '../../mixin/filter'
     import {financialService} from '../../service/financialService.js'
     export default {
         name: 'app',

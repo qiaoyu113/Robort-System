@@ -5,7 +5,7 @@
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新增代表用户</el-button>
       <el-input
               placeholder="搜索用户名称"
-              v-model="query" size="mini" class="right middle" @enter.keyup="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
+              v-model="query" size="mini" class="right middle" @keyup.enter.native="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
         <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
       </el-input>
     </p>
@@ -44,16 +44,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
-            :page-size="page.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.totalCount" v-if="tableData.length>0">
-    </el-pagination>
+    <pagination :options="page" v-on:currentChange="handleCurrentChange" v-on:sizeChange="handleSizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -70,6 +61,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import pagination from '../../component/pagination/pagination.vue'
   import {contentService} from '../../service/contentService'
   import {common} from '../../assets/js/common/common'
   export default {
@@ -88,7 +80,7 @@
         tableData: [], //列表数据
         currentPage: 1, // 分页
         page: {
-          size: 1,
+          size: 10,
           num: 1,
           totalCount: 0,
           totalPage: 0
@@ -96,7 +88,7 @@
         query: '',
       }
     },
-    components: {},
+    components: {pagination},
     mounted () {
       let that = this;
       that.getList();

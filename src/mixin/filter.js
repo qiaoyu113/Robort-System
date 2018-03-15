@@ -30,31 +30,31 @@ Vue.filter('dateFormate', function (value) {
     // else if(weekC>=1){
     // 	result="" + parseInt(weekC) + "周前";
     // }
-    // if(dayC>1){
+    if(dayC>1){
         result = common.getFormatOfDate(value*1, 'yyyy-MM-dd');
-    // }
-    // else if(dayC==1){ //文章信息流时间显示
-    //     result=""+ "昨天";
-    // }
-    // else if(hourC>=1){
-    //     result=""+ parseInt(hourC) +"小时前";
-    // }
-    // else if(minC>=1){
-    //     result=""+ parseInt(minC) +"分钟前";
-    // }else
-    //     result="刚刚";
+    }
+    else if(dayC==1){ //文章信息流时间显示
+        result=""+ "昨天";
+    }
+    else if(hourC>=1){
+        result=""+ parseInt(hourC) +"小时前";
+    }
+    else if(minC>=1){
+        result=""+ parseInt(minC) +"分钟前";
+    }else
+        result="刚刚";
     return result;
 })
 
 Vue.filter('readNumFormate',function(value) {
     let result =''
-    if(value > 10000000000000){
-        result = value/10000000000000 + "B"
-    } else if(value > 10000000){
-        result = value/10000000 + "m"
-    } else if(value > 10000){
-        result = value/10000 + "k"
-    } else if(value < 9999){
+    if(value >= 1000000000){
+        result = parseInt(value/1000000000) + "B"
+    } else if(value >= 1000000){
+        result = parseInt(value/1000000) + "m"
+    } else if(value >= 10000){
+        result = parseInt(value/1000) + "k"
+    } else if(value <= 9999){
         result = value
     }
     return result

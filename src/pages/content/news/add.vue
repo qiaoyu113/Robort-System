@@ -61,6 +61,9 @@
           ],
           detail: [
             { required: true, message: '请填写新闻详情', trigger: 'blur' }
+          ],
+          desc: [
+            { required: false, message: '请确保填写的内容在120字以内', trigger: 'blur' }
           ]
         },
         myOption: {

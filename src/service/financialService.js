@@ -50,14 +50,17 @@ export const financialService = {
         return axios.get('/admin/users/'+ params);
     },
     /* 提现审核 */
-    getvarifyinfos: function (params) {
-        return axios.get('/admin/varifyinfos'+ this.getParam(params));
+    getvarifyinfos: function (params) { // pageNo,pageSize,status:0.待审核1.审核通过2.审核未通过,phone
+        return axios.get('/admin/varifyinfos' + this.getParam(params));
     },
-    passvarifyinfo: function () {
-        return axios.get('/admin/varifyinfos'+ this.getParam(params));
+    getvarifydetail: function (params) {// id 获得服务详情
+        return axios.get('/admin/varifyinfos/' + params);
     },
-    getvarifydetail:function(params) {
-        return axios.get('/admin/varifyinfos/'+ params);
+    agreeVarify: function (params) {
+        return axios.put('/admin/varifyinfos/agree', qs.stringify(params));
+    },
+    refuseVarify: function (params) {
+        return axios.put('/admin/varifyinfos/refuse', qs.stringify(params));
     },
     getParam: function(param){
         let url = '';

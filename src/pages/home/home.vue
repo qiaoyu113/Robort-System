@@ -50,7 +50,7 @@
                                     <span>渠道管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="自建渠道"><router-link to="/share/index">自建渠道</router-link></el-menu-item>
+                                    <el-menu-item index="自建渠道"><router-link to="/channel/users">自建渠道</router-link></el-menu-item>
                                     <el-menu-item index="用户渠道"><router-link to="/content/users">用户渠道</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>

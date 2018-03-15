@@ -5,8 +5,8 @@
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建产品包</el-button>
       <el-input
               placeholder="搜索产品包名称"
-              v-model="input23" size="mini" class="right">
-        <i slot="suffix" class="el-input__icon el-icon-search"></i>
+              v-model="query" size="mini" class="right" @keyup.enter.native="getList">
+        <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
       </el-input>
     </p>
     <!--表格-->
@@ -79,17 +79,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
-            background
-            v-if="page.totalCount > page.size"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
-            :page-size="page.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.totalCount">
-    </el-pagination>
+    <pagination :options="page" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -106,6 +96,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import pagination from '../../component/pagination/pagination.vue'
   import {common} from '../../assets/js/common/common'
   import {contractService} from '../../service/contractService'
   export default {
@@ -134,7 +125,7 @@
         tableData: [] //列表数据
       }
     },
-    components: {},
+    components: {pagination},
     mounted () {
       let that = this;
       that.getList();
@@ -236,16 +227,14 @@
         }
       },
       // 分页
-      handleSizeChange (val) {
-        //console.log(`每页 ${val} 条`);
+      sizeChange (val) {
         let that = this;
         that.page.size = val;
         that.getList();
       },
-      handleCurrentChange (val) {
+      currentChange (val) {
         // 当前页，就是当前点击的那一页
         let that = this;
-        that.currentPage = val;
         that.page.num = val;
         that.getList();
       },

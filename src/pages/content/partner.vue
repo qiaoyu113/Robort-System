@@ -10,8 +10,8 @@
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合作伙伴</el-button>
       <el-input
               placeholder="搜索名称"
-              v-model="query" size="mini" class="right normal">
-        <i slot="suffix" class="el-input__icon el-icon-search"></i>
+              v-model="query" size="mini" class="right normal" @keyup.enter.native="getList">
+        <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
       </el-input>
     </p>
     <!--表格-->
@@ -50,7 +50,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
+    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             title="删除提示"
@@ -82,7 +82,7 @@
           id: ''
         },
         myPagination: {
-          size: 1,
+          size: 10,
           num: 1,
           totalCount: 0,
           totalPage: 1

@@ -82,6 +82,9 @@ const messages= (resolve) => {require(['./pages/message/messages.vue'],resolve)}
 // 用户管理
 const usersList= (resolve) => {require(['./pages/users/user-list.vue'],resolve)}
 const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolve)}
+// 渠道管理
+const channelSelf= (resolve) => {require(['./pages/channel/index.vue'],resolve)}
+const channelUser= (resolve) => {require(['./pages/channel/user-index.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -148,6 +151,9 @@ const routers = [
                // 用户管理
                {name: 'users',path:'/users',component: usersList},
                {name: 'user-detail',path:'/users/:userId',component: userDetail},
+               // 渠道管理
+               {name: 'channelSelf',path:'/channel/self',component: channelSelf},
+               {name: 'channelUser',path:'/channel/users',component: channelUser},
 
            ]
        },

@@ -59,6 +59,7 @@
 
 
 <script>
+    import {common} from '../../assets/js/common/common'
     import {financialService} from '../../service/financialService.js'
     export default {
         name: 'app',
@@ -120,8 +121,13 @@
             getwallets:function(){
                 let that = this
                 financialService.getwallets(this.params).then(function (res) {
-                    that.wallets = res.data.datas.datas
-                    that.total = res.data.datas.totalCount*1
+                    let newArr = res.data.datas.datas;
+                    for(let i=0;i<newArr.length;i++){
+                      newArr[i].createTime = common.getFormatOfDate(newArr[i].createTime*1,'yyyy-MM-dd hh:mm:ss');
+                    };
+                    that.wallets = newArr;
+                    that.total = res.data.datas.totalCount*1;
+
                 })
             },
             changePage:function (page) {

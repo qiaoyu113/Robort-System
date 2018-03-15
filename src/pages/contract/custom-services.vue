@@ -23,8 +23,8 @@
     <p class="opr">
       <el-input
               placeholder="搜索帐号"
-              v-model="query" size="mini" class="right">
-        <i slot="suffix" class="el-input__icon el-icon-search"></i>
+              v-model="query" size="mini" class="right" @keyup.enter.native="getList">
+        <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
       </el-input>
     </p>
     <!--表格-->
@@ -64,7 +64,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
+    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -83,7 +83,7 @@
         dealCount: 0, // 待审核服务个数
         tableData: [],
         myPagination: {
-          size:1,
+          size:10,
           num: 1,
           totalCount: 0,
           totalPage: 1

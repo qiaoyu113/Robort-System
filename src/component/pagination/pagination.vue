@@ -4,7 +4,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-sizes="[1, 2, 3, 4]"
+          :page-sizes="[10, 20, 50, 100]"
           :page-size="options.size"
           layout="total, sizes, prev, pager, next, jumper"
           :total="options.totalCount">
@@ -15,13 +15,7 @@
     props: ['options'],
     data () {
       return {
-        currentPage: 1,
-//        page: {
-//          size: 10,
-//          num: 1,
-//          totalCount: 0,
-//          totalPage: 1
-//        }
+        currentPage: 1
       }
     },
     components: {},

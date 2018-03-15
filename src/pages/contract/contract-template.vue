@@ -11,7 +11,7 @@
       <el-button v-if="tabIndex=='2'" type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建试用模板</el-button>
       <el-input
               placeholder="搜索合同模板标题"
-              v-model="query" size="mini" class="right middle" @enter.keyup="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
+              v-model="query" size="mini" class="right middle" @keyup.enter.native="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
         <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
       </el-input>
     </p>
@@ -114,7 +114,7 @@
       </el-table>
     </div>
     <!--分页-->
-    <pagination v-if="myPagination.totalCount > myPagination.size" :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
+    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -156,7 +156,7 @@
         cPackage: [], //产品包信息
         currentPage: 1, // 分页
         myPagination: {
-          size: 1,
+          size: 10,
           num: 1,
           totalCount: 0,
           totalPage: 1

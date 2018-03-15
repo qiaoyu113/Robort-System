@@ -36,16 +36,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
-            :page-size="page.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.totalCount" v-if="tableData.length>0">
-    </el-pagination>
+    <pagination :options="page" v-on:currentChange="handleCurrentChange" v-on:sizeChange="handleSizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             title="删除提示"
@@ -114,6 +105,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import pagination from '../../component/pagination/pagination.vue'
 import VueCropper from 'vue-cropper'
 import {pluginService} from '../../service/pluginService'
 import {contentService} from '../../service/contentService'
@@ -141,7 +133,7 @@ import {contentService} from '../../service/contentService'
           ],
           intro: [
             { required: true, message: '请填写产品功能简介', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在60个字符以内', trigger: 'blur' }
+            { min: 0, max: 60, message: '长度在60个字符以内', trigger: 'blur' }
           ],
           order: [
             { required: true, message: '请选择排序号', trigger: 'change' }
@@ -168,9 +160,9 @@ import {contentService} from '../../service/contentService'
         }, //截图
         isImageState: 0, // 显示图片区域 or 显示上传图片按钮区域
         imgUrl: '', // 图片显示路径
-        currentPage: 1, // 默认当前页为第一页
+        //currentPage: 1, // 默认当前页为第一页
         page: {
-          size: 1,
+          size: 10,
           num: 1,
           totalCount: 0,
           totalPage: 1,
@@ -182,7 +174,7 @@ import {contentService} from '../../service/contentService'
         tableData: [] //列表数据
       }
     },
-    components: { 'vue-cropper': VueCropper},
+    components: { 'vue-cropper': VueCropper,pagination},
     mounted () {
       let that = this;
       that.getList();

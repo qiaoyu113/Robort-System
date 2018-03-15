@@ -76,7 +76,7 @@
         rules: {
           name: [
             { required: true, message: '请输入分类名称', trigger: 'blur' },
-            { min: 0, max: 5, message: '分类名称的字数需在5字以内', trigger: 'blur' }
+            { min: 0, max: 10, message: '分类名称的字数需在10字以内', trigger: 'blur' }
           ],
         },
         dialog: {
@@ -221,7 +221,7 @@
     .classify{width: 800px;min-height:150px;margin-bottom:40px;border:1px solid #ccc;
       .title{height: 40px;line-height: 40px;font-size:16px;color:#333;padding:0 20px;border-bottom:1px solid #ccc;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
       .content{min-height:110px;display:flex;align-items:center; justify-content: flex-start; flex-wrap: wrap;
-        .item{min-width: 80px;height:30px;line-height:30px;margin:10px 0  10px 20px;color:#666;text-align:center;border:1px solid #eee;
+        .item{min-width: 80px;height:30px;line-height:30px;padding: 0 10px;margin:10px 0  10px 20px;color:#666;text-align:center;border:1px solid #eee;
           -webkit-border-radius:30px;
           -moz-border-radius:30px;
           border-radius: 30px;

@@ -44,16 +44,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
-            :page-size="page.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.totalCount" v-if="tableData.length>0">
-    </el-pagination>
+    <pagination :options="page" v-on:currentChange="handleCurrentChange" v-on:sizeChange="handleSizeChange"></pagination>
     <!--弹框-->
     <el-dialog
             title="删除提示"
@@ -69,6 +60,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import pagination from '../../component/pagination/pagination.vue'
   import VueCropper from 'vue-cropper'
   import {common} from '../../assets/js/common/common'
   import {contentService} from '../../service/contentService'
@@ -85,7 +77,7 @@
         isTop: 1, // 是置顶按钮
         currentPage: 1, // 默认当前页为第一页
         page: {
-          size: 1,
+          size: 10,
           num: 1,
           totalCount: 0,
           totalPage: 1,
@@ -95,7 +87,7 @@
         tableData: [] //列表数据
       }
     },
-    components: { 'vue-cropper': VueCropper},
+    components: { 'vue-cropper': VueCropper,pagination},
     mounted () {
       let that = this;
       that.getList();
