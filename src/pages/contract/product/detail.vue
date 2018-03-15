@@ -122,7 +122,7 @@
           num: 1,
           totalCount: 0,
           totalPage: 1
-        },
+        },// 分页
         query: '', // 表格查询条件
         ckData: [], // 复选框
         ckChecked: [],
