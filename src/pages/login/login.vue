@@ -121,7 +121,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
 #login{
     width:100%;
     height:100%;
@@ -149,28 +149,10 @@
         }
     }
 }
-.el-form-item{
-    width:100%;
-    /*height:50px;*/
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-}
-.el-input__inner{
-    border:none;
-    background:none;
-    color:#fff;
-}
 .loginBtn{
     width:100%;
 }
-.el-form-item:last-child .el-form-item__content{
-    margin-left:0 !important;
-}
-.el-form-item__error{
-    margin-left: -100px;
-}
+
     #captcha-box{
         width:100%;
         background: rgba(0, 0, 0, 0.1);
