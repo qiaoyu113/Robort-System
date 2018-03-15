@@ -106,7 +106,7 @@
                 <div class="right-top">
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">
-                        <div class="rightHome"><a href="www.baidu.com">网站首页</a></div>
+                        <div class="rightHome"><a href="http://www.docqbot.com " target="_blank">网站首页</a></div>
                         <div class="User">
                             <div class="UserImg">
                                 <img class="image" :src="adminPhoto"/>

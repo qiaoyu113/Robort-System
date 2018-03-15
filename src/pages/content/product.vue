@@ -26,10 +26,6 @@
               prop = 'description'
               label="介绍">
       </el-table-column>
-      <!--<el-table-column-->
-              <!--prop="link"              fixed="right"-->
-              <!--label="跳转链接">-->
-      <!--</el-table-column>-->
       <el-table-column
               label="操作"
               width="90">

@@ -177,7 +177,7 @@
         that.tableData = [];
         let id = that.$route.params.prodId;
         contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: id}).then(function (res) {
-          console.log('产品包列表', res);
+          //console.log('产品包下的合同列表', res);
           if(res.data.success){
             let table = res.data.datas;
             that.myPagination.totalCount = parseInt(table.totalCount);
