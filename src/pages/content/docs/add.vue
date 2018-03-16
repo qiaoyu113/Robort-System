@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="60px" class="demo-ruleForm">
-      <el-form-item label="作者" prop="author" size="mini">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+      <el-form-item label="用户名称" prop="author" size="mini">
         <el-input v-model="ruleForm.author" class="iptLength"></el-input>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
