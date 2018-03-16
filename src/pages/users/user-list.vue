@@ -60,40 +60,48 @@
                         <el-table-column
                                 label="头像">
                             <template slot-scope="cope">
-                                <div  @click="getUserDetail(cope.row.id)"><img :src="picHead+cope.row.headImg" class="head-img"></div>
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)"><img :src="picHead+cope.row.headImg" class="head-img"></div>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 label="姓名">
                             <template slot-scope="cope">
-                                <div  @click="getUserDetail(cope.row.id)">
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">
                                 {{cope.row.name}}
                                 </div>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="phone"
                                 label="手机号">
+                            <template slot-scope="cope">
+                                <div class="potHand" @click="getUserDetail(cope.row.id)">{{cope.row.phone}}</div>
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="company"
                                 label="单位类型">
+                            <template slot-scope="cope">
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.company}}</div>
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="job"
                                 label="职位">
+                            <template slot-scope="cope">
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.job}}</div>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 label="订阅">
                             <template slot-scope="cope">
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">
                                 <span v-if="cope.row.subscribeItems">是</span>
                                 <span v-else>否</span>
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 label="加入时间">
                             <template slot-scope="cope">
-                                <span>{{cope.row.createTime | dateFormate}}</span>
+                                <span class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.createTime | dateFormate}}</span>
                             </template>
                         </el-table-column>
                         <!--<el-table-column
@@ -385,8 +393,9 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
     .user_list {
+       .potHand{width:100%;height:28px;cursor:pointer;}
         .title {
             padding: 20px 20px 0 40px;
             .search {

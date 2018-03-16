@@ -52,6 +52,9 @@ export const userService = {
     getUserInfo: function (params) {
         return axios.get('/admin/users/'+params);
     },
+    getUserRecords: function (params) {
+        return axios.get('/admin/users/' + params + '/watch');
+    },
     getParam: function(param){
         let url = '';
         for(let key in param){
