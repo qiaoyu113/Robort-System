@@ -10,7 +10,7 @@
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
           <input v-show="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
-          <input v-show="isImageState===1" type="button" class="file">
+          <input v-show="isImageState===1" type="button" class="file" @click="aa">
         </div>
         <p class="des">1. {{options.des}}</p>
         <p class="des">2. {{options.des2}}</p>
@@ -32,7 +32,7 @@
               :fixedNumber="options.fixedNumber"
       ></vue-cropper>
       <span slot="footer" class="dialog-footer">
-            <el-button size="mini" @click="dialogCropperVisible=false">取消</el-button>
+            <el-button size="mini" @click="cancelImg">取消</el-button>
             <el-button size="mini" type="primary" @click="finish('base64')">确 定</el-button>
       </span>
     </el-dialog>
@@ -64,6 +64,9 @@
     components: {'vue-cropper': VueCropper},
     mounted () {},
     methods: {
+      aa () {
+        console.log('换了安安')
+      },
       //删除图片路径
       delImgUrl () {
         let that = this;
@@ -104,33 +107,63 @@
       // 图片上传，打开文件选择器
       uploadImg (event) {
         let that = this;
+        console.log(1);
         // 清空 文件选择器
         var obj = document.getElementById("uploads") ;
         obj.outerHTML = obj.outerHTML;
         //
+        console.log(2);
         let e = event;
-        var file = e.target.files[0]
+        console.log(3);
+        var file = e.target.files[0];
+        console.log(4);
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
+          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种');
+          console.log(5);
           return false
         }
+        console.log(6);
         var reader = new FileReader();
+        console.log(7);
         reader.onload = (e) => {
-          let data
+          let data;
+          console.log(8);
           if (typeof e.target.result === 'object') {
             // 把Array Buffer转化为blob 如果是base64不需要
             //data = window.URL.createObjectURL(new Blob([e.target.result]))
+            console.log(9);
           } else {
-            data = e.target.result
+            data = e.target.result;
+            console.log(10);
           }
+          console.log(11);
           that.option.img = data; //赋值到图片截取弹出层
+          console.log(12);
           that.dialogCropperVisible = true; //确定弹出图片截取层
+          console.log(13);
         }
         // 转化为base64
+        console.log(14);
         reader.readAsDataURL(file);
+        console.log(15);
         // 转化为blob
         //reader.readAsArrayBuffer(file)
       },
+      // 取消截取功能
+      cancelImg () {
+        let that = this;
+        that.option = {
+          img: '',
+          info: true,
+          size: 1,
+          outputType: 'jpeg',
+          canScale: false,
+          autoCrop: true,
+          // 开启宽度和高度比例
+          fixed: true
+        }; //截图重置
+        that.dialogCropperVisible = false; //确定弹出图片截取层
+      }
     },
     watch: {
       isImageState(cur, old){
