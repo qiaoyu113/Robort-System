@@ -52,6 +52,7 @@
     </div>
 </template>
 <script>
+import {common} from '../../assets/js/common/common'
 import {userService} from '../../service/userService.js'
 export default {
         name: 'app',
@@ -78,9 +79,10 @@ export default {
             getUsers: function (id) {
                 let that = this
                 userService.getUserInfo(that.id).then(function (res) {
-                    console.log(res.data)
-                    that.users = res.data.datas
-                    that.numItem = res.data.datas.numItem
+                    console.log(res.data);
+                    that.users = res.data.datas;
+                    that.numItem = res.data.datas.numItem;
+                    that.users.createTime = common.getFormatOfDate(that.users.createTime*1, 'yyyy-MM-dd hh:mm');
                 })
             },
         },

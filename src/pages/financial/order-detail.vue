@@ -26,6 +26,7 @@
     </div>
 </template>
 <script>
+    import {common} from '../../assets/js/common/common'
 import {financialService} from '../../service/financialService.js'
 export default {
         name: 'app',
@@ -50,8 +51,9 @@ export default {
                 financialService.getOdersNo(that.params).then(function (res) {
                     that.orders = res.data.datas
                     that.orderDetail = res.data.datas.orderDetails[0]
-                    that.userId = res.data.datas.userId
-                     console.log(res.data);
+                    that.userId = res.data.datas.userId;
+                    that.orders.createTime = common.getFormatOfDate(that.orders.createTime*1, 'yyyy-MM-dd hh:mm');
+                     //console.log(res.data);
                      that.getUsers()
                 })
             },
