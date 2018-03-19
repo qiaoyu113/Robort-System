@@ -97,7 +97,7 @@ export default {
                         // 验证成功
                         // 同意操作
                         if(that.myForm.chose == '1'){
-                            console.log('formInfo agree', that.myForm,that.params.id);
+                            //console.log('formInfo agree', that.myForm,that.params.id);
                             financialService.agreeVarify({id: that.params.id, type: 3,resultInfo: that.myForm.remark, certificate: that.myForm.showImgUrl}).then(function (res) {
                                 //console.log('同意', res);
                                 if(res.data.success){
@@ -107,7 +107,7 @@ export default {
                         }
                         // 拒绝操作
                         else if(that.myForm.chose == '2'){
-                            console.log('formInfo refuse', that.myForm, that.params.id);
+                            //console.log('formInfo refuse', that.myForm, that.params.id);
                             financialService.refuseVarify({id: that.params.id, type: 3,resultInfo: that.myForm.remark, certificate: that.myForm.showImgUrl}).then(function (res) {
                                 //console.log('拒绝', res);
                                 if(res.data.success){
@@ -124,7 +124,7 @@ export default {
             getvarifydetail:function(){
                 let that = this
                 financialService.getvarifydetail(that.params.id).then(function (res) {
-                    console.log('提现详情', res);
+                    //console.log('提现详情', res);
                     let obj = res.data.datas;
                     if(obj.status != 0){ // 已经审核过的
                         that.myForm.chose = obj.status+'';//通过还是未通过

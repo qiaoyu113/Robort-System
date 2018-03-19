@@ -100,7 +100,7 @@
       getList() {
         let that = this;
         contractService.getServicesInfo({pageNo: that.myPagination.num, pageSize: that.myPagination.size, status: that.status, phone: that.query, type: parseInt(that.tabIndex)}).then(function (res) {
-          console.log('列表', res);
+          //console.log('列表', res);
           if(res.data.success){
             let data = res.data.datas;
             that.myPagination.totalCount = data.totalCount!=null ? parseInt(data.totalCount): 0;
@@ -119,7 +119,7 @@
          that.$router.push({name: 'contractServiceDetail'});
       },
       handleClick(tab, event) {
-        console.log(tab, event);
+        //console.log(tab, event);
       },
       // 分页
       sizeChange (val) {

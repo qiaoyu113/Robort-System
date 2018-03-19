@@ -147,7 +147,7 @@
       toTop (id) {
           let that = this;
           contentService.stickVideoDemo({demoVideoId: id}).then(function (res) {
-              console.log('置顶操作', res);
+              //console.log('置顶操作', res);
               if(res.data.success){
                   that.getList();
               }
@@ -157,7 +157,7 @@
       toDown (id) {
           let that = this;
           contentService.disStickVideoDemo({demoVideoId: id}).then(function (res) {
-              console.log('置顶操作', res);
+              //console.log('置顶操作', res);
               if(res.data.success){
                   that.getList();
               }

@@ -79,7 +79,7 @@ export default {
             getUsers: function (id) {
                 let that = this
                 userService.getUserInfo(that.id).then(function (res) {
-                    console.log('单个用户',res.data);
+                    //console.log('单个用户',res.data);
                     that.users = res.data.datas;
                     that.numItem = res.data.datas.numItem;
                     that.users.createTime = common.getFormatOfDate(that.users.createTime*1, 'yyyy-MM-dd hh:mm');
@@ -89,7 +89,7 @@ export default {
             getUserRecords () {
                 let that = this;
                 userService.getUserRecords(that.id).then(function (res) {
-                    console.log('用户访问记录', res);
+                    //console.log('用户访问记录', res);
                 });
             }
         },

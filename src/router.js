@@ -10,18 +10,18 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 定义全局组件
-import zmodal from './component/common/modal.vue'
-import zbanner from './component/common/banner.vue'
-import zfooter from './component/common/footer.vue'
-import zhistory from './component/common/goback.vue'
-import backhome from './component/common/back-home.vue'
-
-
-Vue.component('z-modal', zmodal)
-Vue.component('z-banner', zbanner)
-Vue.component('z-footer', zfooter)
-Vue.component('z-history', zhistory)
-Vue.component('z-home', backhome)
+// import zmodal from './component/common/modal.vue'
+// import zbanner from './component/common/banner.vue'
+// import zfooter from './component/common/footer.vue'
+// import zhistory from './component/common/goback.vue'
+// import backhome from './component/common/back-home.vue'
+//
+//
+// Vue.component('z-modal', zmodal)
+// Vue.component('z-banner', zbanner)
+// Vue.component('z-footer', zfooter)
+// Vue.component('z-history', zhistory)
+// Vue.component('z-home', backhome)
 
 
 // 定义组件
@@ -85,6 +85,7 @@ const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolv
 // 渠道管理
 const channelSelf= (resolve) => {require(['./pages/channel/index.vue'],resolve)}
 const channelUser= (resolve) => {require(['./pages/channel/user-index.vue'],resolve)}
+const channelDetail= (resolve) => {require(['./pages/channel/detail.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -154,6 +155,7 @@ const routers = [
                // 渠道管理
                {name: 'channelSelf',path:'/channel/self',component: channelSelf},
                {name: 'channelUser',path:'/channel/users',component: channelUser},
+               {name: 'channelDetail',path:'/channel/detail/:channelId',component: channelDetail},
 
            ]
        },

@@ -19,6 +19,27 @@ export const channelService = {
     deleteChannel: function (params) {
         return axios.delete('/admin/channel', qs.stringify(params));
     },
+    // 分销
+    getDistributions: function (params) {
+        return axios.get('/admin/distributions'+ this.getParams(params));
+    },
+    addDistribution: function (params) {
+        return axios.post('/admin/distributions', qs.stringify(params));
+    },
+    deleteDistribution: function (params) {
+        return axios.delete('/admin/distributions'+ this.getParams(params));
+    },
+    getContentList: function (params) {
+        return axios.get('/admin/distributions/models'+ this.getParams(params));
+    },
+    // 用户渠道
+    getUserChannels: function (params) {
+      return axios.get('/admin/users/invite'+ this.getParams(params));
+    },
+    // 渠道导出管理
+    exportChannelInfo: function (params) {
+        return axios.get('/admin/export/channel'+ this.getParams(params));
+    },
     // 参数拼接
     getParams: function (param) {
         let url = '';

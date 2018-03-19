@@ -112,7 +112,7 @@
         let that = this, id = that.$route.params.serviceId;
         //获得详情
         contractService.getServiceOne(id).then(function (res) {
-          console.log('答案电动蝶阀', res);
+          //console.log('答案电动蝶阀', res);
           if(res.data.success){
             let obj = res.data.datas;
             let cTime = obj.createTime*1;
@@ -130,7 +130,7 @@
       contractInfo (id) {
         let that = this;//, id = that.$route.params.serviceId;
         contractService.contractInfo(id).then(function (res) {
-          console.log('获取合同1',res);
+          //console.log('获取合同1',res);
           if(res.data.success){
             let obj = res.data.datas;
             that.downloadList = {
@@ -153,7 +153,7 @@
             if(that.dialog.typ==1){
               // 审核通过，同意
               contractService.agreeService({id: that.form.id, resultInfo: that.form.reason, updateUrl: that.form.fileUrl}).then(function (res) {
-                console.log('审核通过', res);
+                //console.log('审核通过', res);
                 if(res.data.success){
                   that.getInfo();
                   that.formDialogVisible = false;
@@ -162,7 +162,7 @@
             }else{
               // 审核未通过，拒绝
               contractService.refuseService({id: that.form.id, resultInfo: that.form.reason}).then(function (resp) {
-                console.log('审核未通过', resp);
+                //console.log('审核未通过', resp);
                 if(resp.data.success){
                   that.getInfo();
                   that.formDialogVisible = false;
@@ -177,7 +177,7 @@
       getUpdateFileUrl (val) {// 获得文件路径
         let that = this;
         that.form.fileUrl = val;
-        console.log('val', that.form.fileUrl);
+        //console.log('val', that.form.fileUrl);
       }
     }
   }

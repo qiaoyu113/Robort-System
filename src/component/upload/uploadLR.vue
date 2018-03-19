@@ -123,7 +123,7 @@
           return false
         }
         console.log(6);
-        var reader = new FileReader();
+        let reader = new FileReader();
         console.log(7);
         reader.onload = (e) => {
           let data;
@@ -152,17 +152,22 @@
       // 取消截取功能
       cancelImg () {
         let that = this;
-        that.option = {
-          img: '',
-          info: true,
-          size: 1,
-          outputType: 'jpeg',
-          canScale: false,
-          autoCrop: true,
-          // 开启宽度和高度比例
-          fixed: true
-        }; //截图重置
+
+          console.log(35555);
         that.dialogCropperVisible = false; //确定弹出图片截取层
+          console.log(34444);
+          that.option = {
+              img: '',
+              info: true,
+              size: 1,
+              outputType: 'jpeg',
+              canScale: false,
+              autoCrop: true,
+              // 开启宽度和高度比例
+              fixed: true
+          }; //截图重置
+          //document.querySelector('.el-dialog__wrapper').removeChild();
+          console.log(36666);
       }
     },
     watch: {

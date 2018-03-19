@@ -63,7 +63,7 @@
               }else{}
             });
           } else {
-            console.log('error submit!!');
+            //console.log('error submit!!');
             return false;
           }
         });
@@ -71,7 +71,7 @@
       getHotUser () {
         let that = this, id = that.$route.params.hotDocsId;
         contentService.getHotUser(id).then(function (res) {
-          console.log('详情', res);
+          //console.log('详情', res);
           if(res.data.success) {
             let obj = res.data.datas;
             that.ruleForm = {

@@ -50,8 +50,8 @@
                                     <span>渠道管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="自建渠道"><router-link to="/channel/users">自建渠道</router-link></el-menu-item>
-                                    <el-menu-item index="用户渠道"><router-link to="/content/users">用户渠道</router-link></el-menu-item>
+                                    <el-menu-item index="自建渠道"><router-link to="/channel/self">自建渠道</router-link></el-menu-item>
+                                    <el-menu-item index="用户渠道"><router-link to="/channel/users">用户渠道</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
@@ -141,13 +141,13 @@
         },
         methods: {
             handleOpen(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             },
             select(key,keyPath,indexPath){
-                console.log(key,keyPath,indexPath._uid);
+                //console.log(key,keyPath,indexPath._uid);
                 this.titleName = key
             },
             getAdminInfo () {
