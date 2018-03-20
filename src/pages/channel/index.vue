@@ -36,22 +36,22 @@
       </el-table-column>
       <el-table-column
               prop="channelNum"
-              width="130"
+              width="80"
               label="渠道数">
       </el-table-column>
       <el-table-column
               prop="pv"
-              width="130"
+              width="80"
               label="浏览量">
       </el-table-column>
       <el-table-column
               prop="uv"
-              width="130"
+              width="80"
               label="访客数">
       </el-table-column>
       <el-table-column
               prop="orderNum"
-              width="130"
+              width="80"
               label="订单数">
       </el-table-column>
       <el-table-column
@@ -68,7 +68,7 @@
               width="140">
         <template slot-scope="scope">
           <el-button @click="toDetail(scope.row.id)" type="text" size="small">详情</el-button>
-          <el-button @click="doEdit(scope.row.id)" type="text" size="small">下载</el-button>
+          <el-button @click="exportData(scope.row.id)" type="text" size="small">下载</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -275,6 +275,11 @@
         };
         that.centerDialogVisible = true;
       },
+      // 导出数据
+      exportData (id) {
+        let that = this;
+        channelService.exportChannelInfo('http://huufk9.natappfree.cc',{id: id});
+      },
       // 分页
       sizeChange (val) {
         let that = this;
@@ -297,9 +302,8 @@
         let id = that.dialog.id;
         let rows = that.dialog.rows;
         let index = that.dialog.index;
-        console.log('id', id);
         channelService.deleteDistribution({id: id}).then(function (res) {
-          console.log('删除', res);
+          //console.log('删除', res);
           if(res.data.success){
             that.centerDialogVisible = false;
             rows.splice(index, 1);

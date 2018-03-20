@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     // 定义状态
     state: {
         picHead:'http://test.resource.vjuzhen.com/',
+        qrCodeDomain: 'http://saqw.cn/d/123456/',
         indexLogo:'',
         indexName:'',
         fromPath:['home'],

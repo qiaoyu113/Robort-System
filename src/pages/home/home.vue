@@ -167,7 +167,7 @@
     }
 </script>
 
-<style>
+<style lang="less" scope>
     body{margin: 0;}
     #app {
         min-width: 1200px;
@@ -182,7 +182,9 @@
     main .main-left::-webkit-scrollbar {display:none}
     main .main-left .logo{width:100%;height:60px;font-size:16px;font-weight: bold;line-height:60px;color:#BFCBD9;}
     main .main-left .el-menu{background:#304156;}
-    .el-submenu .el-menu-item{min-width:180px;}
+    .el-submenu .el-menu-item{min-width:180px;
+      a{display:block;width:100%;height:100%;}
+    }
     .el-menu-item.is-active{color:#3792FF !important;background:#1F2D3D;}
     .el-menu-item-group{background:#1F2D3D;}
     /*.is-opened{background:#1F2D3D;}*/

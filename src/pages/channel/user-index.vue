@@ -50,18 +50,16 @@
     <pagination :options="page" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
     <!--弹框-->
     <el-dialog
-            :title="dialog.title"
+            title="设置规则"
             modal="false"
             :visible.sync="centerDialogVisible"
             width="30%"
             center>
-      <div class=""  v-if="dialog.typeChose==1">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
-          <el-form-item label="可获佣金" prop="money">
-            <el-input v-model="ruleForm.money" width="80"></el-input><span>元</span>
-          </el-form-item>
-        </el-form>
-      </div>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
+        <el-form-item label="可获佣金"  prop="money">
+          <el-input v-model="ruleForm.money" class="digIptLen"></el-input><span class="yuan">元</span>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
             <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
             <el-button size="mini" type="primary" @click="submitForm('ruleForm')">确 定</el-button>
@@ -87,16 +85,8 @@
           totalCount: 0,
           totalPage: 1
         }, // 分页
-
-        dialog: {
-          title: '',
-          content: '',
-          rows: '',
-          index: '',
-          id: '',
-          typeChose: 0 // 1:添加；2：删除
-        },
         ruleForm: {
+          id: '',
           money: 500,
         },
         rules: {
@@ -104,7 +94,6 @@
             { required: true, message: '请填写佣金', trigger: 'blur' }
           ]
         }, // 验证
-        flowList: [], // 联动数组
       }
     },
     components: {pagination},
@@ -131,38 +120,32 @@
           }else{}
         });
       },
+      // 获得奖励规则
+      getRewords () {
+        let that = this;
+        channelService.getRewards().then(function (res) {
+          //console.log('奖励',res);
+          if(res.data.success){
+            let obj = res.data.datas;
+            that.ruleForm = {
+              id: obj.id,
+              money: obj.money_s
+            };
+          }else{}
+        });
+      },
       //添加分销内容
       add () {
         let that = this;
-        that.dialog = {
-          title: '新增分销内容',
-          content: '',
-          typeChose: 1
-        };
-        that.ruleForm = {
-          type: '',
-          title: ''
-        };
+        that.getRewords();
         that.centerDialogVisible = true;
       },
       submitForm(formName) {
         let that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
-            // 通过id获得name
-            let typeName = '';
-            let newArr = that.flowList;
-            for(let i=0;i<newArr.length;i++){
-              if(newArr[i].id == that.ruleForm.title){
-                typeName = newArr[i].name;
-              }
-            }
-            //
-            channelService.addDistribution({
-              type: that.ruleForm.type,
-              typeName: typeName,
-              typeId: that.ruleForm.title}).then(function (res) {
-              //console.log(res, '添加一个分销');
+            channelService.modifyRewards({id: that.ruleForm.id,money_s: that.ruleForm.money}).then(function (res) {
+              //console.log(res, '添加一个规则');
               if(res.data.success){
                 that.centerDialogVisible = false;
                 that.getList();
@@ -201,15 +184,10 @@
   .el-table td{font-size:14px;color:#333!important;}
   .el-pagination{margin-top:20px;text-align:right;}
   .el-table__empty-block{height:300px;}
+  .digIptLen{width:120px;}
+  .yuan{margin-left: 15px;}
   .container{padding: 20px;}
   .container .opr{margin:40px auto 20px;overflow:hidden;}
   .container .opr .left{}
   .container .opr .right{width:250px;float:right;}
-  .container .picTxt{display:flex;justify-content:center;align-items:center;}
-  .container .picTxt .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
-  .container .picTxt .img-cover .image{max-width:100px;max-height:80px;width:auto;height:auto;}
-  .container .picTxt .txt{word-wrap:break-word;}
-  .container .picTxt .txt .mark{width:30px;height:20px;line-height:20px;font-size:12px;margin-right:6px;text-align:center;float:left;display:block;color:#fff;background-color: #e6a23c;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
-  .container .picTxt .txt .price{display:block;}
-  .titleUnderLine:hover{color:#66b1ff;text-decoration: underline;cursor:pointer;}
 </style>

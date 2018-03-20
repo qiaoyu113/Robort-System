@@ -70,6 +70,8 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
+    /* 面包屑 */
+    .blue .el-breadcrumb__inner{color:#409EFF;}
     /* 弹层样式重置 */
     .el-table th{background:#f5f7fa!important;}
     .el-table td{font-size:14px;color:#333!important;}

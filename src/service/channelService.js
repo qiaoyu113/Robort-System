@@ -14,10 +14,10 @@ export const channelService = {
         return axios.put('/admin/channel', qs.stringify(params));
     },
     getChannel: function (params) {
-        return axios.get('/admin/channel/' + params);
+        return axios.get('/admin/channel/' + params.id);
     },
     deleteChannel: function (params) {
-        return axios.delete('/admin/channel', qs.stringify(params));
+        return axios.delete('/admin/channel'+ this.getParams(params));
     },
     // 分销
     getDistributions: function (params) {
@@ -36,9 +36,16 @@ export const channelService = {
     getUserChannels: function (params) {
       return axios.get('/admin/users/invite'+ this.getParams(params));
     },
+    // 奖励规则
+    getRewards: function (params) {
+        return axios.get('/rewards'+ this.getParams(params));
+    },
+    modifyRewards: function (params) {
+        return axios.put('/rewards', qs.stringify(params));
+    },
     // 渠道导出管理
-    exportChannelInfo: function (params) {
-        return axios.get('/admin/export/channel'+ this.getParams(params));
+    exportChannelInfo: function (domain,params) {
+        window.open(domain + '/admin/export/channel'+ this.getParams(params));
     },
     // 参数拼接
     getParams: function (param) {
