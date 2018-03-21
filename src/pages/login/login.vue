@@ -11,11 +11,11 @@
                 </el-form-item>
                 <!--滑动验证-->
                 <div id="captcha-box"></div>
-                <el-form-item>
+                <el-form-item class="btnBox">
                     <el-button type="primary" @click="submitForm('ruleForm2')" class="loginBtn">提交</el-button>
                 </el-form-item>
             </el-form>
-            <el-checkbox v-model="checked">记住密码</el-checkbox>
+            <el-checkbox v-model="checked" class="ckBox">记住密码</el-checkbox>
         </div>
     </div>
 </template>
@@ -154,11 +154,15 @@
 }
 
     #captcha-box{
-        width:100%;
+        width:420px;
+        height:40px;
         background: rgba(0, 0, 0, 0.1);
         border-radius: 5px;
         color: #454545;
         margin-bottom:30px;
+        float:right;
         overflow: hidden;
     }
+    .ckBox{margin-left:100px;}
+    .btnBox{clear:both;}
 </style>
