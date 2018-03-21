@@ -188,7 +188,7 @@
       .des{line-height: 24px;font-size:12px;color:#999;}
     }
     .thumb-zone{width:150px;height:100px;position:relative;
-      .thumb{width:100%;height:100%;}
+      /*.thumb{width:100%;height:100%;}*/
       .del{font-size:20px;position:absolute;top: -8px; right:-8px;}
     }
     .upload-btn{width:80px;height:28px;position:relative;

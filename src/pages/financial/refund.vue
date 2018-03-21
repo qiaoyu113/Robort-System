@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--面包屑-->
-        <el-breadcrumb separator="/" class="bread">
+        <el-breadcrumb separator="/" class="blue">
             <el-breadcrumb-item :to="{ name: 'manage' }">提现审核</el-breadcrumb-item>
             <el-breadcrumb-item>详情</el-breadcrumb-item>
         </el-breadcrumb>
@@ -52,6 +52,7 @@
     </div>
 </template>
 <script>
+import {common} from '../../assets/js/common/common'
 import {financialService} from '../../service/financialService.js'
 import uploadOriginal from '../../component/upload/uploadOriginal.vue'
 
@@ -141,6 +142,7 @@ export default {
                         that.account = obj.bankInfo;
                     }
                     that.orders = obj;
+                    that.orders.createTime = common.getFormatOfDate(obj.createTime*1, 'yyyy-MM-dd hh:mm');
                 })
             },
             getPictureUrl:function(url){

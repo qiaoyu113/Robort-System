@@ -296,8 +296,8 @@
     }
   }
 </script>
-<style lang="less">
-  .el-form-item__content{margin-left:78px!important;}
+<style lang="less" scope>
+  .el-form-item__content{margin-left:78px;}
   .container{
     font-size:14px;color:#333;
     padding: 20px;

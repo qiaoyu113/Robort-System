@@ -13,7 +13,7 @@
             <el-form-item label="生成合同banner" prop="banner">
                 <upload-original :options="uploadOrgBanner" v-on:getPictureUrl="myBannerPicUrl" ref="upBanner"></upload-original>
             </el-form-item>
-            <el-form-item label="简介">
+            <el-form-item label="宣传语">
                 <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
             </el-form-item>
             <el-form-item label="演示视频" prop="selItem"  size="mini">
@@ -21,7 +21,7 @@
                     <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item.id" :key="key"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="产品包详情" prop="detail">
+            <el-form-item label="简介" prop="detail">
                 <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
             </el-form-item>
             <el-form-item label="价格" prop="price">

@@ -201,7 +201,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .container{
     font-size:14px;color:#333;
     padding: 20px;

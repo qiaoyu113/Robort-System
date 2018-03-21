@@ -230,10 +230,10 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .el-form-item__content,.el-form-item__label{line-height:28px;}
   .el-upload-list__item-name [class^=el-icon]{height:auto!important;}
-  .el-form-item__content{margin-left:78px!important;}
+  .el-form-item__content{margin-left:78px;}
   .el-upload-list{width: 600px;}
   .el-upload-list__item-status-label{top:5px;}
   .container{

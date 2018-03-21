@@ -408,6 +408,7 @@
         }
         .v_box {
             margin: 20px 40px;
+            min-height:600px;
             position: relative;
             padding-left: 180px;
             border: 1px solid #f0f0f0;

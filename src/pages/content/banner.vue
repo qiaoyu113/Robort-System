@@ -202,8 +202,9 @@
           order: ''
         };
         that.isAddEdit = 1;
-
         that.dialogTitle = '新增焦点图';
+        that.$refs.upOrgs.imgUrl = '';
+        that.$refs.upOrgs.isImageState = 0;
         that.dialogFormVisible = true;
       },
       // 编辑

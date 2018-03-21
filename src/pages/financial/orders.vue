@@ -24,7 +24,7 @@
                 <div class="search-phone right20">
                     <el-input
                             placeholder="订单号/手机号" size="mini"
-                            v-model="params.searchKey" class="right20">
+                            v-model="params.searchKey" class="right20" @keyup.enter.native="search()">
                         <i slot="suffix" class="el-input__icon el-icon-search" @click="search()" ></i>
                     </el-input>
                 </div>
@@ -152,10 +152,10 @@
             getOders:function(){
                 let that = this
                 financialService.getOders(that.params).then(function (res) {
-                    that.orders = res.data.datas.datas
-                    that.total = res.data.datas.totalCount*1
-                    console.log(that.total);
-                     console.log(res);
+                    that.orders = res.data.datas.datas;
+                    that.total = res.data.datas.totalCount*1;
+                    //console.log(that.total);
+                     //console.log(res);
                 })
             },
             changePage:function (page) {
@@ -169,8 +169,8 @@
                 that.getOders()
             },
             search:function () {
-                let that = this
-                that.params.pageNo = 1
+                let that = this;
+                that.params.pageNo = 1;
                 if(that.timeRange){
                     that.params.startTime = that.timeRange[0]
                     that.params.endTime = that.timeRange[1]
@@ -178,7 +178,7 @@
                     that.params.startTime = ''
                     that.params.endTime = ''
                 }
-                that.getOders()
+                that.getOders();
             },
 
         },

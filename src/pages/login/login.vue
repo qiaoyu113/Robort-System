@@ -88,7 +88,7 @@
                 let that = this
                 that.$refs[formName].validate((valid) => {
                     let geetesst = that.geetesst;
-                    console.log('geetesst', geetesst);
+                    //console.log('geetesst', geetesst);
                     if (valid) {
                         if(geetesst){
                             that.$notify({
@@ -96,7 +96,7 @@
                                 type: 'success'
                             });
                             loginService.login({account: that.ruleForm2.user, password: that.ruleForm2.pass, platform: 'PCH5',challenge: that.geetestInfo.geetest_challenge, validate: that.geetestInfo.geetest_validate, seccode: that.geetestInfo.geetest_seccode}).then(function (res) {
-                                console.log('登录成功', res);
+                                //console.log('登录成功', res);
                                 if(res.data.success){
                                     localStorage.token = res.data.datas;
                                     that.$router.push({name: 'home'});
