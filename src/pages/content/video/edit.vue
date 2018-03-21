@@ -290,23 +290,8 @@
       // 富文本编辑器
       editor(){
         let CKEDITOR = window.CKEDITOR;
-        myEditor = CKEDITOR.replace("desc",
-                {
-                  toolbar: [
-                    { name: 'document', items: [ 'Print' ] },
-                    { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                    { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                    { name: 'links', items: [ 'Link', 'Unlink' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                    { name: 'insert', items: [ 'Image', 'Table' ] },
-                    { name: 'tools', items: [ 'Maximize' ] },
-                    { name: 'editing', items: [ 'Scayt' ] }
-                  ]
-                } );
-        myEditor.setData("");
+        myEditor = CKEDITOR.replace("desc");
+        //myEditor.setData("");
       },
     }
   }

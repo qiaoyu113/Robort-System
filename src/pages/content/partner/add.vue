@@ -100,14 +100,14 @@ export default {
     let that = this;
     that.pType = parseInt(that.$route.params.partnerTyp);
     that.$refs.upOrg.isShowDes = true; // 上传图片组件显示描述文字
-    console.log(1233, that.pType);
+    //console.log(1233, that.pType);
     that.editor(); // 富文本编辑器初始化
     if(that.pType === 1){ // 白标合作伙伴
-      console.log(1)
+      //console.log(1)
       that.getPackage(); //产品包
     }
     else if(that.pType === 2){ // 国际合作伙伴
-      console.log(2)
+      //console.log(2)
       that.getCountry(); //国家
       that.getTemplate(); //合同模板
     }
@@ -195,22 +195,7 @@ export default {
     // 富文本编辑器
     editor(){
       let CKEDITOR = window.CKEDITOR;
-      myEditor = CKEDITOR.replace("detail",
-              {
-                toolbar: [
-                  { name: 'document', items: [ 'Print' ] },
-                  { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                  { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                  { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-                  { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                  { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                  { name: 'links', items: [ 'Link', 'Unlink' ] },
-                  { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                  { name: 'insert', items: [ 'Image', 'Table' ] },
-                  { name: 'tools', items: [ 'Maximize' ] },
-                  { name: 'editing', items: [ 'Scayt' ] }
-                ]
-              } );
+      myEditor = CKEDITOR.replace("detail");
       myEditor.setData("");
     }
   }
