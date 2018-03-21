@@ -10,9 +10,16 @@
       <el-button v-if="tabIndex=='1'" type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建合同模板</el-button>
       <el-button v-if="tabIndex=='2'" type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新建试用模板</el-button>
       <el-input
+              v-if="tabIndex=='1'"
               placeholder="搜索合同模板标题"
               v-model="query" size="mini" class="right middle" @keyup.enter.native="getList"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
         <i slot="suffix" class="el-input__icon el-icon-search" @click="getList"></i>
+      </el-input>
+      <el-input
+              v-if="tabIndex=='2'"
+              placeholder="搜索合同模板标题"
+              v-model="query" size="mini" class="right middle" @keyup.enter.native="getList2"><!--无效果，因为element会将转化为另外的结构，事件不会触发的input上-->
+        <i slot="suffix" class="el-input__icon el-icon-search" @click="getList2"></i>
       </el-input>
     </p>
     <!--表格-->
@@ -140,6 +147,7 @@
       return {
         tabIndex: '1', // tab默认显示第一个
         isTop: 0, // 是否显示置顶按钮
+        classId: '',
         dialog: {
           title: '',
           content: '',
@@ -201,7 +209,7 @@
           flag = true;
         }
         contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
-          //console.log('模板列表', res);
+          //console.log('模板列表正式', res);
           if(res.data.success){
             let table = res.data.datas;
             that.myPagination.totalCount = parseInt(table.totalCount);
@@ -269,9 +277,11 @@
             let array = res.data.datas;
             for(let i=0;i<array.length;i++){
               let vName = array[i].name;
+              let id = array[i].id;
               let obj = {
                 text: vName,
                 value: vName
+                //value: id
               };
               that.filterList.push(obj);
             }
@@ -280,6 +290,9 @@
       },
       // 筛选
       filterTag (value, row) {
+//        console.log('选中分类', value);
+//        let that = this;
+//        that.classId = value;
         return row.className === value;
       },
       // 分页
@@ -398,6 +411,7 @@
     watch: {
       tabIndex (cur, old){
         let that = this;
+        that.query = '';
         if(cur == '1'){
           that.getList();
         }
@@ -405,6 +419,9 @@
           that.getList2();
         }
         return cur;
+      },
+      classId (cur, old) {
+        this.getList();
       }
     }
   }

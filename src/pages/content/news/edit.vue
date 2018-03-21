@@ -19,7 +19,7 @@
         <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
       </el-form-item>
       <el-form-item label="摘要" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情"></el-input>
+        <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -83,12 +83,18 @@
       let that = this;
       that.editor(); // 富文本编辑器初始化
       that.getDicKey(); // 分类
-      that.getNews(); // 获取新闻详情
+      setTimeout(function () {
+        that.getNews(); // 获取新闻详情
+      },1);
     },
     methods: {
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
+        if(that.ruleForm.desc.length == 0){
+          let textEditor = myEditor.document.getBody().getText();
+          that.ruleForm.desc = textEditor.substring(0, 120);
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             // 根据classID获得className
@@ -140,11 +146,12 @@
         let that = this;
         let id = that.$route.params.newsId;
         contentService.getNews(id).then(function (res) {
-          console.log('详情', res);
+          //console.log('详情', res);
           if(res.data.success){
             let obj = res.data.datas;
-            //that.demoList = res.data.datas;
-
+            setTimeout(function () {
+              myEditor.setData(obj.content);
+            },1);
             that.ruleForm = {
               id: obj.id,
               title: obj.name, // 新闻名称
@@ -153,38 +160,32 @@
               selItem: obj.classId,
               detail: obj.content, // 详情
               desc: obj.description // 简介
-            }
-            myEditor.setData(obj.content);
+            };
             that.$refs.uImg.isImageState = 1;
             that.$refs.uImg.imgUrl = that.$store.state.picHead + obj.cover;
           }else{}
         });
       },
+      // 摘要框输入
+      zy (event) {
+        let cur = event.currentTarget;
+        let text = cur.childNodes[0];
+        let old = text.value;
+        if(old.length >= 120){
+          text.value = text.value.slice(0,120);
+        }else{
+          text.value = old;
+        }
+      },
       // 富文本编辑器
       editor(){
         let CKEDITOR = window.CKEDITOR;
-        myEditor = CKEDITOR.replace("detail",
-                {
-                  toolbar: [
-                    { name: 'document', items: [ 'Print' ] },
-                    { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                    { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                    { name: 'links', items: [ 'Link', 'Unlink' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                    { name: 'insert', items: [ 'Image', 'Table' ] },
-                    { name: 'tools', items: [ 'Maximize' ] },
-                    { name: 'editing', items: [ 'Scayt' ] }
-                  ]
-                } );
-        myEditor.setData("");
+        myEditor = CKEDITOR.replace("detail");
       },
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .container{
     font-size:14px;color:#333;
     padding: 20px;

@@ -88,15 +88,16 @@
           </div>
         </el-form-item>
         <el-form-item label="排序号" :label-width="formLabelWidth" prop="order">
-          <el-select v-model="form.order" placeholder="请选择排序号">
-            <el-option label="1" value="1"></el-option>
-            <el-option label="2" value="2"></el-option>
-            <el-option label="3" value="3"></el-option>
-            <el-option label="4" value="4"></el-option>
-            <el-option label="5" value="5"></el-option>
-            <el-option label="6" value="6"></el-option>
-            <el-option label="7" value="7"></el-option>
-          </el-select>
+          <el-input v-model="form.order" placeholder="请填写排序号"></el-input>
+          <!--<el-select v-model="form.order" placeholder="请选择排序号">-->
+            <!--<el-option label="1" value="1"></el-option>-->
+            <!--<el-option label="2" value="2"></el-option>-->
+            <!--<el-option label="3" value="3"></el-option>-->
+            <!--<el-option label="4" value="4"></el-option>-->
+            <!--<el-option label="5" value="5"></el-option>-->
+            <!--<el-option label="6" value="6"></el-option>-->
+            <!--<el-option label="7" value="7"></el-option>-->
+          <!--</el-select>-->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,7 +136,8 @@
             { required: true, message: '请填写链接', trigger: 'blur' }
           ],
           order: [
-            { required: true, message: '请选择排序号', trigger: 'change' }
+            { required: true, message: '请填写排序号', trigger: 'change' },
+            { type: 'number', message: '排序号必须为数字值'}
           ]
         }, //表单验证
         couch: {

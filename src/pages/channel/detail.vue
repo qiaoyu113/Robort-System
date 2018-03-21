@@ -61,7 +61,7 @@
         <!--分页-->
         <pagination :options="page" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
         <!--统计图-->
-        <line-chart :lineOption="myLine"></line-chart>
+        <line-chart :lineOption="myLine" ref="myLineIndex" v-on:trendChange="trendChange" v-on:indexChange="indexChange"></line-chart>
         <!--弹框-->
         <el-dialog
                 :title="dialog.title"
@@ -107,12 +107,14 @@
     import lineChart from '../../component/echart/line.vue'
     import {common} from '../../assets/js/common/common'
     import {channelService} from '../../service/channelService'
+    import axios from 'axios'
     export default {
         props: [],
         data () {
             return {
                 centerDialogVisible: false, // 弹框
                 query: '', // 查询条件
+                dateCondition: '1', // 时间查询条件
                 filterList: [], // 筛选条件
                 tableData: [], //列表数据
                 id: this.$route.params.channelId, // 分销id
@@ -145,7 +147,43 @@
                     ]
                 }, // 验证
                 myLine: {
-                    title: '渠道统计'
+                    title: '渠道统计', // 统计图标题
+                    subTitle: '说明：最多展示最新建立的10个渠道',
+                    xAxis: {
+                        data: ['周一','周二','周三','周四','周五','周六','周日']
+                    },
+                    series: [
+                        {
+                            name:'邮件营销', //渠道名称
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210] // n天的n数
+                        },
+                        {
+                            name:'联盟广告',
+                            type:'line',
+                            stack: '总量',
+                            data:[220, 182, 191, 234, 290, 330, 310]
+                        },
+                        {
+                            name:'视频广告',
+                            type:'line',
+                            stack: '总量',
+                            data:[150, 232, 201, 154, 190, 330, 410]
+                        },
+                        {
+                            name:'直接访问',
+                            type:'line',
+                            stack: '总量',
+                            data:[320, 332, 301, 334, 390, 330, 320]
+                        },
+                        {
+                            name:'搜索引擎',
+                            type:'line',
+                            stack: '总量',
+                            data:[820, 932, 901, 934, 1290, 1330, 1320]
+                        }
+                    ]
                 }
             }
         },
@@ -153,6 +191,7 @@
         mounted () {
             let that = this;
             that.getList(); // 获取列表
+            that.getStatistics(); // 统计图数据
         },
         methods: {
             //获得列表
@@ -170,6 +209,16 @@
                             newArr[i].createTime = common.getFormatOfDate(newArr[i].createTime*1, 'yyyy-MM-dd hh:mm');
                             that.tableData.push(newArr[i]);
                         }
+                    }else{}
+                });
+            },
+            // 获取统计图数据
+            getStatistics () {
+                let that = this;
+                channelService.getStatistics({id: that.id, type: that.dateCondition}).then(function (res) {
+                    console.log('统计图信息', res);
+                    if(res.data.success){
+
                     }else{}
                 });
             },
@@ -233,7 +282,19 @@
             // 导出数据
             exportData () {
                 let that = this;
-                channelService.exportChannelInfo('http://huufk9.natappfree.cc',{id: that.id});
+                channelService.exportChannelInfo(axios.defaults.baseURL,{id: that.id});
+            },
+            // 统计图，指标下拉列表变化
+            indexChange (val) {
+                let that = this;
+                //that.dateCondition = val;
+                //that.getStatistics();
+            },
+            // 统计图，趋势下拉列表变化
+            trendChange (val) {
+                let that = this;
+                that.dateCondition = val;
+                that.getStatistics();
             },
             // 表单提交
             submitForm(formName) {

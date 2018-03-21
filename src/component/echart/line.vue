@@ -1,5 +1,23 @@
 <template>
   <div class="chartCover">
+    <div class="selectBox">
+      <el-select v-model="opIndex" placeholder="请选择指标" size="mini">
+        <el-option
+                v-for="item in filterList"
+                :key="item.value"
+                :label="item.text"
+                :value="item.value">
+        </el-option>
+      </el-select>
+      <el-select v-model="trendIndex" placeholder="请选择趋势" size="mini">
+        <el-option
+                v-for="item in trendList"
+                :key="item.value"
+                :label="item.text"
+                :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
     <div id="main" class="myChart"></div>
   </div>
 </template>
@@ -9,6 +27,18 @@
     props: ['lineOption'],
     data () {
       return {
+        opIndex: '1', // 指标model
+        filterList: [
+          {text: '浏览数', value: '1'},
+          {text: '访客数', value: '2'},
+          {text: '成交单数', value: '3'},
+          {text: '收入', value: '4'},
+        ],
+        trendIndex: '1', // 趋势model
+        trendList: [
+          {text: '最近7天', value: '1'},
+          {text: '最近30天', value: '2'},
+        ]
       }
     },
     components: {},
@@ -25,75 +55,57 @@
         // 指定图表的配置项和数据
         let option = {
           title: {
-            //text: '折线图堆叠'
-            text: that.lineOption.title
+            text: that.lineOption.title,
+            subtext: that.lineOption.subTitle,
           },
           tooltip: {
             trigger: 'axis'
           },
           legend: {
-            data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            //data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            bottom: 0 //图例的位置，bottom: 0 即为位于底部
           },
-          grid: {
+          grid: {  // 统计图表
             left: '3%',
             right: '4%',
-            bottom: '3%',
+            bottom: '10%',
             containLabel: true
           },
-          toolbox: {
+          toolbox: { //下载图片的工具
             feature: {
               saveAsImage: {}
-            }
+            },
+            right: '4%'
           },
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一','周二','周三','周四','周五','周六','周日']
+            data: that.lineOption.xAxis.data
           },
           yAxis: {
             type: 'value'
           },
-          series: [
-            {
-              name:'邮件营销',
-              type:'line',
-              stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name:'联盟广告',
-              type:'line',
-              stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-              name:'视频广告',
-              type:'line',
-              stack: '总量',
-              data:[150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name:'直接访问',
-              type:'line',
-              stack: '总量',
-              data:[320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name:'搜索引擎',
-              type:'line',
-              stack: '总量',
-              data:[820, 932, 901, 934, 1290, 1330, 1320]
-            }
-          ]
+          series: that.lineOption.series
         };
-
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+      }
+    },
+    watch: {
+      opIndex (cur, old) {
+        this.$emit('indexChange', cur);
+        //this.initChart();
+      },
+      trendIndex (cur, old) {
+        this.$emit('trendChange', cur);
+        //this.initChart();
       }
     }
   }
 </script>
 <style lang="less" scope>
-  .chartCover{margin: 40px 0 0;}
-  .myChart{width:100%;height:400px;}
+  .chartCover{margin: 40px 0 0;position:relative;}
+  .myChart{width:100%;height:600px;}
+  .selectBox{position:absolute;top:0;left: 20%;z-index:3;}
+  .el-select{margin: 0 10px;}
 </style>

@@ -1,27 +1,22 @@
 <template>
-  <div>
-  
+  <div id="ckeditor">
+    正在加載...
   </div>
 </template>
-<script type="text/ecmascript-6">
-  import {pluginService} from '../../service/pluginService'
-  export default {
-    props: [],
-    data () {
-      return {}
-    },
-    components: {},
-    mounted () {
-      pluginService.uploadFile().then(function (res) {
-        if(res.data.success){
-          let obj = res.data.datas;
-          localStorage.editorImgUrl = obj.resourceUrl + obj.
-        }else{
 
-        }
-      });
+<script>
+  export default {
+    mounted(){
+      let that = this;
+      let CKEDITOR = window.CKEDITOR;
+      let ImageUrl = that.$route.query.ImageUrl;
+      let CKEditorFuncNum = that.$route.query.CKEditorFuncNum;
+      let Message = that.$route.query.Message;
+      window.parent.CKEDITOR.tools.callFunction( CKEditorFuncNum, ImageUrl,Message);
     },
-    methods: {}
+    methods: {
+
+    }
   }
 </script>
 <style></style>

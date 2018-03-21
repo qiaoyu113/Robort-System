@@ -12,8 +12,8 @@ import homeStore from './modules/homeStore'
 const store = new Vuex.Store({
     // 定义状态
     state: {
-        picHead:'http://test.resource.vjuzhen.com/',
-        qrCodeDomain: 'http://saqw.cn/d/123456/',
+        picHead:'http://test.resource.vjuzhen.com/', // 图片资源地址
+        qrCodeDomain: 'http://saqw.cn/d/123456/', // 二维码地址主机头
         indexLogo:'',
         indexName:'',
         fromPath:['home'],

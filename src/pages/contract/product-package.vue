@@ -15,6 +15,7 @@
             empty-text="暂无数据"
             style="width: 100%">
       <el-table-column
+              width="250"
               label="产品包名称">
         <template slot-scope="scope">
           <div class="picTxt">
@@ -301,7 +302,7 @@
   .container .opr{margin:40px auto 20px;overflow:hidden;}
   .container .opr .left{}
   .container .opr .right{width:250px;float:right;}
-  .container .picTxt{display:flex;justify-content:center;align-items:center;}
+  .container .picTxt{display:flex;justify-content:flex-start;align-items:center;}
   .container .picTxt .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
   .container .picTxt .img-cover .image{max-width:100px;max-height:80px;width:auto;height:auto;}
   .container .picTxt .txt{word-wrap:break-word;}

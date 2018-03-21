@@ -19,7 +19,7 @@
        <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
     </el-form-item>
     <el-form-item label="摘要" prop="desc">
-    <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情"></el-input>
+    <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
     </el-form-item>
     <el-form-item>
     <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -61,9 +61,6 @@
           ],
           detail: [
             { required: true, message: '请填写新闻详情', trigger: 'blur' }
-          ],
-          desc: [
-            { required: false, message: '请确保填写的内容在120字以内', trigger: 'blur' }
           ]
         },
         myOption: {
@@ -89,6 +86,10 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
+        if(that.ruleForm.desc.length == 0){
+          let textEditor = myEditor.document.getBody().getText();
+          that.ruleForm.desc = textEditor.substring(0, 120);
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             // 根据classID获得className
@@ -133,31 +134,27 @@
         let that = this;
         that.ruleForm.cover = val;
       },
+      // 摘要框输入
+      zy (event) {
+        let cur = event.currentTarget;
+        let text = cur.childNodes[0];
+        let old = text.value;
+        if(old.length >= 120){
+          text.value = text.value.slice(0,120);
+        }else{
+          text.value = old;
+        }
+      },
       // 富文本编辑器
       editor(){
         let CKEDITOR = window.CKEDITOR;
-        myEditor = CKEDITOR.replace("detail",
-                {
-                  toolbar: [
-                    { name: 'document', items: [ 'Print' ] },
-                    { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                    { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                    { name: 'links', items: [ 'Link', 'Unlink' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                    { name: 'insert', items: [ 'Image', 'Table' ] },
-                    { name: 'tools', items: [ 'Maximize' ] },
-                    { name: 'editing', items: [ 'Scayt' ] }
-                  ]
-                } );
+        myEditor = CKEDITOR.replace("detail");
         myEditor.setData("");
       },
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .container{
     font-size:14px;color:#333;
     padding: 20px;

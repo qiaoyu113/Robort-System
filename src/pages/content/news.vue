@@ -101,8 +101,6 @@
           if(res.data.success) {
             let page = res.data.datas;
             let table = res.data.datas.datas;
-            //console.log('page', page);
-            //console.log('table', table);
             that.page.totalPage = page.totalPage;
             that.page.totalCount = parseInt(page.totalCount);
             for (let i = 0; i < table.length; i++) {
@@ -179,7 +177,7 @@
         let id = that.couch.id;
         this.centerDialogVisible = false;
         contentService.deleteNews(id).then(function (res) {
-          console.log('删除', res);
+          //console.log('删除', res);
           if(res.data.success){
             rows.splice(index, 1);
             that.page.num = 1;

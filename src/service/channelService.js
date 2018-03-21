@@ -47,6 +47,10 @@ export const channelService = {
     exportChannelInfo: function (domain,params) {
         window.open(domain + '/admin/export/channel'+ this.getParams(params));
     },
+    // 查询渠道统计信息
+    getStatistics: function(params){
+        return axios.get('/admin/channel/statistics'+ this.getParams(params));
+    },
     // 参数拼接
     getParams: function (param) {
         let url = '';

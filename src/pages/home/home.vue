@@ -126,6 +126,7 @@
 
 <script>
     import {financialService} from '../../service/financialService.js'
+    import axios from 'axios'
     export default {
         name: 'app',
         data: function (){
@@ -137,6 +138,10 @@
             }
         },
         mounted () {
+            // 富文本编辑器，本地图片上传
+            localStorage.beforeA = axios.defaults.baseURL + '/ckFiles';
+            localStorage.afterB = 'http://' + window.location.host + '/editor/image';
+            // 获得管理员信息
             this.getAdminInfo();
         },
         methods: {

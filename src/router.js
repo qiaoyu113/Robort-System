@@ -86,6 +86,8 @@ const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolv
 const channelSelf= (resolve) => {require(['./pages/channel/index.vue'],resolve)}
 const channelUser= (resolve) => {require(['./pages/channel/user-index.vue'],resolve)}
 const channelDetail= (resolve) => {require(['./pages/channel/detail.vue'],resolve)}
+// 富文本编辑器，本地图片上传
+const editorImg= (resolve) => {require(['./pages/common/editorImageUpload.vue'],resolve)}
 
 // 创建路由器实例，配置路由规则
 const routers = [
@@ -156,6 +158,8 @@ const routers = [
                {name: 'channelSelf',path:'/channel/self',component: channelSelf},
                {name: 'channelUser',path:'/channel/users',component: channelUser},
                {name: 'channelDetail',path:'/channel/detail/:channelId',component: channelDetail},
+               // 富文本编辑器，上传本地图片
+               {name: 'editorImg',path:'/editor/image',component: editorImg},
 
            ]
        },

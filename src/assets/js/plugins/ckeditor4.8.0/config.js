@@ -34,5 +34,9 @@ CKEDITOR.editorConfig = function( config ) {
 	config.format_tags = 'p;h1;h2;h3;pre';
 
 	// Simplify the dialog windows.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+	//config.removeDialogTabs = 'image:advanced;link:advanced';
+	// 本地图片上传功能
+	config.image_previewText = '';
+	config.removeDialogTabs = 'image:advanced;image:Link';//隐藏超链接与高级选项
+	config.filebrowserImageUploadUrl = localStorage.beforeA + "?backUrl=" + localStorage.afterB;//上传图片的地址
 };

@@ -124,6 +124,7 @@
   import pagination from '../../component/pagination/pagination.vue'
   import {common} from '../../assets/js/common/common'
   import {channelService} from '../../service/channelService'
+  import axios from 'axios'
   export default {
     props: [],
     data () {
@@ -278,7 +279,7 @@
       // 导出数据
       exportData (id) {
         let that = this;
-        channelService.exportChannelInfo('http://huufk9.natappfree.cc',{id: id});
+        channelService.exportChannelInfo(axios.defaults.baseURL,{id: id});
       },
       // 分页
       sizeChange (val) {
