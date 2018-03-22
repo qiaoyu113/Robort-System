@@ -55,7 +55,7 @@
           </span>
     </el-dialog>
     <!--新增-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :show-close="false">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="上传主显图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
           <div class="upload-img">
@@ -101,7 +101,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+        <el-button @click="resetForm('form')" size="mini">取 消</el-button>
         <el-button type="primary" @click="submit('form')" size="mini">保 存</el-button>
       </div>
     </el-dialog>
@@ -126,7 +126,7 @@
           title: '',
           radio: 1,
           link: '',
-          order: ''
+          order: 1
         }, // 新增表单
         rules: {
           pic: [
@@ -136,8 +136,8 @@
             { required: true, message: '请填写链接', trigger: 'blur' }
           ],
           order: [
-            { required: true, message: '请填写排序号', trigger: 'change' },
-            { type: 'number', message: '排序号必须为数字值'}
+            { required: true, message: '请填写排序号', trigger: 'blur' },
+            { type: 'number', message: '排序号必须为数字值', trigger: 'blur'}
           ]
         }, //表单验证
         couch: {
@@ -199,12 +199,14 @@
           title: '',
           radio: 1,
           link: '',
-          order: ''
+          order: 1
         };
         that.isAddEdit = 1;
         that.dialogTitle = '新增焦点图';
-        that.$refs.upOrgs.imgUrl = '';
-        that.$refs.upOrgs.isImageState = 0;
+        setTimeout(function () {
+          that.$refs.upOrgs.imgUrl = '';
+          that.$refs.upOrgs.isImageState = 0;
+        },1);
         that.dialogFormVisible = true;
       },
       // 编辑
@@ -218,7 +220,7 @@
               id: obj.id,
               pic: obj.picUrl,
               title: obj.picTitle,
-              radio: 1,
+              //radio: 1,
               link: '',
               order: obj.sortNum
             };
@@ -244,7 +246,6 @@
             that.dialogFormVisible = true;
           }
         });
-
       },
       // 删除
       doDelete (id, index, rows) {
@@ -255,6 +256,12 @@
           index: index,
           id: id
         };
+      },
+      // 重置
+      resetForm (form) {
+        let that = this;
+        that.$refs[form].resetFields();
+        that.dialogFormVisible = false;
       },
       // 表单提交
       submit (form) {
@@ -276,6 +283,7 @@
               contentService.addBanner({picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
                 //console.log('submit add success', res);
                 if(res.data.success){
+                  that.$refs[form].resetFields();
                   that.dialogFormVisible = false;
                   that.getList();
                 }
@@ -284,6 +292,7 @@
               contentService.editBanner({id: that.form.id,picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
                 //console.log('submit edit success', res);
                 if(res.data.success){
+                  that.$refs[form].resetFields();
                   that.dialogFormVisible = false;
                   that.getList();
                 }
@@ -360,8 +369,6 @@
             }
           });
         }
-        //document.getElementById('uploadVideo')[0].value = '';
-        //document.getElementById('uploadVideo')[0].outerHTML = '';
       },
       getYunToken () { // 获取阿里云token
         let that = this;

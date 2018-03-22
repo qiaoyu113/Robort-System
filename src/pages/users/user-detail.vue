@@ -20,9 +20,10 @@
             <div class="bicinfo">
                 <div class="title">访问记录</div>
                 <div class="bor"></div>
-                <div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>
-                <div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>
-                <div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>
+                <div v-for="item in visitedRecords" class="mar">{{item.watchTypeName}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.watchNum}}次</div>
+                <!--<div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>-->
+                <!--<div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>-->
+                <!--<div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>-->
             </div>
         </div>
         
@@ -32,20 +33,8 @@
             <div class="mar">生成合同：{{numItem.contractNum}}次</div>
             <div class="mar">消费金额：{{numItem.consumeMoney}}元</div>
             <div class="bor"></div>
-            <div class="box1 clearfix">
-                <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
-            </div>
-            <div class="box1 clearfix">
-                <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
-            </div>
-            <div class="box1 clearfix">
-                <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
-            </div>
-            <div class="box1 clearfix">
-                <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
-            </div>
-            <div class="box1 clearfix">
-                <div class="left">2017-9-9</div><div class="right">订阅产品包：我是产品包名称我是产品包名称我是产品包名称</div>
+            <div v-for="item in footprintItems" class="box1 clearfix">
+                <div class="left">{{item.time}}</div><div class="right">{{item.content}}</div>
             </div>
         </div>
         
@@ -64,6 +53,8 @@ export default {
                 selectUsers:[],
                 id:this.$route.params.userId,
                 numItem:'',
+                footprintItems: [], // 用户轨迹
+                visitedRecords: [] // 访问记录
             }
         },
         computed: {
@@ -72,7 +63,8 @@ export default {
             }
         },
         mounted(){
-            this.getUsers()
+            this.getUsers();
+            this.getUserRecords();
         },
         methods: {
             // 查询获取单个用户
@@ -80,9 +72,18 @@ export default {
                 let that = this
                 userService.getUserInfo(that.id).then(function (res) {
                     //console.log('单个用户',res.data);
-                    that.users = res.data.datas;
+                    let obj = res.data.datas;
+                    that.users = obj;
                     that.numItem = res.data.datas.numItem;
-                    that.users.createTime = common.getFormatOfDate(that.users.createTime*1, 'yyyy-MM-dd hh:mm');
+                    that.users.createTime = common.getFormatOfDate(obj.createTime*1, 'yyyy-MM-dd hh:mm');
+                    // 轨迹
+                    if(obj.footprintItems!=null){
+                        let newFoot = obj.footprintItems;
+                        for(let i=0;i<newFoot.length;i++){
+                            newFoot[i].time = common.getFormatOfDate(newFoot[i].time*1, 'yyyy-MM-dd');
+                        }
+                        that.footprintItems = newFoot;
+                    }
                 })
             },
             // 用户访问记录
@@ -90,13 +91,16 @@ export default {
                 let that = this;
                 userService.getUserRecords(that.id).then(function (res) {
                     //console.log('用户访问记录', res);
+                    if(res.data.success){
+                        that.visitedRecords = res.data.datas;
+                    }else{}
                 });
             }
         },
 
     }
 </script>
-<style lang="less">
+<style lang="less" scope>
 .clearfix:after {
     display: table;
     content: " ";
@@ -107,13 +111,13 @@ export default {
 }
     .fuserDetail{
         width: 800px;
-        height: 600px;
+        /*height: 600px;*/
         margin: 30px;
         border: 1px solid black;
         .fl{
             float: left;
             width: 370px;
-            height: 600px;
+            /*height: 600px;*/
             border-right: 1px solid black;
             .box{
                 border: 1px solid black;

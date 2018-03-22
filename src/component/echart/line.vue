@@ -38,7 +38,9 @@
         trendList: [
           {text: '最近7天', value: '1'},
           {text: '最近30天', value: '2'},
-        ]
+        ],
+        xAxisData: [], // 横轴，时间
+        seriesData: [], // 数据
       }
     },
     components: {},
@@ -51,18 +53,18 @@
         let that = this;
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('main'));
-
         // 指定图表的配置项和数据
-        let option = {
+        let option = null;
+        option = {
           title: {
             text: that.lineOption.title,
             subtext: that.lineOption.subTitle,
           },
           tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            //formatter: '{b}: {c}'
           },
           legend: {
-            //data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
             bottom: 0 //图例的位置，bottom: 0 即为位于底部
           },
           grid: {  // 统计图表
@@ -80,15 +82,17 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: that.lineOption.xAxis.data
+            data: that.xAxisData
           },
           yAxis: {
             type: 'value'
           },
-          series: that.lineOption.series
+          series: that.seriesData
         };
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        if (option && typeof option === "object") {
+          myChart.setOption(option, true);
+        }
       }
     },
     watch: {
@@ -99,7 +103,15 @@
       trendIndex (cur, old) {
         this.$emit('trendChange', cur);
         //this.initChart();
-      }
+      },
+      xAxisData (cur, old) {
+        this.xAxisData = cur;
+        this.initChart();
+      }, // 横轴，时间
+      seriesData (cur, old) {
+        this.seriesData = cur;
+        this.initChart();
+      }, // 数据
     }
   }
 </script>

@@ -93,6 +93,7 @@
 
 <script>
     import {filter} from '../../mixin/filter'
+    import {common} from '../../assets/js/common/common'
     import {financialService} from '../../service/financialService.js'
     export default {
         name: 'app',
@@ -152,8 +153,14 @@
             getOders:function(){
                 let that = this
                 financialService.getOders(that.params).then(function (res) {
-                    that.orders = res.data.datas.datas;
+                   //console.log('订单', res);
+                    let newArr = res.data.datas.datas;
+                    for(let i=0;i<newArr.length;i++){
+                        newArr[i].amount = common.getFormatOfPrice(newArr[i].amount);
+                    }
+                    that.orders = newArr;
                     that.total = res.data.datas.totalCount*1;
+
                     //console.log(that.total);
                      //console.log(res);
                 })

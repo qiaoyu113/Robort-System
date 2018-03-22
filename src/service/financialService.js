@@ -2,10 +2,7 @@
  * Created by 乔宇 on 2017/12/27.
  */
 import axios from './axios.js'
-import store from '../vuex/'
 import qs from 'qs'
-// const api = "http://6fpqir.natappfree.cc"
-const api = 'http://39.106.114.64:8097';
 
 export const financialService = {
     api: {},
@@ -48,6 +45,9 @@ export const financialService = {
     },
     getuserId: function (params) {
         return axios.get('/admin/users/'+ params);
+    },
+    editRemark: function (params) {
+        return axios.put('/admin/orders/edit', qs.stringify(params));
     },
     /* 提现审核 */
     getvarifyinfos: function (params) { // pageNo,pageSize,status:0.待审核1.审核通过2.审核未通过,phone

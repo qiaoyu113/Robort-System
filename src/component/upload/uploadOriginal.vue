@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--上传图片，左边图片，右边上传按钮和描述文字图片比例3:2-->
+    <!--上传图片，左边图片，右边上传按钮和描述文字（原始尺寸，不裁剪）-->
     <div class="picUpload iptFormLen flexStart">
       <div class="thumb-zone">
         <img class="thumb" :src="imgUrl">
@@ -79,14 +79,13 @@
                           let formData = new FormData();
                           formData.append('myFile', file);
                           pluginService.uploadFile(formData).then(function (res) {
-                              //console.log('上传的图片', res);
                               if(res.data.success){
                                   that.$emit('getPictureUrl', res.data.datas.myFile);
                                   that.imgUrl = that.$store.state.picHead + res.data.datas.myFile;
                                   that.isImageState=1;
                                   // 清空 文件选择器
                                   var obj = document.getElementById("uploads") ;
-                                  obj.value = '';
+                                  obj.outerHTML = obj.outerHTML;
                               }
                           });
                       }else{

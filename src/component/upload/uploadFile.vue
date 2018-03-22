@@ -1,5 +1,5 @@
 <template>
-  <div class="uploadFile">
+  <div class="uploadFile"><!--普通上传文件组件-->
     <div class="upload-btn">
       <el-button type="primary" size="mini">上传文件</el-button>
       <input type="file" id="uploads" accept="*" @change="uploadFile" class="file">

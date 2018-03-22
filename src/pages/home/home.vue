@@ -23,7 +23,7 @@
                                 <el-menu-item-group>
                                     <el-menu-item index="产品包"><router-link to="/contract/product">产品包</router-link></el-menu-item>
                                     <el-menu-item index="合同模板"><router-link to="/contract/template">合同模板</router-link></el-menu-item>
-                                    <el-menu-item index="定制服务"><router-link to="/contract/service">定制服务</router-link></el-menu-item>
+                                    <!--<el-menu-item index="定制服务"><router-link to="/contract/service">定制服务</router-link></el-menu-item>-->
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu

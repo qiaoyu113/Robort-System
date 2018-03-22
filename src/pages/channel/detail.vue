@@ -114,7 +114,8 @@
             return {
                 centerDialogVisible: false, // 弹框
                 query: '', // 查询条件
-                dateCondition: '1', // 时间查询条件
+                dateCondition: '1', // 时间查询条件7天或者一个月
+                indexCondition: '1', // 1,浏览数/2,访客量/3订单数/4金额
                 filterList: [], // 筛选条件
                 tableData: [], //列表数据
                 id: this.$route.params.channelId, // 分销id
@@ -146,44 +147,12 @@
                         { required: true, message: '请输入渠道名称', trigger: 'blur' }
                     ]
                 }, // 验证
+                xAxisData: [], // 横轴，时间
+                seriesData: [], // 数据
+                legendData: [], // lengend
                 myLine: {
                     title: '渠道统计', // 统计图标题
                     subTitle: '说明：最多展示最新建立的10个渠道',
-                    xAxis: {
-                        data: ['周一','周二','周三','周四','周五','周六','周日']
-                    },
-                    series: [
-                        {
-                            name:'邮件营销', //渠道名称
-                            type:'line',
-                            stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210] // n天的n数
-                        },
-                        {
-                            name:'联盟广告',
-                            type:'line',
-                            stack: '总量',
-                            data:[220, 182, 191, 234, 290, 330, 310]
-                        },
-                        {
-                            name:'视频广告',
-                            type:'line',
-                            stack: '总量',
-                            data:[150, 232, 201, 154, 190, 330, 410]
-                        },
-                        {
-                            name:'直接访问',
-                            type:'line',
-                            stack: '总量',
-                            data:[320, 332, 301, 334, 390, 330, 320]
-                        },
-                        {
-                            name:'搜索引擎',
-                            type:'line',
-                            stack: '总量',
-                            data:[820, 932, 901, 934, 1290, 1330, 1320]
-                        }
-                    ]
                 }
             }
         },
@@ -209,16 +178,6 @@
                             newArr[i].createTime = common.getFormatOfDate(newArr[i].createTime*1, 'yyyy-MM-dd hh:mm');
                             that.tableData.push(newArr[i]);
                         }
-                    }else{}
-                });
-            },
-            // 获取统计图数据
-            getStatistics () {
-                let that = this;
-                channelService.getStatistics({id: that.id, type: that.dateCondition}).then(function (res) {
-                    console.log('统计图信息', res);
-                    if(res.data.success){
-
                     }else{}
                 });
             },
@@ -287,14 +246,71 @@
             // 统计图，指标下拉列表变化
             indexChange (val) {
                 let that = this;
-                //that.dateCondition = val;
-                //that.getStatistics();
+                that.indexCondition = val;
+                that.getStatistics();
             },
             // 统计图，趋势下拉列表变化
             trendChange (val) {
                 let that = this;
                 that.dateCondition = val;
                 that.getStatistics();
+            },
+            // 统计图,获取数据
+            getStatistics () {
+                let that = this;
+                that.xAxisData = []; // 横轴，时间
+                that.seriesData = []; // 数据
+                that.legendData = []; // lengend
+                channelService.getStatistics({id: that.id, type: that.dateCondition, typeId: that.indexCondition}).then(function (res) {
+                    //console.log('统计图信息', res);
+                    if(res.data.success){
+                        if(that.dateCondition == '1'){
+                            for(let i=1;i<8;i++){
+                                that.xAxisData.push(that.getXAxis(i));
+                            }
+                            that.$refs.myLineIndex.xAxisData = that.xAxisData; // 横轴(从当期时间起到7天前的数据)
+                        }
+                        if(that.dateCondition == '2'){
+                            for(let i=1;i<31;i++){
+                                that.xAxisData.push(that.getXAxis(i));
+                            }
+                            that.$refs.myLineIndex.xAxisData = that.xAxisData;  // 横轴(从当期时间起到30天前的数据)
+                        }
+                        let newArr = res.data.datas;
+                        for(let i=0;i<newArr.length;i++){
+                            let temp = {
+                                name: newArr[i].name, //渠道名称
+                                type:'line',
+                                stack: '总量',
+                                data: newArr[i].value // n天的n数
+                            };
+                            that.seriesData.push(temp);
+                        };
+                        that.$refs.myLineIndex.seriesData = that.seriesData; // 数据
+                    }else{}
+                });
+            },
+            // 统计图，获得横轴
+            getXAxis (returnNum) {
+                let n = returnNum;
+                let d = new Date();
+                let year = d.getFullYear();
+                let mon = d.getMonth() + 1;
+                let day = d.getDate();
+                if(day <= n) {
+                    if(mon > 1) {
+                        mon = mon - 1;
+                    } else {
+                        year = year - 1;
+                        mon = 12;
+                    }
+                }
+                d.setDate(d.getDate() - n);
+                year = d.getFullYear();
+                mon = d.getMonth() + 1;
+                day = d.getDate();
+                let s = year + "-" + (mon < 10 ? ('0' + mon) : mon) + "-" + (day < 10 ? ('0' + day) : day);
+                return s;
             },
             // 表单提交
             submitForm(formName) {
@@ -452,7 +468,9 @@
             justify-content: center;
             align-items:center;
             .botIpt{}
-            .fz{}
+            .fz{
+                color: #C1232B;
+            }
         }
     }
 </style>

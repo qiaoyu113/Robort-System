@@ -108,10 +108,10 @@
           that.isShowLink = 1;
         }if(tab==4){
           that.textTitle = '内容合作伙伴';
-          that.isShowLink = 0;
+          that.isShowLink = 1;
         }if(tab==5){
           that.textTitle = '更多信息';
-          that.isShowLink = 1;
+          that.isShowLink = 0;
         }
         that.form = {
           id: '',

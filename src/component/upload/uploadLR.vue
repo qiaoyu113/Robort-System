@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--上传图片，左边图片，右边上传按钮和描述文字图片比例3:2-->
+    <!--上传图片，左边图片，右边上传按钮和描述文字图片比例3:2（裁剪图片）-->
     <div class="picUpload iptFormLen">
       <div class="thumb-zone">
         <img class="thumb" :src="imgUrl">
@@ -10,14 +10,14 @@
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
           <input v-show="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
-          <input v-show="isImageState===1" type="button" class="file" @click="aa">
+          <input v-show="isImageState===1" type="button" class="file">
         </div>
         <p class="des">1. {{options.des}}</p>
         <p class="des">2. {{options.des2}}</p>
       </div>
     </div>
     <!--截图-->
-    <el-dialog title="" :visible.sync="dialogCropperVisible" show-close="true">
+    <el-dialog title="" :visible.sync="dialogCropperVisible" :show-close="false">
       <vue-cropper
               ref="cropper"
               :img="option.img"
@@ -64,9 +64,6 @@
     components: {'vue-cropper': VueCropper},
     mounted () {},
     methods: {
-      aa () {
-        console.log('换了安安')
-      },
       //删除图片路径
       delImgUrl () {
         let that = this;
@@ -78,7 +75,7 @@
       postToService (base64, width, height) {
         let that = this;
         pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
-          console.log('截取的图片', res);
+          //console.log('截取的图片', res);
           if(res.data.success){
             that.$emit('getPictureUrl', res.data.datas);
             that.dialogCropperVisible = false;
@@ -107,67 +104,49 @@
       // 图片上传，打开文件选择器
       uploadImg (event) {
         let that = this;
-        console.log(1);
         // 清空 文件选择器
-        var obj = document.getElementById("uploads") ;
-        obj.outerHTML = obj.outerHTML;
-        //
-        console.log(2);
+//        var obj = document.getElementById("uploads") ;
+//        obj.outerHTML = obj.outerHTML;
         let e = event;
-        console.log(3);
         var file = e.target.files[0];
-        console.log(4);
         if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种');
-          console.log(5);
+          //alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种');
           return false
         }
-        console.log(6);
         let reader = new FileReader();
-        console.log(7);
         reader.onload = (e) => {
           let data;
-          console.log(8);
           if (typeof e.target.result === 'object') {
             // 把Array Buffer转化为blob 如果是base64不需要
             //data = window.URL.createObjectURL(new Blob([e.target.result]))
-            console.log(9);
           } else {
             data = e.target.result;
-            console.log(10);
           }
-          console.log(11);
           that.option.img = data; //赋值到图片截取弹出层
-          console.log(12);
           that.dialogCropperVisible = true; //确定弹出图片截取层
-          console.log(13);
         }
         // 转化为base64
-        console.log(14);
         reader.readAsDataURL(file);
-        console.log(15);
         // 转化为blob
         //reader.readAsArrayBuffer(file)
       },
       // 取消截取功能
       cancelImg () {
         let that = this;
-
-          console.log(35555);
         that.dialogCropperVisible = false; //确定弹出图片截取层
-          console.log(34444);
-          that.option = {
-              img: '',
-              info: true,
-              size: 1,
-              outputType: 'jpeg',
-              canScale: false,
-              autoCrop: true,
-              // 开启宽度和高度比例
-              fixed: true
-          }; //截图重置
-          //document.querySelector('.el-dialog__wrapper').removeChild();
-          console.log(36666);
+        that.option = {
+            img: '',
+            info: true,
+            size: 1,
+            outputType: 'jpeg',
+            canScale: false,
+            autoCrop: true,
+            // 开启宽度和高度比例
+            fixed: true
+        }; //截图重置
+        // 清空 文件选择器,不可以清空，否则，如果点击“取消”，则打不开截图层
+//        var obj = document.getElementById("uploads") ;
+//        obj.outerHTML = obj.outerHTML;
       }
     },
     watch: {
@@ -180,15 +159,15 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .el-dialog{margin:0 auto 50px!important;}
   .vue-cropper{height: 60%!important;;}
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}
     }
-    .thumb-zone{width:150px;height:100px;position:relative;
-      /*.thumb{width:100%;height:100%;}*/
+    .thumb-zone{width:150px;height:100px;position:relative;border:1px solid #dcdfe6;
+      .thumb{max-width:100%;min-height:100%;width:auto;height:auto;}
       .del{font-size:20px;position:absolute;top: -8px; right:-8px;}
     }
     .upload-btn{width:80px;height:28px;position:relative;
