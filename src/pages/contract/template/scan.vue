@@ -2,7 +2,7 @@
     <div class="container">
         <!--面包屑-->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ name: 'contractTemplate' }">合同模板</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'contractTemplate', params:{templateTyp: templateType}}">合同模板</el-breadcrumb-item>
             <el-breadcrumb-item>浏览数详情</el-breadcrumb-item>
         </el-breadcrumb>
         <!--表格-->
@@ -31,6 +31,7 @@
         props: [],
         data () {
             return {
+                templateType: that.$route.params.templateTyp,
                 myPagination: {
                     size: 1,
                     num: 1,

@@ -119,7 +119,8 @@
                 financialService.exportwallets()
             },
             getwallets:function(){
-                let that = this
+                let that = this;
+                that.wallets = [];
                 financialService.getwallets(this.params).then(function (res) {
                     let newArr = res.data.datas.datas;
                     for(let i=0;i<newArr.length;i++){
@@ -131,14 +132,15 @@
                 })
             },
             changePage:function (page) {
-                let that = this
-                that.params.pageNo = page
-                that.getwallets()
+                let that = this;
+                that.params.pageNo = page;
+                that.getwallets();
             },
             changeSize:function (size) {
-                let that = this
-                that.params.pageSize = size
-                that.getwallets()
+                let that = this;
+                that.params.pageNo = 1;
+                that.params.pageSize = size;
+                that.getwallets();
             },
         },
 

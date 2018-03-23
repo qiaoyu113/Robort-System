@@ -50,7 +50,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
+    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange" ref="myPagination"></pagination>
     <!--弹框-->
     <el-dialog
             title="删除提示"
@@ -75,7 +75,7 @@
     props: [],
     data () {
       return {
-        tabIndex: '1',
+        tabIndex: this.$route.params.partnerTyp,
         pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；
         isTop: 0, // 是否显示置顶按钮
         dialog: {
@@ -204,6 +204,7 @@
       tabIndex (cur, old){
         let that = this;
         let tab = parseInt(cur);
+        that.$refs.myPagination.currentPage = 1;
         if(tab==1){
           that.getList();
         }if(tab==2){

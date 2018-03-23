@@ -153,6 +153,7 @@
                tryUse: that.ruleForm.isTry}).then(function (res) {
               //console.log(res, '添加一个模板信息');
               if(res.data.success){
+                that.$route.params.templateTyp = String(that.templateType);
                 that.$router.push({name: 'contractTemplate'}); //
               }else{}
             });

@@ -61,7 +61,8 @@
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <a :href="'./refund/'+scope.row.id">查看</a>
+                        <!--<a :href="'./refund/'+scope.row.id">查看</a>-->
+                        <router-link :to="{name: 'refund', params:{tabIndex: tabPosition, orderId:scope.row.id}}">查看</router-link>
                     </template>
                 </el-table-column>
             </el-table>
@@ -88,7 +89,7 @@
         data: function (){
             return {
                 orders:[],
-                tabPosition:"0",
+                tabPosition: this.$route.params.tabIndex,
                 params:{
                     pageNo:1,
                     pageSize:10,
@@ -126,12 +127,13 @@
             }
         },
         mounted(){
-            this.getvarifyinfos()
+            this.clearInfo();
         },
         methods: {
             getvarifyinfos:function(){
                 let that = this
                 that.params.status=that.tabPosition;
+                console.log('tabIndex',that.params.status=that.tabPosition);
                 financialService.getvarifyinfos(that.params).then(function (res) {
                     that.orders = res.data.datas.datas
                     that.total = res.data.datas.totalCount*1
@@ -167,6 +169,10 @@
 
         },
         watch : {
+            '$route' (to, from) {
+                this.tabPosition = to.params.tabIndex;
+                this.clearInfo();
+            },
             tabPosition(cur, old){
                 this.tabPosition = cur;
                 this.clearInfo()
@@ -175,7 +181,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
     @import "../../assets/css/common/opration-bar.less";
     .fmanage{
         margin:20px;

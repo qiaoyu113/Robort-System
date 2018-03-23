@@ -117,13 +117,13 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}
     }
     .thumb-zone{width:150px;height:100px;position:relative;
-      .thumb{width:100%;height:100%;}
+      .thumb{max-width:100%;max-height: 100%; width: auto;height: auto;}
       .del{font-size:20px;position:absolute;top: -8px; right:-8px;}
     }
     .upload-btn{width:80px;height:28px;position:relative;
@@ -132,7 +132,7 @@
   }
   .flexStart{justify-content: flex-start;
     .thumb-zone{display:flex;justify-content:center; align-items: center; border:1px solid #bbb;
-      .thumb{max-width:150px;max-height: 100px; width: auto;height: auto;}
+      .thumb{max-width:100%;max-height: 100%; width: auto;height: auto;}
     }
   }
 </style>

@@ -115,7 +115,6 @@
           oprTyp: 0 //操作类型：1.删除；2.上架；3.下架
         },
         centerDialogVisible: false, // 弹框
-        currentPage: 1,
         page: {
           size: 10,
           num: 1,
@@ -230,6 +229,7 @@
       // 分页
       sizeChange (val) {
         let that = this;
+        that.page.num = 1;
         that.page.size = val;
         that.getList();
       },

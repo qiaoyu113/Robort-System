@@ -7,12 +7,12 @@
             <div class="info">
                 <div class="mar">姓名：{{users.name}}</div>
                 <div class="mar">手机：{{users.phone}}</div>
-                <div class="mar">微信昵称：  </div>
+                <div class="mar">微信昵称：{{wxNickName}}</div>
             </div>
             <div class="bicinfo">
                 <div class="title">基本信息</div>
-                <div class="mar">单位类型 &nbsp;&nbsp;&nbsp;&nbsp;{{users.job}}</div>
-                <div class="mar">职位 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产品经理</div>
+                <div class="mar">单位类型 &nbsp;&nbsp;&nbsp;&nbsp;{{users.unitType}}</div>
+                <div class="mar">职位 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{users.job}}</div>
                 <div class="mar" v-if='subscribeItems'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</div>
                 <div class="mar" v-if='subscribeItems==null'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</div>
                 <div class="mar">加入时间 &nbsp;&nbsp;&nbsp;&nbsp;{{users.createTime}}</div>
@@ -29,7 +29,7 @@
         
         <div class="buyerinfo">
             <div class="title">用户轨迹</div>
-            <div class="mar">订阅产品包：5个</div>
+            <div class="mar">订阅产品包：{{numItem.productPkgNum}}个</div>
             <div class="mar">生成合同：{{numItem.contractNum}}次</div>
             <div class="mar">消费金额：{{numItem.consumeMoney}}元</div>
             <div class="bor"></div>
@@ -54,7 +54,8 @@ export default {
                 id:this.$route.params.userId,
                 numItem:'',
                 footprintItems: [], // 用户轨迹
-                visitedRecords: [] // 访问记录
+                visitedRecords: [], // 访问记录
+                wxNickName: ''  // 微信昵称
             }
         },
         computed: {
@@ -71,14 +72,16 @@ export default {
             getUsers: function (id) {
                 let that = this
                 userService.getUserInfo(that.id).then(function (res) {
-                    //console.log('单个用户',res.data);
+                    console.log('单个用户',res.data);
                     let obj = res.data.datas;
-                    that.users = obj;
-                    that.numItem = res.data.datas.numItem;
-                    that.users.createTime = common.getFormatOfDate(obj.createTime*1, 'yyyy-MM-dd hh:mm');
+                    let userObj = obj.user, baseUserObj = obj.baseUser;
+                    that.users = userObj;
+                    that.numItem = userObj.numItem;
+                    that.wxNickName = baseUserObj.name;
+                    that.users.createTime = common.getFormatOfDate(userObj.createTime*1, 'yyyy-MM-dd hh:mm');
                     // 轨迹
                     if(obj.footprintItems!=null){
-                        let newFoot = obj.footprintItems;
+                        let newFoot = userObj.footprintItems;
                         for(let i=0;i<newFoot.length;i++){
                             newFoot[i].time = common.getFormatOfDate(newFoot[i].time*1, 'yyyy-MM-dd');
                         }

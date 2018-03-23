@@ -9,21 +9,6 @@ import store from './vuex'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-// 定义全局组件
-// import zmodal from './component/common/modal.vue'
-// import zbanner from './component/common/banner.vue'
-// import zfooter from './component/common/footer.vue'
-// import zhistory from './component/common/goback.vue'
-// import backhome from './component/common/back-home.vue'
-//
-//
-// Vue.component('z-modal', zmodal)
-// Vue.component('z-banner', zbanner)
-// Vue.component('z-footer', zfooter)
-// Vue.component('z-history', zhistory)
-// Vue.component('z-home', backhome)
-
-
 // 定义组件
 const short = (resolve) => {require(['./pages/short.vue'],resolve)}
 const home = (resolve) => {require(['./pages/home/home.vue'],resolve)}
@@ -114,13 +99,13 @@ const routers = [
                // 合同管理—》模板
                {name: 'contractTemplateAdd',path:'/contract/template/:templateTyp/add',component: contractTemplateAdd},
                {name: 'contractTemplateEdit',path:'/contract/template/:templateTyp/edit/:templateId',component: contractTemplateEdit},
-               {name: 'contractTemplateScan',path:'/contract/template/scan/:templateId',component: contractTemplateScan},
-               {name: 'contractTemplate',path:'/contract/template',component: contractTemplate},
+               {name: 'contractTemplateScan',path:'/contract/template/:templateTyp/scan/:templateId',component: contractTemplateScan},
+               {name: 'contractTemplate',path:'/contract/template/:templateTyp',component: contractTemplate},
                // 合同管理—》定制服务
                {name: 'contractServices',path:'/contract/service',component: contractServices},
                {name: 'contractServiceDetail',path:'/contract/service/detail/:serviceId',component: contractServiceDetail},
                // 内容管理—》合作伙伴
-               {name: 'partner',path:'/content/partner',component: partner},
+               {name: 'partner',path:'/content/partner/:partnerTyp',component: partner},
                {name: 'partnerAdd',path:'/content/partner/:partnerTyp/add',component: partnerAdd},
                {name: 'partnerEdit',path:'/content/partner/:partnerTyp/edit/:partnerId',component: partnerEdit},
                // 内容管理—》产品功能
@@ -146,11 +131,11 @@ const routers = [
                // 站内信
                {name: 'messages',path:'/message/messages',component: messages},
                // 财务
-               {name: 'manage',path:'/financial/manage',component: manage},
+               {name: 'manage',path:'/financial/manage/:tabIndex',component: manage},
                {name: 'accounts',path:'/financial/accounts',component: accounts},
                {name: 'orders',path:'/financial/orders',component: orders},
                {name: 'order-detail',path:'/financial/orders/:orderNo',component: orderDetail},
-               {name: 'refund',path:'/financial/refund/:orderId',component: refund},
+               {name: 'refund',path:'/financial/refund/:tabIndex/:orderId',component: refund},
                // 用户管理
                {name: 'users',path:'/users',component: usersList},
                {name: 'user-detail',path:'/users/:userId',component: userDetail},

@@ -17,23 +17,25 @@
                             <el-submenu
                                     index="7" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-document"></i>
+                                    <i class="iconfont icon-neirong"></i>
                                     <span>合同管理</span>
                                 </template>
                                 <el-menu-item-group>
                                     <el-menu-item index="产品包"><router-link to="/contract/product">产品包</router-link></el-menu-item>
-                                    <el-menu-item index="合同模板"><router-link to="/contract/template">合同模板</router-link></el-menu-item>
+                                    <!--<el-menu-item index="合同模板"><router-link :to="{}/contract/template">合同模板</router-link></el-menu-item>-->
+                                    <el-menu-item index="合同模板"><router-link :to="{name: 'contractTemplate',params:{templateTyp: '1'}}">合同模板</router-link></el-menu-item>
                                     <!--<el-menu-item index="定制服务"><router-link to="/contract/service">定制服务</router-link></el-menu-item>-->
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
                                     index="8" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-menu"></i>
+                                    <i class="iconfont icon-huodong3"></i>
                                     <span>内容管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="合作伙伴"><router-link to="/content/partner">合作伙伴</router-link></el-menu-item>
+                                    <!--<el-menu-item index="合作伙伴"><router-link to="/content/partner">合作伙伴</router-link></el-menu-item>-->
+                                    <el-menu-item index="合作伙伴"><router-link :to="{name: 'partner', params:{partnerTyp: '1'}}">合作伙伴</router-link></el-menu-item>
                                     <el-menu-item index="产品功能"><router-link to="/content/product">产品功能</router-link></el-menu-item>
                                     <el-menu-item index="演示视频"><router-link to="/content/video">演示视频</router-link></el-menu-item>
                                     <el-menu-item index="HotDocs代表用户"><router-link to="/content/hotdocs">HotDocs代表用户</router-link></el-menu-item>
@@ -46,7 +48,7 @@
                             <el-submenu
                                     index="1" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-menu"></i>
+                                    <i class="iconfont icon-qud"></i>
                                     <span>渠道管理</span>
                                 </template>
                                 <el-menu-item-group>
@@ -57,7 +59,7 @@
                             <el-submenu
                                     index="4" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-menu"></i>
+                                    <i class="iconfont icon-qunzu"></i>
                                     <span>用户管理</span>
                                 </template>
                                 <el-menu-item-group>
@@ -67,7 +69,7 @@
                             <el-submenu
                                     index="2" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-menu"></i>
+                                    <i class="iconfont icon-xinxi"></i>
                                     <span>消息管理</span>
                                 </template>
                                 <el-menu-item-group>
@@ -77,11 +79,12 @@
                             <el-submenu
                                     index="3" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-menu"></i>
+                                    <i class="iconfont icon-qianbao"></i>
                                     <span>财务管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                    <el-menu-item index="提现审核"><router-link to="/financial/manage">提现审核</router-link></el-menu-item>
+                                    <!--<el-menu-item index="提现审核"><router-link to="/financial/manage">提现审核</router-link></el-menu-item>-->
+                                    <el-menu-item index="提现审核"><router-link :to="{name: 'manage',params:{tabIndex: '0'}}">提现审核</router-link></el-menu-item>
                                     <el-menu-item index="账户总览"><router-link to="/financial/accounts">账户总览</router-link></el-menu-item>
                                     <el-menu-item index="订单管理"><router-link to="/financial/orders">订单管理</router-link></el-menu-item>
                                 </el-menu-item-group>
@@ -89,7 +92,7 @@
                             <el-submenu
                                     index="9" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
-                                    <i class="el-icon-setting"></i>
+                                    <i class="iconfont icon-shezhi"></i>
                                     <span>系统设置</span>
                                 </template>
                                 <el-menu-item-group>
@@ -163,6 +166,9 @@
                         let obj = res.data.datas;
                         that.adminPhoto = that.$store.state.picHead + obj.hostLogo;
                         that.adminName = obj.hostName;
+                        if(that.$route.path=='/'){
+                            that.$router.push({name: 'productPackage'});
+                        }
                     }else{
                         that.$message.error(res.data.message);
                     }
@@ -173,6 +179,7 @@
 </script>
 
 <style lang="less" scope>
+    @import "../../assets/css/icon/iconfont.css";
     body{margin: 0;}
     #app {
         min-width: 1200px;
@@ -204,4 +211,5 @@
     .right-top .topRight .User .UserImg{width:40px;height:40px;border-radius: 100%;float:left;border:2px solid #eeeeee;overflow: hidden;margin-top:10px;}
     .right-top .topRight .User .UserImg .image{width:100%;height:100%;}
     .right-top .topRight .User .name{float:left;width:80px;text-align: center;color:#969896;line-height: 60px;font-size: 14px;}
+    .el-submenu__title i{width:24px;height:18px;font-size:18px;color:#BFCBD9;}
 </style>

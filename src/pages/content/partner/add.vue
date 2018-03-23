@@ -151,6 +151,7 @@ export default {
             description: description}).then(function (res) {
             //console.log('添加一个合作伙伴', res);
             if(res.data.success){
+              that.$route.params.partnerTyp = String(that.pType);
               that.$router.push({name: 'partner'});
             }
           });

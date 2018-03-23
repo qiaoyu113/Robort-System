@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="refund">
         <!--面包屑-->
         <el-breadcrumb separator="/" class="blue">
             <el-breadcrumb-item :to="{ name: 'manage' }">提现审核</el-breadcrumb-item>
@@ -162,8 +162,8 @@ export default {
     }
 </script>
 
-<style lang="less">
-    .bread{width: 300px;margin: 20px 0 0 30px;}
+<style lang="less" scope>
+    .refund .blue{width: 300px;margin: 20px 0 0 30px;}
     .frefundInfo{
         width: 400px;
         height: 688px;

@@ -1,6 +1,7 @@
 <template>
   <el-pagination
           background
+          v-if="options.totalCount > options.size"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
@@ -21,15 +22,16 @@
     components: {},
     mounted () {},
     methods: {
-      // 分页
+      // 分页，每页n条
       handleSizeChange (val) {
-        //console.log(`每页 ${val} 条`);
+        //console.log('每页'+val+'条');
         let that = this;
         that.$emit('sizeChange', val);
       },
+      // 分页，当前页，就是当前点击的那一页
       handleCurrentChange (val) {
-        // 当前页，就是当前点击的那一页
         let that = this;
+        //console.log('当前'+val+'页码');
         that.currentPage = val;
         that.$emit('currentChange', val);
       },

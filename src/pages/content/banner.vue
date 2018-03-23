@@ -83,21 +83,14 @@
                 <i class="el-icon-close" @click="delVideo" v-if="fileList.length > 0"></i>
                 <i class="el-icon-circle-check"  v-if="fileList.length > 0"></i>
               </p>
-              <img class="progress">
+              <p class="barProg">
+                <img class="progress" :width="progressBar">
+              </p>
             </div>
           </div>
         </el-form-item>
         <el-form-item label="排序号" :label-width="formLabelWidth" prop="order">
-          <el-input v-model="form.order" placeholder="请填写排序号"></el-input>
-          <!--<el-select v-model="form.order" placeholder="请选择排序号">-->
-            <!--<el-option label="1" value="1"></el-option>-->
-            <!--<el-option label="2" value="2"></el-option>-->
-            <!--<el-option label="3" value="3"></el-option>-->
-            <!--<el-option label="4" value="4"></el-option>-->
-            <!--<el-option label="5" value="5"></el-option>-->
-            <!--<el-option label="6" value="6"></el-option>-->
-            <!--<el-option label="7" value="7"></el-option>-->
-          <!--</el-select>-->
+          <el-input v-model.number="form.order" placeholder="请填写排序号"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -130,14 +123,14 @@
         }, // 新增表单
         rules: {
           pic: [
-            { required: true, message: '请上传焦点图', trigger: 'blur' },
+            {required: true, message: '请上传焦点图', trigger: 'blur'},
           ],
           link: [
-            { required: true, message: '请填写链接', trigger: 'blur' }
+            {required: true, message: '请填写链接', trigger: 'blur'}
           ],
           order: [
-            { required: true, message: '请填写排序号', trigger: 'blur' },
-            { type: 'number', message: '排序号必须为数字值', trigger: 'blur'}
+            {required: true, message: '请填写排序号', trigger: 'blur'},
+            {type: 'number', message: '排序号必须为数字值', trigger: 'blur'}
           ]
         }, //表单验证
         couch: {
@@ -165,10 +158,11 @@
         centerDialogVisible: false, // 提示弹框
         dialogFormVisible: false, // 表单弹窗
         dialogCropperVisible: false, // 截图弹框
-        tableData: [] //列表数据
+        tableData: [], //列表数据
+        progressBar: 0 // 进度条
       }
     },
-    components: { 'upload-original': uploadOriginal},
+    components: {'upload-original': uploadOriginal},
     mounted () {
       let that = this;
       that.getList();
@@ -178,13 +172,12 @@
       //获得列表
       getList () {
         let that = this;
-        contentService.getBanners({type: 0, status: 1}).then(function(res){
-          //console.log('焦点图列表', res);
-          if(res.data.success) {
+        contentService.getBanners({type: 0, status: 1}).then(function (res) {
+          if (res.data.success) {
             let table = res.data.datas;
             for (let i = 0; i < table.length; i++) {
               table[i].picUrl = that.$store.state.picHead + table[i].picUrl;
-              table[i].createDate = common.getFormatOfDate(table[i].createDate*1, 'yyyy-MM-dd hh:mm');
+              table[i].createDate = common.getFormatOfDate(table[i].createDate * 1, 'yyyy-MM-dd hh:mm');
             }
             that.tableData = table;
           }
@@ -206,38 +199,37 @@
         setTimeout(function () {
           that.$refs.upOrgs.imgUrl = '';
           that.$refs.upOrgs.isImageState = 0;
-        },1);
+        }, 1);
         that.dialogFormVisible = true;
       },
       // 编辑
       doEdit (id) {
         let that = this;
         contentService.getBanner(id).then(function (res) {
-          //console.log('编辑', res);
-          if(res.data.success){
+          if (res.data.success) {
             let obj = res.data.datas;
-            that.form={
+            that.form = {
               id: obj.id,
               pic: obj.picUrl,
               title: obj.picTitle,
               //radio: 1,
-              link: '',
-              order: obj.sortNum
+              link: ''
             };
+            that.form.order = Number(obj.sortNum);
             setTimeout(function () {
-            that.$refs.upOrgs.imgUrl = that.$store.state.picHead + obj.picUrl;
-            that.$refs.upOrgs.isImageState = 1;
-            },1);
-            if(obj.bannerType == '0'){
+              that.$refs.upOrgs.imgUrl = that.$store.state.picHead + obj.picUrl;
+              that.$refs.upOrgs.isImageState = 1;
+            }, 1);
+            if (obj.bannerType == '0') {
               that.form.radio = 1;
               that.form.link = obj.picLink;
             }
-            else if(obj.bannerType == '1'){
+            else if (obj.bannerType == '1') {
               that.form.radio = 2;
               that.form.link = obj.videoUrl;
               let arr = obj.videoUrl.split('/');
-              that.fileList =[{
-                name: arr[arr.length-1],
+              that.fileList = [{
+                name: arr[arr.length - 1],
                 size: '',
               }];
             }
@@ -272,26 +264,41 @@
             let videoUrl = '';
             let picLink = '';
             let bannerType = 0;
-            if(that.form.radio == 1){
+            if (that.form.radio == 1) {
               bannerType = 0;
               picLink = that.form.link;
-            }else if (that.form.radio == 2){
+            } else if (that.form.radio == 2) {
               bannerType = 1;
               videoUrl = that.form.link;
             }
-            if(that.isAddEdit == 1){
-              contentService.addBanner({picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit add success', res);
-                if(res.data.success){
+            if (that.isAddEdit == 1) {
+              contentService.addBanner({
+                picUrl: that.form.pic,
+                videoUrl: videoUrl,
+                picTitle: that.form.title,
+                picLink: picLink,
+                type: 0,
+                bannerType: bannerType,
+                sortNum: that.form.order
+              }).then(function (res) {
+                if (res.data.success) {
                   that.$refs[form].resetFields();
                   that.dialogFormVisible = false;
                   that.getList();
                 }
               });
-            }else if(that.isAddEdit == 2){
-              contentService.editBanner({id: that.form.id,picUrl: that.form.pic, videoUrl: videoUrl, picTitle: that.form.title, picLink: picLink, type: 0,bannerType: bannerType, sortNum: that.form.order}).then(function (res) {
-                //console.log('submit edit success', res);
-                if(res.data.success){
+            } else if (that.isAddEdit == 2) {
+              contentService.editBanner({
+                id: that.form.id,
+                picUrl: that.form.pic,
+                videoUrl: videoUrl,
+                picTitle: that.form.title,
+                picLink: picLink,
+                type: 0,
+                bannerType: bannerType,
+                sortNum: that.form.order
+              }).then(function (res) {
+                if (res.data.success) {
                   that.$refs[form].resetFields();
                   that.dialogFormVisible = false;
                   that.getList();
@@ -316,11 +323,11 @@
         let e = event || window.event;
         let file = e.target.files[0];
         let fileName = file.name;
-        let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
-        let key ='upload/'+that.getNowFormatDate()+'/'+ file.name; // 新文件名称
-        let  suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
+        let limit = parseFloat(file.size / 1024 / 1024); //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+        let key = 'upload/' + that.getNowFormatDate() + '/' + file.name; // 新文件名称
+        let suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
         // 只可以上传一个视频
-        if(that.fileList.length >= 1){
+        if (that.fileList.length >= 1) {
           this.$alert('只可以上传一个视频', '提示', {
             confirmButtonText: '确定',
             callback: action => {
@@ -329,7 +336,7 @@
           return false;
         }
         // 请上传mp4格式的视频
-        if(suffix!='.mp4'){
+        if (suffix != '.mp4') {
           this.$alert('请上传MP4格式的视频', '提示', {
             confirmButtonText: '确定',
             callback: action => {
@@ -338,20 +345,21 @@
           return false;
         }
         // 视频小于500mb
-        if(limit < 500){
+        if (limit < 500) {
           let client = new OSS.Wrapper(that.ossOption);
           // 上传
           client.multipartUpload(key, file, {
-            progress: function* (percentage, cpt) {
+            progress: function*(percentage, cpt) {
               // 上传进度
               //_this.percentage = percentage
-              //console.log('percentage', percentage);
-              //console.log('cpt', cpt);
+              that.progressBar = percentage*100 + '%';
+              console.log('percentage', percentage);
+              console.log('cpt', cpt);
             }
           }).then((results) => {
             // 上传完成
             //console.log(results,'上传完成');
-            that.form.link = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+            that.form.link = "http://shiatang.oss-cn-shanghai.aliyuncs.com/" + key;
             let option = {
               name: fileName,
               size: Math.floor(limit),
@@ -361,7 +369,7 @@
             console.log(err)
           });
 
-        }else{
+        } else {
           // 不超过500m
           this.$alert('上传视频的大小不能超过500mb', '提示', {
             confirmButtonText: '确定',
@@ -374,7 +382,7 @@
         let that = this;
         pluginService.getYunToken().then(function (res) {
           //console.log('获取阿里云token', res);
-          if(res.data.success){
+          if (res.data.success) {
             let info = res.data.datas;
             that.ossOption.accessKeyId = info.accesskeyid;
             that.ossOption.accessKeySecret = info.accesskeysecret;
@@ -419,20 +427,15 @@
         this.centerDialogVisible = false;
         contentService.deleteBanner({bannerId: id, status: 2}).then(function (res) {
           //console.log('删除', res);
-          if(res.data.success){
+          if (res.data.success) {
             rows.splice(index, 1);
             that.getList();
           }
         });
-      },
-      // 关闭
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-                .then(_ => {
-                  done();
-                })
-                .catch(_ => {});
       }
+    },
+    watch: {
+      progressBar(cur, old){}
     }
   }
 </script>
@@ -470,4 +473,9 @@
   .v-upload-btn{width:80px;height:28px;position:relative;
   .file{width:80px;height:28px;position:absolute;top:0; left:0;cursor: pointer;opacity:0;}
   }
+  .barProg{width: 200px;height:2px;}
+  .progress{height:2px;background:#409EFF;
+    -webkit-border-radius:1px;
+    -moz-border-radius:1px;
+    border-radius:1px;}
 </style>

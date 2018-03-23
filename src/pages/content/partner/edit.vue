@@ -101,14 +101,11 @@
       let that = this;
       that.pType = parseInt(that.$route.params.partnerTyp);
       that.$refs.upOrg.isShowDes = true; // 上传图片组件显示描述文字
-      console.log(1233, that.pType);
       that.editor(); // 富文本编辑器初始化
       if(that.pType === 1){ // 白标合作伙伴
-        console.log(1)
         that.getPackage(); //产品包
       }
       else if(that.pType === 2){ // 国际合作伙伴
-        console.log(2)
         that.getCountry(); //国家
         that.getTemplate(); //合同模板
       }
@@ -156,6 +153,7 @@
               description: description}).then(function (res) {
               //console.log('编辑一个合作伙伴', res);
               if(res.data.success){
+                that.$route.params.partnerTyp = String(that.pType);
                 that.$router.push({name: 'partner'});
               }
             });
@@ -168,7 +166,6 @@
       // 获得封面图路径
       myPicUrl (val) {
         let that = this;
-        console.log('dee',val)
         that.ruleForm.imgUrl = val;// 封面图
       },
       // 获取一个合作伙伴
@@ -191,7 +188,9 @@
             }
             that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
             that.$refs.upOrg.isImageState = 1;
-            myEditor.setData(obj.description);
+            setTimeout(function () {
+              myEditor.setData(obj.description);
+            }, 1000);
           }else{}
         });
       },

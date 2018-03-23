@@ -114,7 +114,6 @@
         that.ruleForm.isTry = true;
       }
       that.editor(); // 初始化富文本编辑器
-      that.getOneTemplate(); // 得到信息
       that.getTemplateType(); // 分类
       that.getCountries(); // 国家
       that.getHotDogTemplateType(); //HotDog模板
@@ -156,6 +155,7 @@
               price_s: that.ruleForm.price_s, tryUse: that.ruleForm.isTry}).then(function (res) {
               //console.log(res, '添加一个模板信息');
               if(res.data.success){
+                that.$route.params.templateTyp = String(that.templateType);
                 that.$router.push({name: 'contractTemplate'}); //
               }else{}
             });
@@ -173,6 +173,10 @@
           //console.log('ma', res);
           if(res.data.success){
             let obj = res.data.datas;
+            setTimeout(function () {
+              myEditor.setData(obj.description);
+              myEditor2.setData(obj.catalogue);
+            },1000); // 延迟一秒加载数据，使编辑器完全加载上
             that.ruleForm = {
               name: obj.name, // 模板名称
               slogan: obj.slogan, // 宣传语
@@ -184,9 +188,7 @@
               catalogue: obj.catalogue, // 目录
               price_s: obj.price_s, // 价格
               isTry: obj.tryUse
-            }
-            myEditor.setData(obj.description);
-            myEditor2.setData(obj.catalogue);
+            };
           }else{}
         });
       },
@@ -233,11 +235,11 @@
       },
       // 富文本编辑器
       editor(){
+        let that = this;
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
         myEditor2 = CKEDITOR.replace("list");
-        //myEditor.setData("");
-        //myEditor2.setData("");
+        that.getOneTemplate(); // 得到信息
       },
     }
   }

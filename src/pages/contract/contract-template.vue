@@ -40,13 +40,13 @@
                 prop="className"
                 label="分类"
                 width="140"
+                :filter-placement="50"
+                :filter-multiple="false"
                 :filters="filterList"
                 :filter-method="filterTag"
                 filter-placement="bottom-end">
             <template slot-scope="scope">
                 <span>{{scope.row.className}}</span>
-                <!--<span v-if="scope.row.close==false">已上架</span>-->
-                <!--<span v-if="scope.row.close==true">已下架</span>-->
             </template>
         </el-table-column>
         <el-table-column
@@ -81,7 +81,7 @@
     </div>
     <div v-if="tabIndex == '2' ">
       <el-table key="atable"
-              ref="multipleTable"
+              ref="multipleTable2"
               :data="tableData2"
               tooltip-effect="dark"
               empty-text="暂无数据"
@@ -115,13 +115,13 @@
                 width="90">
           <template slot-scope="scope">
             <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
-            <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
+            <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData2)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <!--分页-->
-    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange"></pagination>
+    <pagination :options="myPagination" v-on:currentChange="currentChange" v-on:sizeChange="sizeChange" ref="myPagination"></pagination>
     <!--弹框-->
     <el-dialog
             :title="dialog.title"
@@ -145,7 +145,7 @@
     props: [],
     data () {
       return {
-        tabIndex: '1', // tab默认显示第一个
+        tabIndex: this.$route.params.templateTyp, // tab默认显示第一个
         isTop: 0, // 是否显示置顶按钮
         classId: '',
         dialog: {
@@ -208,7 +208,8 @@
         else if(that.tabIndex == '2'){
           flag = true;
         }
-        contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag}).then(function (res) {
+        console.log('dataTable0',that.tableData,that.tabIndex);
+        contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag, classId: that.classId}).then(function (res) {
           //console.log('模板列表正式', res);
           if(res.data.success){
             let table = res.data.datas;
@@ -280,8 +281,8 @@
               let id = array[i].id;
               let obj = {
                 text: vName,
-                value: vName
-                //value: id
+                //value: vName
+                value: id
               };
               that.filterList.push(obj);
             }
@@ -290,25 +291,11 @@
       },
       // 筛选
       filterTag (value, row) {
-//        console.log('选中分类', value);
-//        let that = this;
-//        that.classId = value;
-        return row.className === value;
-      },
-      // 分页
-      handleSizeChange (val) {
-        //console.log(`每页 ${val} 条`);
+       //console.log('选中分类', value);
         let that = this;
-        that.page.size = val;
-        that.getList();
-      },
-      handleCurrentChange (val) {
-            // 当前页，就是当前点击的那一页
-            //console.log(`当前页: ${val}`);
-            let that = this;
-            that.currentPage = val;
-            that.page.num = val;
-            that.getList();
+        that.classId = value;
+        that.$refs.multipleTable.clearFilter();
+        //return row.className === value;
       },
       //添加合同模板
       add () {
@@ -412,6 +399,7 @@
       tabIndex (cur, old){
         let that = this;
         that.query = '';
+        that.$refs.myPagination.currentPage = 1;
         if(cur == '1'){
           that.getList();
         }
@@ -421,7 +409,10 @@
         return cur;
       },
       classId (cur, old) {
+        //console.log('分类变化', cur);
+        this.classId = cur;
         this.getList();
+        this.$refs.multipleTable.doLayout();
       }
     }
   }
