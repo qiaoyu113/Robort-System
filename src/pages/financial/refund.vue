@@ -10,7 +10,7 @@
             <div class="buyerinfo">
                 <div class="title">个人资料</div>
                 <div class="mar">申请时间：{{orders.createTime}}</div>
-                <div class="mar">申请帐号：{{orders.name}}</div>
+                <div class="mar">申请帐号：{{orders.phone}}</div>
                 <div class="mar">姓名：{{orders.name}}</div>
             </div>
             <div class="buyerinfo">

@@ -72,7 +72,7 @@ export default {
             getUsers: function (id) {
                 let that = this
                 userService.getUserInfo(that.id).then(function (res) {
-                    console.log('单个用户',res.data);
+                    //console.log('单个用户',res.data);
                     let obj = res.data.datas;
                     let userObj = obj.user, baseUserObj = obj.baseUser;
                     that.users = userObj;
