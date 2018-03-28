@@ -17,7 +17,7 @@ export const financialService = {
     getwallets: function (params) {
         return axios.get('/admin/wallets'+ this.getParam(params));
     },
-    exportwallets: function () {
+    exportwallets: function (api) {
         window.location.href = api + "/admin/export/wallet"
         // return axios.get('/admin/export/wallet');
     },
@@ -35,7 +35,7 @@ export const financialService = {
     getOders: function (params) {
         return axios.get('/admin/orders/'+ this.getParam(params));
     },
-    exportOrders: function () {
+    exportOrders: function (api) {
         window.location.href= api + "/admin/export/order"
         // return axios.get('/admin/export/wallet');
     },

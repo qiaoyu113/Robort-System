@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     // 定义状态
     state: {
         picHead:'http://test.resource.vjuzhen.com/', // 图片资源地址
+        api:'http://39.106.114.64:8097/', // 图片资源地址
         qrCodeDomain: 'http://saqw.cn/d/123456/', // 二维码地址主机头
         indexLogo:'',
         indexName:'',

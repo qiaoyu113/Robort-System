@@ -116,7 +116,7 @@
         methods: {
             exportwallets:function(){
                 let that = this
-                financialService.exportwallets()
+                financialService.exportwallets(this.$store.state.api)
             },
             getwallets:function(){
                 let that = this;

@@ -88,7 +88,7 @@
           <el-input type="textarea" :rows="2" resize="none" placeholder="请输入简介" v-model="form.intro"></el-input>
         </el-form-item>
         <el-form-item label="排序号" :label-width="formLabelWidth" prop="order">
-          <el-input v-model="form.order" placeholder="请填写排序号"></el-input>
+          <el-input type="number" v-model="form.order" placeholder="请填写排序号"></el-input>
           <!--<el-select v-model="form.order" placeholder="请选择排序号">-->
             <!--<el-option label="1" value="1"></el-option>-->
             <!--<el-option label="2" value="2"></el-option>-->
@@ -138,7 +138,6 @@ import {contentService} from '../../service/contentService'
           ],
           order: [
             { required: true, message: '请填写排序号', trigger: 'change' },
-            { type: 'number', message: '排序号必须为数字值'}
           ]
         }, //表单验证
         couch: {

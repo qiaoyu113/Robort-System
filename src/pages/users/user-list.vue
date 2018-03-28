@@ -240,7 +240,7 @@
                 that.getUsers()
             },
             exportTable: function () {
-                userService.exportUserList()
+                userService.exportUserList(this.$store.state.api)
             },
             addGroup() {
                 let that = this

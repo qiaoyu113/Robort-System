@@ -5,7 +5,7 @@ import axios from './axios.js'
 import store from '../vuex/'
 import qs from 'qs'
 // const api = "http://6fpqir.natappfree.cc"
-const api = 'http://39.106.114.64:8097';
+// const api = 'http://39.106.114.64:8097';
 
 export const userService = {
     api: {},
@@ -36,7 +36,7 @@ export const userService = {
     getUserList: function () {
         return axios.post('/admin/users/');
     },
-    exportUserList: function () {
+    exportUserList: function (api) {
         window.location.href = api + "/admin/export/user"
     },
     /* 发送站内信 */

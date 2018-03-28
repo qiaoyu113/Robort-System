@@ -148,7 +148,7 @@
         methods: {
             exportOrders:function(){
                 let that = this
-                financialService.exportOrders(that.params)
+                financialService.exportOrders(this.$store.state.api)
             },
             getOders:function(){
                 let that = this
