@@ -82,8 +82,7 @@ export default {
             getUsers:function(){
                 let that = this
                 financialService.getuserId(that.userId).then(function (res) {
-                    that.users = res.data.datas
-                     //console.log(res.data);
+                    that.users = res.data.datas.user
                 })
             },
             // 表单
