@@ -1,8 +1,8 @@
 <template>
     <div class="fuserDetail clearfix">
         <div class="fl">
-            <div class="box">
-                <img :src="picHead+users.headImg" alt="">
+            <div class="box headImg">
+                <img v-if="users.headImg" :src="picHead+users.headImg" alt="">
             </div>
             <div class="info">
                 <div class="mar">姓名：{{users.name}}</div>
@@ -11,22 +11,22 @@
             </div>
             <div class="bicinfo">
                 <div class="title">基本信息</div>
-                <div class="mar">单位类型 &nbsp;&nbsp;&nbsp;&nbsp;{{users.unitType}}</div>
+                <div class="mar">邮箱 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{users.email}}</div>
+                <div class="mar">组织类型 &nbsp;&nbsp;&nbsp;&nbsp;{{users.organType}}</div>
+                <div class="mar">组织名称 &nbsp;&nbsp;&nbsp;&nbsp;{{users.organName}}</div>
+                <div class="mar">地区 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{users.myProv + users.myCity}}</div>
+            </div>
+            <div class="bicinfo">
+                <div class="mar">行业 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{users.unitType}}</div>
                 <div class="mar">职位 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{users.job}}</div>
+                <div class="mar">交易类型 &nbsp;&nbsp;&nbsp;&nbsp;{{tran[users.tranType]}}</div>
+            </div>
+            <div class="bicinfo">
                 <div class="mar" v-if='subscribeItems'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</div>
                 <div class="mar" v-if='subscribeItems==null'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</div>
                 <div class="mar">加入时间 &nbsp;&nbsp;&nbsp;&nbsp;{{users.createTime}}</div>
             </div>
-            <div class="bicinfo">
-                <div class="title">访问记录</div>
-                <div class="bor"></div>
-                <div v-for="item in visitedRecords" class="mar">{{item.watchTypeName}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.watchNum}}次</div>
-                <!--<div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>-->
-                <!--<div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>-->
-                <!--<div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>-->
-            </div>
         </div>
-        
         <div class="buyerinfo">
             <div class="title">用户轨迹</div>
             <div class="mar">订阅产品包：{{numItem.productPkgNum}}个</div>
@@ -35,8 +35,17 @@
             <div class="bor"></div>
             <div v-for="item in footprintItems" class="box1 clearfix">
                 <div class="left">{{item.time}}</div><div class="right">{{item.content}}</div>
-            </div>
+            </div><!--<div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>-->
+            <!--<div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>-->
+            <!--<div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>-->
         </div>
+        <div class="buyerinfo">
+            <div class="title">访问记录</div>
+            <div class="bor"></div>
+            <div v-for="item in visitedRecords" class="mar">{{item.watchTypeName}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.watchNum}}次</div>
+
+        </div>
+
         
     </div>
 </template>
@@ -55,7 +64,8 @@ export default {
                 numItem:'',
                 footprintItems: [], // 用户轨迹
                 visitedRecords: [], // 访问记录
-                wxNickName: ''  // 微信昵称
+                wxNickName: '',  // 微信昵称
+                tran: ['','境内交易','境外交易','入境交易'],  // 微信昵称
             }
         },
         computed: {
@@ -112,16 +122,22 @@ export default {
 .clearfix{
     *zoom: 1;
 }
+.showBox{
+    position: relative;
+    box-sizing: border-box;
+    padding:30px;
+    height: 100%;
+}
     .fuserDetail{
-        width: 800px;
-        /*height: 600px;*/
-        margin: 30px;
+        width: 1200px;
+        height: 100%;
         border: 1px solid black;
+        box-sizing: border-box;
         .fl{
             float: left;
-            width: 370px;
-            /*height: 600px;*/
-            border-right: 1px solid black;
+            width: 410px;
+            height: 100%;
+            overflow-y: scroll;
             .box{
                 border: 1px solid black;
                 border-radius: 50%;
@@ -131,6 +147,7 @@ export default {
                 margin: 10px;
                 margin-left: 20px;
                 margin-top: 20px;
+                background: #f0f0f0;
                 img{
                     height: 100px;
                     height: 100px;
@@ -166,10 +183,13 @@ export default {
             }
         }
         .buyerinfo{
-            margin: 10px;
-            height: 580px;
-            width: 400px;
-            float: right;
+            padding: 10px;
+            height: 100%;
+            width: 390px;
+            box-sizing: border-box;
+            float: left;
+            border-left: 1px solid black;
+            overflow-y: scroll;
             .title{
                 font-size: 15px;
                 color: blue;

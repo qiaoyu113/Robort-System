@@ -38,8 +38,10 @@
               label="成功订阅用户数">
       </el-table-column>
       <el-table-column
-              prop="numItem.commission"
               label="获得佣金总额">
+        <template slot-scope="scope">
+          <span>{{scope.row.numItem.commission | moneyFormate}}</span>
+        </template>
       </el-table-column>
       <el-table-column
               prop="createTime"

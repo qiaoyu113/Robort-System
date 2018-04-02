@@ -2,10 +2,11 @@
  * Created by zhong on 2017/10/27.
  */
 import axios from 'axios';
-import store from '../vuex/'
+// import store from '../vuex/'
 
-//axios.defaults.baseURL = 'admin.api.docqbot.com ';
-axios.defaults.baseURL = 'http://39.106.114.64:8097';
+axios.defaults.baseURL = 'http://admin.api.docqbot.com';
+// axios.defaults.baseURL = 'http://39.106.114.64:8097';
+// axios.defaults.baseURL = ' http://4yxjzg.natappfree.cc';
 
 let win = typeof window
 let isClient = false

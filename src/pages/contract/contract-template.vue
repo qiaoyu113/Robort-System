@@ -27,6 +27,7 @@
       <el-table key="btable"
               ref="multipleTable"
               :data="tableData"
+              @filter-change="filterHandle"
               tooltip-effect="dark"
               empty-text="暂无数据"
               @selection-change="handleSelectionChange"
@@ -40,10 +41,10 @@
                 prop="className"
                 label="分类"
                 width="140"
+                :column-key="'filterclass'"
                 :filter-placement="50"
-                :filter-multiple="false"
+                :filter-multiple = false
                 :filters="filterList"
-                :filter-method="filterTag"
                 filter-placement="bottom-end">
             <template slot-scope="scope">
                 <span>{{scope.row.className}}</span>
@@ -208,7 +209,7 @@
         else if(that.tabIndex == '2'){
           flag = true;
         }
-        console.log('dataTable0',that.tableData,that.tabIndex);
+//        console.log('dataTable0',that.tableData,that.tabIndex);
         contractService.getTemplates({pageNo: that.myPagination.num, pageSize: that.myPagination.size, name: that.query, productPkgId: that.productPkgId, tryUse: flag, classId: that.classId}).then(function (res) {
           //console.log('模板列表正式', res);
           if(res.data.success){
@@ -273,7 +274,7 @@
       getTemplateType () {
         let that = this;
         contractService.getTemplateType({type: 2}).then(function (res) {
-          //console.log('分类', res);
+          console.log('分类', res);
           if(res.data.success){
             let array = res.data.datas;
             for(let i=0;i<array.length;i++){
@@ -286,15 +287,21 @@
               };
               that.filterList.push(obj);
             }
+              console.log(that.filterList);
           }else{}
         });
       },
       // 筛选
-      filterTag (value, row) {
-       //console.log('选中分类', value);
+      filterHandle (filters) {
+//       console.log('选中分类', filters['filterclass'][0]);
         let that = this;
-        that.classId = value;
-        that.$refs.multipleTable.clearFilter();
+        if(filters['filterclass'][0]){
+            that.classId = filters['filterclass'][0];
+        }else{
+            that.classId=null
+        }
+
+//        that.$refs.multipleTable.clearFilter();
         //return row.className === value;
       },
       //添加合同模板

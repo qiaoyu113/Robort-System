@@ -18,7 +18,7 @@
                 <div class="mar">身份证号：{{account.idCardNo}}</div>
                 <div class="mar">银行：{{account.bankName}}</div>
                 <div class="mar">银行卡号：{{account.bankCardNo}}</div>
-                <div class="mar">提现金额：{{orders.applyMoney}}</div>
+                <div class="mar">提现金额：{{orders.applyMoney | moneyFormate}}</div>
             </div>
             <div class="buyerinfo">
                 <el-form ref="form" :model="myForm" :rules="rules">
@@ -67,6 +67,7 @@ export default {
                 orders:'',
                 uploadOrg: {
                     limit:1,
+                    noSizeLimit:true,
                 },
                 myForm: {
                     chose: '1',

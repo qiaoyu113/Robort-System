@@ -55,8 +55,10 @@
               label="订单数">
       </el-table-column>
       <el-table-column
-              prop="totalAmount"
               label="佣金总额">
+        <template slot-scope="scope">
+          <span>{{scope.row.totalAmount | moneyFormate}}</span>
+        </template>
       </el-table-column>
       <el-table-column
               prop="createTime"

@@ -5,6 +5,7 @@
       <el-form :model="userForm" :rules="rules" ref="userForm" label-width="110px" class="demo-ruleForm">
         <el-form-item label="账号" size="mini">
           {{list.account}}
+          <div class="reset-pass" @click="show()">修改密码</div>
         </el-form-item>
         <el-form-item label="头像" prop="imgUrl">
           <upload-original :options="uploadOrg" v-on:getPictureUrl="getPictureUrl" ref="upOrg"></upload-original>
@@ -26,15 +27,15 @@
       <div class="modifybox">
         <div class="modifros clearfix">
           <p class="modifros_l">原密码 : </p>
-          <p class="modifros_r"><el-input v-model="oldpwd" placeholder="请输入原密码"></el-input></p>
+          <p class="modifros_r"><el-input type="password" v-model="oldpwd" placeholder="请输入原密码"></el-input></p>
         </div>
         <div class="modifros clearfix">
           <p class="modifros_l">新密码 : </p>
-          <p class="modifros_r"><el-input v-model="newpwd1" placeholder="请输入新密码"></el-input></p>
+          <p class="modifros_r"><el-input type="password" v-model="newpwd1" placeholder="请输入新密码"></el-input></p>
         </div>
         <div class="modifros clearfix">
           <p class="modifros_l">确认密码 : </p>
-          <p class="modifros_r"><el-input v-model="newpwd2" placeholder="再次输入新密码"></el-input></p>
+          <p class="modifros_r"><el-input type="password" v-model="newpwd2" placeholder="再次输入新密码"></el-input></p>
         </div>
         <el-button @click='postPassword()'>确定</el-button>
       </div>
@@ -95,14 +96,38 @@
             // 修改密码
             postPassword:function(){
                 let that=this;
-                financialService.postPassword({oldpwd:that.oldpwd,newpwd1:that.newpwd1,newpwd2:that.newpwd2}).then(function(res){
-                    if(res.data.code == 200){
-                        that.getUsers()
-                        that.close()
-                    }else{
-                        that.$message.error(res.data.message);
-                    }
-                })
+                if(that.oldpwd == that.newpwd1){
+                    that.$message({
+                        type: 'info',
+                        message: '旧密码和新密码相同，请重新输入'
+                    });
+                    that.oldpwd ='';that.newpwd1 ='';that.newpwd2 =''
+                }else if(that.newpwd1!==that.newpwd2){
+                    that.$message({
+                        type: 'info',
+                        message: "两次密码输入不相同，请重新输入"
+                    });
+                    that.oldpwd ='';that.newpwd1 ='';that.newpwd2 =''
+
+                }else {
+                    financialService.postPassword({
+                        oldpwd: that.oldpwd,
+                        newpwd1: that.newpwd1,
+                        newpwd2: that.newpwd2
+                    }).then(function (res) {
+                        if (res.data.code == 200) {
+                            that.getUsers()
+                            that.close()
+                            that.$message({
+                                type: 'success',
+                                message: "修改密码成功"
+                            });
+                            that.oldpwd ='';that.newpwd1 ='';that.newpwd2 =''
+                        } else {
+                            that.$message.error(res.data.message);
+                        }
+                    })
+                }
 
             },
             // 修改昵称和手机号
@@ -154,6 +179,12 @@
 
 <style lang="less">
   .system-account{
+    .reset-pass{
+      color: #1ba1e2;
+      font-size: 10px;
+      cursor: pointer;
+      width: 80px;
+    }
     .primary-button{
       margin: 40px 0 0 200px;
     }

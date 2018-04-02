@@ -7,20 +7,20 @@
       <el-form-item label="产品包封面图" prop="cover">
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
       </el-form-item>
-      <el-form-item label="合作伙伴LOGO" prop="logo">
+      <!--<el-form-item label="合作伙伴LOGO" prop="logo">
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myLogoPicUrl"></upload-original>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="生成合同banner" prop="banner">
         <upload-original :options="uploadOrgBanner" v-on:getPictureUrl="myBannerPicUrl"></upload-original>
       </el-form-item>
       <el-form-item label="宣传语">
         <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
       </el-form-item>
-      <el-form-item label="演示视频" prop="selItem"  size="mini">
+      <!--<el-form-item label="演示视频" prop="selItem"  size="mini">
         <el-select v-model="ruleForm.selItem" placeholder="请选择">
           <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item.id" :key="key"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="简介" prop="detail">
         <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
       </el-form-item>
@@ -91,9 +91,9 @@
           cover: [
             { required: true, message: '请上传封面图', trigger: 'blur' }
           ],
-          logo: [
+          /*logo: [
             { required: true, message: '请上传合作伙伴logo图', trigger: 'blur' }
-          ],
+          ],*/
           banner: [
             { required: true, message: '请上传生成合同所需banner图', trigger: 'blur' }
           ],
@@ -101,9 +101,9 @@
 //            { required: true, message: '请填写简介', trigger: 'blur' },
 //            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
 //          ],
-          selItem: [
-            { required: true, message: '请选择演示视频', trigger: 'change' }
-          ],
+//          selItem: [
+//            { required: true, message: '请选择演示视频', trigger: 'change' }
+//          ],
           detail: [
             { required: true, message: '请填写产品包详情', trigger: 'blur' }
           ],
@@ -128,7 +128,7 @@
             contractService.addProductPackage({
               name: that.ruleForm.title,
               cover: that.ruleForm.cover,
-              logo: that.ruleForm.logo,
+//              logo: that.ruleForm.logo,
               banner: that.ruleForm.banner,
               description: that.ruleForm.desc,
               content: that.ruleForm.detail,

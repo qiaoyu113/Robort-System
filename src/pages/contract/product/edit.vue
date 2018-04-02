@@ -7,9 +7,9 @@
             <el-form-item label="产品包封面图" prop="cover">
                 <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl" ref="upCover"></upload-img>
             </el-form-item>
-            <el-form-item label="合作伙伴LOGO" prop="logo">
+            <!--<el-form-item label="合作伙伴LOGO" prop="logo">
                 <upload-original :options="uploadOrg" v-on:getPictureUrl="myLogoPicUrl" ref="upLogo"></upload-original>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="生成合同banner" prop="banner">
                 <upload-original :options="uploadOrgBanner" v-on:getPictureUrl="myBannerPicUrl" ref="upBanner"></upload-original>
             </el-form-item>
@@ -93,9 +93,9 @@ export default {
                 cover: [
                     { required: true, message: '请上传封面图', trigger: 'blur' }
                 ],
-                logo: [
+                /*logo: [
                     { required: true, message: '请上传合作伙伴logo图', trigger: 'blur' }
-                ],
+                ],*/
                 banner: [
                     { required: true, message: '请上传生成合同所需banner图', trigger: 'blur' }
                 ],
@@ -132,7 +132,7 @@ export default {
                         id: that.ruleForm.id,
                         name: that.ruleForm.title,
                         cover: that.ruleForm.cover,
-                        logo: that.ruleForm.logo,
+//                        logo: that.ruleForm.logo,
                         banner: that.ruleForm.banner,
                         description: that.ruleForm.desc,
                         content: that.ruleForm.detail,
@@ -196,8 +196,8 @@ export default {
                   let imgBaseUrl = that.$store.state.picHead;
                   that.$refs.upCover.isImageState = 1; // 显示删除图片图标
                   that.$refs.upCover.imgUrl = imgBaseUrl + obj.cover; // 图片显示路径
-                  that.$refs.upLogo.isImageState = 1; // 显示删除图片图标
-                  that.$refs.upLogo.imgUrl = imgBaseUrl + obj.logo; // 图片显示路径
+//                  that.$refs.upLogo.isImageState = 1; // 显示删除图片图标
+//                  that.$refs.upLogo.imgUrl = imgBaseUrl + obj.logo; // 图片显示路径
                   that.$refs.upBanner.isImageState = 1; // 显示删除图片图标
                   that.$refs.upBanner.imgUrl = imgBaseUrl + obj.banner; // 图片显示路径
 

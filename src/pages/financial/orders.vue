@@ -57,7 +57,7 @@
                 <el-table-column
                         label="交易时间">
                     <template slot-scope="scope">
-                        <span>{{createTime | dateFormate}}</span>
+                        <span>{{scope.row.createTime  | dateFormate}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -99,6 +99,7 @@
         name: 'app',
         data: function (){
             return {
+                orders:[],
                 wallets:[],
                 tabIndex:"1",
                 timeRange:'',
@@ -162,7 +163,6 @@
                     that.total = res.data.datas.totalCount*1;
 
                     //console.log(that.total);
-                     //console.log(res);
                 })
             },
             changePage:function (page) {

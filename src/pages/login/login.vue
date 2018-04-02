@@ -100,7 +100,12 @@
                                 if(res.data.success){
                                     localStorage.token = res.data.datas;
                                     that.$router.push({name: 'home'});
-                                }else{}
+                                }else{
+                                    that.$notify({
+                                        title: '账号密码错误',
+                                        type: 'warning'
+                                    });
+                                }
                             });
                         }else {
                             that.$notify({

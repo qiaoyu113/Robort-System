@@ -6,7 +6,7 @@
                 <div class="logo">合同机器人</div>
                 <el-row class="tac">
                     <el-col>
-                        <el-menu
+                        <el-menu ref="menu"
                                 default-active="2"
                                 class="el-menu-vertical-demo"
                                 @open="handleOpen"
@@ -110,12 +110,13 @@
                     <div class="topLeft">{{titleName}}</div>
                     <div class="topRight">
                         <div class="rightHome"><a href="http://www.docqbot.com " target="_blank">网站首页</a></div>
-                        <div class="User">
+                        <div class="User" @click="show">
                             <div class="UserImg">
                                 <img class="image" :src="adminPhoto"/>
                             </div>
                             <div class="name">{{adminName}}</div>
                         </div>
+                        <div class="logout" v-if="showl" @click="logout">退出</div>
                     </div>
                 </div>
                 <!--展示内容-->
@@ -137,7 +138,8 @@
                 active:true,
                 titleName:'',
                 adminPhoto: '',
-                adminName: ''
+                adminName: '',
+                showl:false,
             }
         },
         mounted () {
@@ -146,10 +148,63 @@
             localStorage.afterB = 'http://' + window.location.host + '/editor/image';
             // 获得管理员信息
             this.getAdminInfo();
+            var r = this.$route.name
+            var that =this
+                /*case:{name: 'jurisdiction',path:'/setup/jurisdiction',component: jurisdiction},
+                {name: 'integral',path:'/setup/integral',component: integral},
+                {name: 'member',path:'/setup/member',component: member},
+                {name: 'file',path:'/setup/file',component: file},
+                {name: 'label',path:'/setup/label',component: label},
+                {name: 'operPhone',path:'/operation/operPhone',component: operPhone},*/
+//                产品7，内容8，渠道1，用户4，消息2，财务3，系统9
+            console.log(this.$refs.menu);
+            this.$refs.menu.open(7);
+            switch (r) {
+                case 'sysClassify': that.titleName = "字典设置";this.$refs.menu.open(9);break;
+                case 'sysAccount' : that.titleName = "账号设置";this.$refs.menu.open(9);break;
+                case 'productPackage' : that.titleName = "产品包";this.$refs.menu.open(7);break;
+                case 'productAdd' : that.titleName = "产品包";this.$refs.menu.open(7);break;
+                case 'productEdit' : that.titleName = "产品包";this.$refs.menu.open(7);break;
+                case 'productDetail' : that.titleName = "产品包";this.$refs.menu.open(7);break;
+                case 'productScan' : that.titleName = "产品包";this.$refs.menu.open(7);break;
+                case 'contractTemplateAdd' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'contractTemplateEdit' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'contractTemplateScan' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'contractTemplate' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'contractServices' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'contractServiceDetail' : that.titleName = "合同模板";this.$refs.menu.open(7);break;
+                case 'partner' : that.titleName = "合作伙伴";this.$refs.menu.open(8);break;
+                case 'partnerAdd' : that.titleName = "合作伙伴";this.$refs.menu.open(8);break;
+                case 'partnerEdit' : that.titleName = "合作伙伴";this.$refs.menu.open(8);break;
+                case 'productFunc' : that.titleName = "产品功能";this.$refs.menu.open(8);break;
+                case 'videoDemo' : that.titleName = "演示视频";this.$refs.menu.open(8);break;
+                case 'videoDemoAdd' : that.titleName = "演示视频";this.$refs.menu.open(8);break;
+                case 'videoDemoEdit' : that.titleName = "演示视频";this.$refs.menu.open(8);break;
+                case 'HotDocs' : that.titleName = "HotDocs代表用户";this.$refs.menu.open(8);break;
+                case 'HotDocsAdd' : that.titleName = "HotDocs代表用户";this.$refs.menu.open(8);break;
+                case 'HotDocsEdit' : that.titleName = "HotDocs代表用户";this.$refs.menu.open(8);break;
+                case 'aboutUs' : that.titleName = "关于我们";this.$refs.menu.open(8);break;
+                case 'news' : that.titleName = "新闻管理";this.$refs.menu.open(8);break;
+                case 'newsAdd' : that.titleName = "新闻管理";this.$refs.menu.open(8);break;
+                case 'newsEdit' : that.titleName = "新闻管理";this.$refs.menu.open(8);break;
+                case 'banner' : that.titleName = "焦点图管理";this.$refs.menu.open(8);break;
+                case 'messages' : that.titleName = "站内信";this.$refs.menu.open(2);break;
+                case 'manage' : that.titleName = "提现审核";this.$refs.menu.open(3);break;
+                case 'accounts' : that.titleName = "账户总览";this.$refs.menu.open(3);break;
+                case 'orders' : that.titleName = "订单管理";this.$refs.menu.open(3);break;
+                case 'order-detail' : that.titleName = "订单管理";this.$refs.menu.open(3);break;
+                case 'refund' : that.titleName = "提现审核";this.$refs.menu.open(3);break;
+                case 'users' : that.titleName = "用户管理";this.$refs.menu.open(4);break;
+                case 'user-detail' : that.titleName = "用户管理";this.$refs.menu.open(4);break;
+                case 'channelSelf' : that.titleName = "渠道管理";this.$refs.menu.open(1);break;
+                case 'channelUser' : that.titleName = "渠道管理";this.$refs.menu.open(1);break;
+                case 'channelDetail' : that.titleName = "渠道管理";this.$refs.menu.open(1);break;
+                default:break;
+            }
         },
         methods: {
             handleOpen(key, keyPath) {
-                //console.log(key, keyPath);
+                console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
                 //console.log(key, keyPath);
@@ -157,6 +212,13 @@
             select(key,keyPath,indexPath){
                 //console.log(key,keyPath,indexPath._uid);
                 this.titleName = key
+            },
+            show(){
+                this.showl = true;
+            },
+            logout(){
+                localStorage.removeItem('token')
+                this.$router.push({name:'login'})
             },
             getAdminInfo () {
                 let that=this;
@@ -185,6 +247,17 @@
         min-width: 1200px;
         margin: 0 auto;
         font-family: "Helvetica Neue","PingFang SC",Arial,sans-serif;
+        .logout{
+            position: absolute;
+            top: 60px;
+            border: 1px solid #f0f0f0;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            right: 120px;
+            text-align: center;
+            cursor: pointer;
+        }
     }
 
     /* 主内容区 */

@@ -10,6 +10,9 @@ export const financialService = {
     getAdminInfo: function () {
         return axios.get('/admin/adminUsers/me');
     },
+    postPassword: function (params) {
+        return axios.post('/admin/adminUsers/resetPwd',qs.toString(params));
+    },
     postAdminInfo: function (params) {
         return axios.post('/admin/adminUsers/'+params.id+ this.getParam(params));
     },

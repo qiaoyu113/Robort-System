@@ -45,6 +45,9 @@
                 <el-table-column
                         prop="applyMoney"
                         label="申请金额">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.applyMoney | moneyFormate}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="银行">

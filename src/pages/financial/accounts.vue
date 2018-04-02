@@ -3,11 +3,11 @@
         <div class="banner-text">
             <div class="left">
                 <div class="font18">累计收入</div>
-                <span class="money-total">{{totalMoney}}</span><span class="font16">&nbsp;元</span>
+                <span class="money-total">{{totalMoney |moneyFormate}}</span><span class="font16">&nbsp;元</span>
             </div>
             <div class="right">
-                <div>微信收入&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="f-red">{{wxMoney}}</span>元</div>
-                <div>支付宝收入&nbsp;&nbsp;&nbsp;<span class="f-red">{{alipayMoney}}</span>元</div>
+                <div>微信收入&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="f-red">{{wxMoney|moneyFormate}}</span>元</div>
+                <div>支付宝收入&nbsp;&nbsp;&nbsp;<span class="f-red">{{alipayMoney|moneyFormate}}</span>元</div>
             </div>
         </div>
         <div class="table">
@@ -32,8 +32,10 @@
                         label="名称">
                 </el-table-column>
                 <el-table-column
-                        prop="flowAmount"
                         label="收入">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.flowAmount | moneyFormate}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="操作">

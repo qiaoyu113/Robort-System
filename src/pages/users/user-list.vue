@@ -60,7 +60,7 @@
                         <el-table-column
                                 label="头像">
                             <template slot-scope="cope">
-                                <div class="potHand"  @click="getUserDetail(cope.row.id)"><img :src="picHead+cope.row.headImg" class="head-img"></div>
+                                <div class="potHand icon"  @click="getUserDetail(cope.row.id)"><img v-if="cope.row.headImg" :src="picHead+cope.row.headImg" class="head-img"></div>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -78,15 +78,15 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                label="单位类型">
+                                label="邮箱">
                             <template slot-scope="cope">
-                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.company}}</div>
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.email}}</div>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                label="职位">
+                                label="组织类型">
                             <template slot-scope="cope">
-                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.job}}</div>
+                                <div class="potHand"  @click="getUserDetail(cope.row.id)">{{cope.row.organType}}</div>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -396,6 +396,7 @@
 <style lang="less" scope>
     .user_list {
        .potHand{width:100%;height:28px;cursor:pointer;}
+       .potHand.icon{width:28px;border-radius: 14px;background: #f0f0f0}
         .title {
             padding: 20px 20px 0 40px;
             .search {

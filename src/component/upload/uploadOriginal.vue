@@ -70,11 +70,11 @@
                   };
               }
               function getfile() {
-                  that.options.imgWidth = that.options.imgWidth || image.width
-                  that.options.imgHeight = that.options.imgHeight || image.height
+                  that.options.imgWidth = that.options.imgWidth
+                  that.options.imgHeight = that.options.imgHeight
                   that.naturalWidth = image.width;
                   that.naturalHeight = image.height;
-                  if(that.naturalWidth == that.options.imgWidth && that.naturalHeight== that.options.imgHeight){
+                  if(that.options.noSizeLimit || (that.naturalWidth == that.options.imgWidth && that.naturalHeight== that.options.imgHeight)){
                       if(limit <= that.options.limit){
                           let formData = new FormData();
                           formData.append('myFile', file);
