@@ -137,20 +137,36 @@
                 pakName = that.cPackage[i].name;
               }
             }
-            //console.log('ruleForm', that.ruleForm);
-            contractService.addOneTemplate({name: that.ruleForm.name,
-              slogan: that.ruleForm.slogan,
-              classId: that.ruleForm.classify,
-              className: className,
-              country: that.ruleForm.country,
-              hotTemplateId: that.ruleForm.hotTemplateId,
-              productPkgId: that.ruleForm.packages,
-              connProductPkgId: that.ruleForm.packages,
-              productPkgName: pakName,
-              description: that.ruleForm.description,
-              catalogue: that.ruleForm.catalogue,
-              price_s: that.ruleForm.price_s,
-               tryUse: that.ruleForm.isTry}).then(function (res) {
+            var params = {}
+              if(that.templateType ==1){
+                params = {name: that.ruleForm.name,
+                    slogan: that.ruleForm.slogan,
+                    classId: that.ruleForm.classify,
+                    className: className,
+                    country: that.ruleForm.country,
+                    hotTemplateId: that.ruleForm.hotTemplateId,
+                    productPkgId: that.ruleForm.packages,
+                    productPkgName: pakName,
+                    description: that.ruleForm.description,
+                    catalogue: that.ruleForm.catalogue,
+                    price_s: that.ruleForm.price_s,
+                    tryUse: that.ruleForm.isTry}
+              }else{
+                  params = {name: that.ruleForm.name,
+                      slogan: that.ruleForm.slogan,
+                      classId: that.ruleForm.classify,
+                      className: className,
+                      country: that.ruleForm.country,
+                      hotTemplateId: that.ruleForm.hotTemplateId,
+                      productPkgId: that.ruleForm.packages,
+                      connProductPkgId: that.ruleForm.packages,
+                      productPkgName: pakName,
+                      description: that.ruleForm.description,
+                      catalogue: that.ruleForm.catalogue,
+                      price_s: that.ruleForm.price_s,
+                      tryUse: that.ruleForm.isTry}
+              }
+            contractService.addOneTemplate(params).then(function (res) {
               //console.log(res, '添加一个模板信息');
               if(res.data.success){
                 that.$route.params.templateTyp = String(that.templateType);

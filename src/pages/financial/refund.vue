@@ -21,7 +21,7 @@
                 <div class="mar">提现金额：{{orders.applyMoney | moneyFormate}}</div>
             </div>
             <div class="buyerinfo">
-                <el-form ref="form" :model="myForm" :rules="rules">
+                <el-form ref="form" :model="myForm" :rules="rules"  v-if="orders.status==0">
                     <div class="title">审核操作</div>
                     <el-form-item class="radio-group">
                         <el-radio v-model="myForm.chose" label="1">通过</el-radio>
@@ -40,7 +40,7 @@
                     </el-form-item>
                     <el-form-item class="box" v-if="orders.status!=0">
                         <div class="thumb-zone">
-                            <img class="thumb" :src="picUrl">
+                            <img v-if="picUrl" class="thumb" :src="picUrl">
                         </div>
                     </el-form-item>
                     <el-form-item class="f-btn" v-if="orders.status==0">

@@ -118,8 +118,8 @@
         centerDialogVisible: false, //提示弹框
         dialogFormVisible: false, // 内容弹层
         myPagination: {
-          size: 1,
-          num: 10,
+          size: 10,
+          num: 1,
           totalCount: 0,
           totalPage: 1
         },// 分页
