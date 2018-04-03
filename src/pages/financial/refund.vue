@@ -21,9 +21,9 @@
                 <div class="mar">提现金额：{{orders.applyMoney | moneyFormate}}</div>
             </div>
             <div class="buyerinfo">
-                <el-form ref="form" :model="myForm" :rules="rules"  v-if="orders.status==0">
+                <el-form ref="form" :model="myForm" :rules="rules" >
                     <div class="title">审核操作</div>
-                    <el-form-item class="radio-group">
+                    <el-form-item class="radio-group" v-if="orders.status==0">
                         <el-radio v-model="myForm.chose" label="1">通过</el-radio>
                         <el-radio v-model="myForm.chose" label="2">拒绝</el-radio>
                     </el-form-item>
@@ -33,14 +33,14 @@
                     </el-form-item>
                     <el-form-item class="remark" v-if='orders.status!=0'>
                         <span class="mar">备注：</span>
-                        <span class="ccc">{{orders.resultInfo}}</span>
+                        <span class="ccc">{{orders.resultInfo || result[orders.status]}}</span>
                     </el-form-item>
                     <el-form-item class="box" v-if="orders.status==0" prop="showImgUrl">
                         <upload-original :options="uploadOrg" v-on:getPictureUrl="getPictureUrl" ref="upOrg"></upload-original>
                     </el-form-item>
-                    <el-form-item class="box" v-if="orders.status!=0">
+                    <el-form-item class="box" v-if="orders.status!=0 && picUrl">
                         <div class="thumb-zone">
-                            <img v-if="picUrl" class="thumb" :src="picUrl">
+                            <img  class="thumb" :src="picUrl">
                         </div>
                     </el-form-item>
                     <el-form-item class="f-btn" v-if="orders.status==0">
@@ -61,6 +61,7 @@ export default {
         components: {'upload-original': uploadOriginal},
         data: function (){
             return {
+                result:['','审核通过','审核未通过'],
                 params:{
                     id:this.$route.params.orderId,
                 },
@@ -130,7 +131,7 @@ export default {
                     let obj = res.data.datas;
                     if(obj.status != 0){ // 已经审核过的
                         that.myForm.chose = obj.status+'';//通过还是未通过
-                        that.picUrl = that.$store.state.picHead + obj.certificate;
+                        that.picUrl = obj.certificate ? that.$store.state.picHead + obj.certificate : '';
                     }
                     if(obj.bankInfo == null){
                         that.account = {
