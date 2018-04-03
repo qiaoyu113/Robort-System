@@ -19,7 +19,9 @@
               <i class="el-icon-close" @click="delVideo" v-if="fileList.length > 0"></i>
               <i class="el-icon-circle-check"  v-if="fileList.length > 0"></i>
             </p><!-- v-if="percent<1 && percent>0"-->
-            <img class="progress" :width="percent">
+            <p class="barProg">
+              <img class="progress" :width="progressBar">
+            </p>
           </div>
       </el-form-item>
       <el-form-item label="简介" prop="desc">
@@ -61,7 +63,7 @@
             { required: true, message: '请输入简介', trigger: 'blur' }
           ]
         }, //表单验证
-        percent: 0,
+          progressBar: 0,
         fileList: [],
         ossOption: { // oss上传视频
             region: 'oss-cn-shanghai',
@@ -154,9 +156,9 @@
             client.multipartUpload(key, file, {
                 progress: function* (percentage, cpt) {
                     // 上传进度
-                    //_this.percentage = percentage
-                    //console.log('percentage', percentage);
-                    //console.log('cpt', cpt);
+                    that.progressBar = percentage*100 + '%';
+//                    console.log('percentage', percentage);
+//                    console.log('cpt', cpt);
                 }
             }).then((results) => {
                 // 上传完成
@@ -257,7 +259,11 @@
     .v-upload-btn{width:80px;height:28px;position:relative;
       .file{width:80px;height:28px;position:absolute;top:0; left:0;cursor: pointer;opacity:0;}
     }
-    .progress{height:2px;border-radius:2px;background:#4EAAFE;}
+    .barProg{width: 200px;height:2px;}
+    .progress{height:2px;background:#409EFF;
+      -webkit-border-radius:1px;
+      -moz-border-radius:1px;
+      border-radius:1px;}
     .thumb{width:150px;height:100px;}
   }
 </style>

@@ -353,8 +353,8 @@
               // 上传进度
               //_this.percentage = percentage
               that.progressBar = percentage*100 + '%';
-              console.log('percentage', percentage);
-              console.log('cpt', cpt);
+//              console.log('percentage', percentage);
+//              console.log('cpt', cpt);
             }
           }).then((results) => {
             // 上传完成

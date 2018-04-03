@@ -215,6 +215,7 @@
       },
       submitForm(formName) {
         let that = this;
+
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             // 通过id获得name
@@ -225,6 +226,7 @@
                 typeName = newArr[i].name;
               }
             }
+              that.centerDialogVisible = false;
             //
             channelService.addDistribution({
               type: that.ruleForm.type,
@@ -232,9 +234,16 @@
               typeId: that.ruleForm.title}).then(function (res) {
               //console.log(res, '添加一个分销');
               if(res.data.success){
-                that.centerDialogVisible = false;
+                  that.$notify({
+                      title: '添加成功',
+                      type: 'success'
+                  })
                 that.getList();
-              }else{}
+              }else{
+                  that.$notify({
+                      title: '添加失败',
+                      type: 'info'
+                  })}
             });
           } else {
             //console.log('error submit!!');
