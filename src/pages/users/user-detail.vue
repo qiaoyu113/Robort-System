@@ -7,7 +7,7 @@
             <div class="info">
                 <div class="mar">姓名：{{users.name}}</div>
                 <div class="mar">手机：{{users.phone}}</div>
-                <div class="mar">微信昵称：{{wxNickName}}</div>
+                <div class="mar">微信昵称：{{wxName}}</div>
             </div>
             <div class="bicinfo">
                 <div class="title">基本信息</div>
@@ -22,8 +22,8 @@
                 <div class="mar">交易类型 &nbsp;&nbsp;&nbsp;&nbsp;{{tran[users.tranType]}}</div>
             </div>
             <div class="bicinfo">
-                <div class="mar" v-if='subscribeItems'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</div>
-                <div class="mar" v-if='subscribeItems==null'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</div>
+                <div class="mar" v-if='users.expense'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</div>
+                <div class="mar" v-if='users.expense'>订阅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</div>
                 <div class="mar">加入时间 &nbsp;&nbsp;&nbsp;&nbsp;{{users.createTime}}</div>
             </div>
         </div>
