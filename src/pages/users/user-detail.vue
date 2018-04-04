@@ -33,8 +33,8 @@
             <div class="mar">生成合同：{{numItem.contractNum}}次</div>
             <div class="mar">消费金额：{{numItem.consumeMoney}}元</div>
             <div class="bor"></div>
-            <div v-for="item in footprintItems" class="box1 clearfix">
-                <div class="left">{{item.time}}</div><div class="right">{{item.content}}</div>
+            <div v-for="item in users.footprintItems" class="box1 clearfix">
+                <div class="left">{{item.time | dateFormate}}</div><div class="right">{{item.content}}</div>
             </div><!--<div class="mar">产品包名称1 &nbsp;&nbsp;&nbsp;&nbsp;{{numItem.collectNum}}次</div>-->
             <!--<div class="mar">合同模板名称  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100次</div>-->
             <!--<div class="mar">产品包名称3 &nbsp;&nbsp;&nbsp;&nbsp;61010次</div>-->
