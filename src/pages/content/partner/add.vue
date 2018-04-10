@@ -12,6 +12,11 @@
           <el-option v-for="item in pkgList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item v-if="pType==2" label="区域" prop="area"  size="mini">
+        <el-select v-model="ruleForm.area" placeholder="请选择区域">
+          <el-option v-for="(value, index, key) in areaList" :label="value" :value="value" :key="key"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item v-if="pType==2" label="国家" prop="country"  size="mini">
         <el-select v-model="ruleForm.country" placeholder="请选择国家">
           <el-option v-for="(value, index, key) in countryList" :label="value" :value="value" :key="key"></el-option>
@@ -27,6 +32,40 @@
       </el-form-item>
       <el-form-item label="简介" prop="detail">
         <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
+      </el-form-item>
+      <el-form-item label="联系人" prop="contactname1" size="mini">
+        <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1"></upload-original>
+        <div class="contact">
+          <el-form-item prop="contactname1" size="mini">
+          <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail1" size="mini">
+          <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="联系邮箱"></el-input>
+          </el-form-item>
+        </div>
+        <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2"></upload-original>
+        <div class="contact">
+          <el-form-item prop="contactemail2" size="mini">
+          <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail2" size="mini">
+          <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="联系邮箱"></el-input>
+          </el-form-item>
+        </div>
+      </el-form-item>
+      <el-form-item label="参考资料" prop="media" size="mini">
+        <div class="media">
+          <el-input v-model="ruleForm.media[0].title" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.media[0].src" class="src-input" placeholder="地址"></el-input>
+        </div>
+        <div class="media">
+          <el-input v-model="ruleForm.media[1].title" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.media[1].title" class="src-input" placeholder="地址"></el-input>
+        </div>
+        <div class="media">
+          <el-input v-model="ruleForm.media[2].title" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.media[2].title" class="src-input" placeholder="地址"></el-input>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -58,6 +97,10 @@ export default {
         // 描述文字二
         des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
       },
+      uploadOrg1: {
+        limit: 1,
+        nodesc:true,
+      },
       ruleForm: {
         name: '', // 伙伴名称
         imgUrl: '', // 图片
@@ -65,6 +108,7 @@ export default {
         country: '', // 国家关联
         template: '', // 合同模板关联
         phoneNo: '', // 联系方式
+        media: [{},{},{}], // 联系方式
         detail: '' // 简介
       },
       rules: {
@@ -78,6 +122,9 @@ export default {
         pkg: [
           { required: true, message: '请选择产品包关联', trigger: 'change' }
         ],
+        area: [
+          { required: true, message: '请选择区域', trigger: 'change' }
+        ],
         country: [
           { required: true, message: '请选择国家', trigger: 'change' }
         ],
@@ -86,8 +133,23 @@ export default {
         ],
         phoneNo: [
           { required: true, message: '请输入联系方式', trigger: 'blur' },
-//          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
-//          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+        ],
+          contact: [
+          { required: true},
+        ],
+        contactname1: [
+          { required: true, message: '请输入联系人', trigger: 'blur' },
+        ],
+        contactemail1: [
+          { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
+        ],
+        contactname2: [
+          { required: true, message: '请输入联系人', trigger: 'blur' },
+        ],
+        contactemail2: [
+          { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
         ],
         detail: [
           { required: true, message: '请填写简介', trigger: 'blur' }
@@ -211,5 +273,15 @@ export default {
     }
     .flexStart .upload-btn{margin-left:0;}
     .cke_chrome{width: 600px;}
+    .contact {
+      height: 100px;
+      padding: 12px;
+      float: left;
+      width: 135px;
+      .contact-input {
+        height:50px;
+        width: 120px;
+      }
+    }
   }
 </style>

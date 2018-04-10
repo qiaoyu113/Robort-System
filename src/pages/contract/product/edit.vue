@@ -88,7 +88,7 @@ export default {
             rules: {
                 title: [
                     { required: true, message: '请输入产品包名称', trigger: 'blur' },
-                    { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
+                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
                 ],
                 cover: [
                     { required: true, message: '请上传封面图', trigger: 'blur' }
