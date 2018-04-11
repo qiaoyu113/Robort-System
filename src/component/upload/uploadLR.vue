@@ -39,7 +39,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import VueCropper from '../../../src/assets/js/plugins/vue-cropper'
+  import VueCropper from 'vue-cropper'
   import {pluginService} from '../../service/pluginService'
 
   export default {
