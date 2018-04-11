@@ -33,17 +33,21 @@
       <el-form-item label="简介" prop="detail">
         <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
       </el-form-item>
-      <el-form-item label="联系人" prop="contactname1" size="mini">
-        <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1"></upload-original>
-        <div class="contact">
-          <el-form-item prop="contactname1" size="mini">
-          <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
-          </el-form-item>
-          <el-form-item prop="contactemail1" size="mini">
-          <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="联系邮箱"></el-input>
-          </el-form-item>
-        </div>
-        <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2"></upload-original>
+      <div class="contact-box" v-show="pType==2">
+        <el-form-item label="联系人" prop="contactname1" size="mini" class="par-contact">
+          <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1" class="partner-image"></upload-original>
+        </el-form-item>
+          <div class="contact">
+            <el-form-item prop="contactname1" size="mini">
+            <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
+            </el-form-item>
+            <el-form-item prop="contactemail1" size="mini">
+            <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="联系邮箱"></el-input>
+            </el-form-item>
+          </div>
+        <el-form-item prop="contactcover2" size="mini" class="par-contact">
+          <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
+        </el-form-item>
         <div class="contact">
           <el-form-item prop="contactemail2" size="mini">
           <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
@@ -52,19 +56,19 @@
           <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="联系邮箱"></el-input>
           </el-form-item>
         </div>
-      </el-form-item>
-      <el-form-item label="参考资料" prop="media" size="mini">
+      </div>
+      <el-form-item label="参考资料" size="mini" v-show="pType==2">
         <div class="media">
-          <el-input v-model="ruleForm.media[0].title" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.media[0].src" class="src-input" placeholder="地址"></el-input>
+          <el-input v-model="ruleForm.referenDatas[0].name" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.referenDatas[0].link" class="src-input" placeholder="地址"></el-input>
         </div>
         <div class="media">
-          <el-input v-model="ruleForm.media[1].title" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.media[1].title" class="src-input" placeholder="地址"></el-input>
+          <el-input v-model="ruleForm.referenDatas[1].name" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.referenDatas[1].link" class="src-input" placeholder="地址"></el-input>
         </div>
         <div class="media">
-          <el-input v-model="ruleForm.media[2].title" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.media[2].title" class="src-input" placeholder="地址"></el-input>
+          <el-input v-model="ruleForm.referenDatas[2].name" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="ruleForm.referenDatas[2].link" class="src-input" placeholder="地址"></el-input>
         </div>
       </el-form-item>
       <el-form-item>
@@ -108,7 +112,8 @@ export default {
         country: '', // 国家关联
         template: '', // 合同模板关联
         phoneNo: '', // 联系方式
-        media: [{},{},{}], // 联系方式
+        referenDatas: [{},{},{}], // 联系方式
+        contactUsers: [{},{}], // 联系方式
         detail: '' // 简介
       },
       rules: {
@@ -134,9 +139,6 @@ export default {
         phoneNo: [
           { required: true, message: '请输入联系方式', trigger: 'blur' },
         ],
-          contact: [
-          { required: true},
-        ],
         contactname1: [
           { required: true, message: '请输入联系人', trigger: 'blur' },
         ],
@@ -144,6 +146,9 @@ export default {
           { required: true, message: '请输入联系邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
         ],
+        /*contactcover1: [
+          { required: true, message: '请上传联系人头像', trigger: 'blur' },
+        ],*/
         contactname2: [
           { required: true, message: '请输入联系人', trigger: 'blur' },
         ],
@@ -151,6 +156,9 @@ export default {
           { required: true, message: '请输入联系邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
         ],
+        /*contactcover2: [
+          { required: true, message: '请上传联系人头像', trigger: 'blur' },
+        ],*/
         detail: [
           { required: true, message: '请填写简介', trigger: 'blur' }
         ]
@@ -191,6 +199,15 @@ export default {
           let cityCode = '';
           let phone = that.ruleForm.phoneNo;
           let description = that.ruleForm.detail;
+          let contactUsers = [
+                  {name:that.ruleForm.contactname1,
+                  cover:that.ruleForm.contactcover1,
+                  email:that.ruleForm.contactemail1},
+                  {name:that.ruleForm.contactname2,
+                  cover:that.ruleForm.contactcover2,
+                  email:that.ruleForm.contactemail2},
+              ]
+          let referenDatas = that.ruleForm.referenDatas;
           if(that.pType === 1){ // 白标合作伙伴
             productPackageId = that.ruleForm.pkg;
           }
@@ -198,8 +215,8 @@ export default {
             templateId = that.ruleForm.template;
             country = that.ruleForm.country;
           }
-          // 表单提交
-          contentService.addPartner({name: name,
+          var params = {
+            name: name,
             cover: cover,
             type: that.pType,
             productPackageId: productPackageId,
@@ -210,7 +227,12 @@ export default {
             city: city,
             cityCode: cityCode,
             phone: phone,
-            description: description}).then(function (res) {
+            description: description,
+            contactUsers:contactUsers,
+            referenDatas:referenDatas
+          }
+          // 表单提交
+          contentService.addPartner(params).then(function (res) {
             //console.log('添加一个合作伙伴', res);
             if(res.data.success){
               that.$route.params.partnerTyp = String(that.pType);
@@ -227,6 +249,16 @@ export default {
     myPicUrl (val) {
       let that = this;
       that.ruleForm.imgUrl = val;// 封面图
+    },
+    // 获得封面图路径
+    myPicUrl1 (val) {
+      let that = this;
+      that.ruleForm.contactcover1= val;// 封面图
+    },
+    // 获得封面图路径
+    myPicUrl2 (val) {
+      let that = this;
+      that.ruleForm.contactcover2 = val;// 封面图
     },
     // 获得产品包列表
     getPackage () {
@@ -268,20 +300,53 @@ export default {
   .container{
     font-size:14px;color:#333;
     padding: 20px;
-    .iptFormLen{
+    .iptFormLen {
       width: 600px;
     }
     .flexStart .upload-btn{margin-left:0;}
     .cke_chrome{width: 600px;}
-    .contact {
-      height: 100px;
-      padding: 12px;
-      float: left;
-      width: 135px;
-      .contact-input {
-        height:50px;
-        width: 120px;
+    .contact-box{
+      width: 100%;
+      height: 130px;
+      .partner-image {
+        width: 180px;
+        overflow:  hidden;
+        display:  inline-block;
+        position: relative;
+        float: left;
+        .right{
+          position: absolute;
+          left: 20px;
+        }
+      }
+      .contact {
+        float: left;
+        width: 150px;
+        display:  inline-block;
+        .el-form-item__content{
+          margin-left: 0!important;
+        }
+      }
+      .par-contact {
+        display:  inline-block;
+        float: left;
+      }
+      .contact-input{
+        margin-top: 10px;
+        width:  110px;
       }
     }
+
+    .media{
+      margin:0 0 10px 0;
+      .title-input {
+        width: 240px;
+      }
+      .src-input{
+        width: 360px;
+        margin:0 10px;
+      }
+    }
+
   }
 </style>

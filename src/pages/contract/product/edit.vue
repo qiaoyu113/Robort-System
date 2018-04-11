@@ -25,7 +25,16 @@
                 <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
             </el-form-item>
             <el-form-item label="价格" prop="price">
-                <el-input size="mini" class="iptPriceLength" v-model="ruleForm.price"></el-input>
+                <div>
+                    <label>现价</label>
+                    <el-input size="mini" class="iptPriceLength" v-model="ruleForm.price"></el-input>
+                </div>
+            </el-form-item>
+            <el-form-item prop="oriPrice_s">
+                <div>
+                    <label>原价</label>
+                    <el-input size="mini" class="iptPriceLength" v-model="ruleForm.oriPrice_s"></el-input>
+                </div>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
@@ -111,6 +120,9 @@ export default {
                 ],
                 price: [
                     { required: true, message: '请填写该产品包的定价', trigger: 'blur' }
+                ],
+                oriPrice_s: [
+                    { required: true, message: '请填写该产品包的原价', trigger: 'blur' }
                 ]
             }
         }
@@ -137,6 +149,7 @@ export default {
                         description: that.ruleForm.desc,
                         content: that.ruleForm.detail,
                         demoVideoId: that.ruleForm.selItem,
+                        oriPrice_s: that.ruleForm.oriPrice_s,
                         price_s: that.ruleForm.price}).then(function (res) {
                         // console.log(res, '编辑一个产品包');
                         if(res.data.success){

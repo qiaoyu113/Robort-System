@@ -11,7 +11,7 @@ export const contentService = {
         return axios.post('/admin/partners', qs.stringify(params));
     },
     editPartner: function (params) {
-        return axios.put('/admin/partners', qs.stringify(params));
+        return axios.put('/admin/partners', params);
     },
     disStickPartner: function (params) {
         return axios.put('/admin/partners/disstick', qs.stringify(params));

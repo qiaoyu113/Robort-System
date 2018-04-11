@@ -96,6 +96,12 @@ const routers = [
                {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
                {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
+               // 合同管理—》价值定位
+               {name: 'productValue',path:'/content/value',component: productPackage},
+               {name: 'productAdd',path:'/contract/product/add',component: productAdd},
+               {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
+               {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
+               {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
                // 合同管理—》模板
                {name: 'contractTemplateAdd',path:'/contract/template/:templateTyp/add',component: contractTemplateAdd},
                {name: 'contractTemplateEdit',path:'/contract/template/:templateTyp/edit/:templateId',component: contractTemplateEdit},

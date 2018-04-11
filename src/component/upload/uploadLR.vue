@@ -39,7 +39,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import VueCropper from 'vue-cropper'
+  import VueCropper from '../../../src/assets/js/plugins/vue-cropper'
   import {pluginService} from '../../service/pluginService'
 
   export default {
@@ -96,8 +96,9 @@
             //test.location.href = window.URL.createObjectURL(data)
           });
         } else {
-          this.$refs.cropper.getCropData((data) => {
-            that.postToService(data, that.options.autoCropWidth, that.options.autoCropHeight);
+            this.$refs.cropper.getCropData((data) => {
+//              console.log(data,111);
+              that.postToService(data, that.options.autoCropWidth, that.options.autoCropHeight);
           });
         }
       },
@@ -115,12 +116,13 @@
         }
         let reader = new FileReader();
         reader.onload = (e) => {
-          let data;
+            let data;
           if (typeof e.target.result === 'object') {
             // 把Array Buffer转化为blob 如果是base64不需要
             //data = window.URL.createObjectURL(new Blob([e.target.result]))
           } else {
             data = e.target.result;
+              console.log(data,555);
           }
           that.option.img = data; //赋值到图片截取弹出层
           that.dialogCropperVisible = true; //确定弹出图片截取层
@@ -160,8 +162,8 @@
   }
 </script>
 <style lang="less" scope>
-  .el-dialog{margin:0 auto 50px!important;}
-  .vue-cropper{height: 60%!important;;}
+  .el-dialog{margin:0 auto 50px!important;height: 100%}
+  .vue-cropper{height: 60%!important;;img{width: 100%}}
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}

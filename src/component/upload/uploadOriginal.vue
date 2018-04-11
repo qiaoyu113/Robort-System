@@ -34,7 +34,9 @@
       }
     },
     components: {},
-    mounted () {},
+    created () {
+//        console.log(this.options,111);
+    },
     methods: {
       //删除图片路径
       delImgUrl () {
@@ -122,7 +124,7 @@
     .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}
     }
-    .thumb-zone{width:150px;height:100px;position:relative;
+    .thumb-zone{width:150px;height:100px;position:relative;background: #f0f0f0;
       .thumb{max-width:100%;max-height: 100%; width: auto;height: auto;}
       .del{font-size:20px;position:absolute;top: -8px; right:-8px;}
     }

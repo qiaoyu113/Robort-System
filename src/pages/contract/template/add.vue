@@ -82,13 +82,13 @@
             { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
           ],
           classify: [
-            { required: true, message: '请选择分类', trigger: 'change' }
+            { required: false, message: '请选择分类', trigger: 'change' }
           ],
           country: [
-            { required: true, message: '请选择国家', trigger: 'change' }
+            { required: false, message: '请选择国家', trigger: 'change' }
           ],
           hotTemplateId: [
-            { required: true, message: '请选择模板', trigger: 'change' }
+            { required: false, message: '请选择模板', trigger: 'change' }
           ],
           packages: [
             { required: true, message: '请选择产品包', trigger: 'change' }
