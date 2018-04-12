@@ -59,18 +59,11 @@
         </div>
       </div>
       <el-form-item label="参考资料" size="mini" v-show="pType==2">
-        <div class="media">
-          <el-input v-model="ruleForm.referenDatas[0].name" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.referenDatas[0].link" class="src-input" placeholder="地址"></el-input>
+        <div class="media" v-for="referenDatas in ruleForm.referenDatas">
+          <el-input v-model="referenDatas.name" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="referenDatas.link" class="src-input" placeholder="地址"></el-input>
         </div>
-        <div class="media">
-          <el-input v-model="ruleForm.referenDatas[1].name" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.referenDatas[1].link" class="src-input" placeholder="地址"></el-input>
-        </div>
-        <div class="media">
-          <el-input v-model="ruleForm.referenDatas[2].name" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="ruleForm.referenDatas[2].link" class="src-input" placeholder="地址"></el-input>
-        </div>
+        <el-button type="line"  icon="el-icon-plus" @click="addRefer()" size="mini" plain>新增参考资料</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -303,6 +296,9 @@ export default {
         systemService.getClassifyList({type: v}).then(function(res){
           that.countryList = res.data.datas
         })
+    },
+    addRefer(v){
+        this.ruleForm.referenDatas.push({})
     }
   }
 }
