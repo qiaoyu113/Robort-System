@@ -8,6 +8,7 @@ import App from './App.vue'
 import './mixin/directive';
 import './mixin/filter';
 
+Vue.http.options.emulateJSON = true;
 // 开启debug
 Vue.config.debug = true
 // or with options

@@ -12,14 +12,15 @@
           <el-option v-for="item in pkgList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-if="pType==2" label="区域" prop="area"  size="mini">
-        <el-select v-model="ruleForm.area" placeholder="请选择区域">
-          <el-option v-for="(value, index, key) in areaList" :label="value" :value="value" :key="key"></el-option>
+      <el-form-item v-if="pType==2" label="区域" prop="classType"  size="mini">
+        <el-select v-model="ruleForm.classType" placeholder="请选择区域"
+                 @change="getCountryList">
+          <el-option v-for="(value, index, key) in areaList" :label="value.name" :value="value.typeId" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-if="pType==2" label="国家" prop="country"  size="mini">
-        <el-select v-model="ruleForm.country" placeholder="请选择国家">
-          <el-option v-for="(value, index, key) in countryList" :label="value" :value="value" :key="key"></el-option>
+      <el-form-item v-if="pType==2" label="国家" prop="classId"  size="mini">
+        <el-select v-model="ruleForm.classId" placeholder="请选择国家">
+          <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
@@ -49,7 +50,7 @@
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
-          <el-form-item prop="contactemail2" size="mini">
+          <el-form-item prop="contactname2" size="mini">
             <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item prop="contactemail2" size="mini">
@@ -81,6 +82,7 @@
   import uploadOriginal from '../../../component/upload/uploadOriginal.vue'
   import {world} from '../../../service/worldService'
   import {contentService} from '../../../service/contentService'
+  import {systemService} from '../../../service/systemService'
 
   let myEditor;// 富文本编辑器
 
@@ -89,6 +91,13 @@
     data () {
       return {
         pkgList: [], // 产品包数组
+        areaList: [
+            { name:'亚太',typeId:4,list:[] },
+            { name:'中东/北非',typeId:5,list:[] },
+            { name:'中东欧/中亚',typeId:6,list:[] },
+            { name:'西欧',typeId:7,list:[] },
+            { name:'撒哈拉以南非洲',typeId:8,list:[] },
+            { name:'美洲',typeId:9,list:[] },], // 国家数组
         countryList: [], // 国家数组
         templateList: [], // 合同模板数组
         pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；partnerTyp
@@ -106,7 +115,8 @@
           name: '', // 伙伴名称
           imgUrl: '', // 图片
           pkg: '', // 产品包关联
-          country: '', // 国家关联
+          classType: '', // 区域
+          classId: '', // 国家关联
           template: '', // 合同模板关联
           phoneNo: '', // 联系方式
           referenDatas: [{},{},{}], // 联系方式
@@ -128,7 +138,10 @@
           pkg: [
             { required: true, message: '请选择产品包关联', trigger: 'change' }
           ],
-          country: [
+          classType: [
+            { required: true, message: '请选择区域', trigger: 'change' }
+          ],
+          classId: [
             { required: true, message: '请选择国家', trigger: 'change' }
           ],
           template: [
@@ -175,7 +188,6 @@
         that.getPackage(); //产品包
       }
       else if(that.pType === 2){ // 国际合作伙伴
-        that.getCountry(); //国家
         that.getTemplate(); //合同模板
       }
       that.getPartner();
@@ -191,7 +203,8 @@
             let cover = that.ruleForm.imgUrl;
             let productPackageId = that.ruleForm.pkg;
             let templateId = that.ruleForm.template;
-            let country = that.ruleForm.country;
+            let classType = that.ruleForm.classType;
+            let classId = that.ruleForm.classId;
             let prov = '';
             let provCode = '';
             let city = '';
@@ -212,24 +225,27 @@
             }
             else if(that.pType === 2){ // 国际合作伙伴
               templateId = that.ruleForm.template;
-              country = that.ruleForm.country;
+              classType = that.ruleForm.classType;
+              classId = that.ruleForm.classId;
             }
             // 表单提交
-            contentService.editPartner({
+              console.log(111,id);
+              contentService.editPartner({
               id: id,
               name: name,
               cover: cover,
               type: that.pType,
               productPackageId: productPackageId,
               templateId: templateId,
-              country: country,
+              classType: classType,
+              classId: classId,
               prov: prov,
               provCode: provCode,
               city: city,
               cityCode: cityCode,
               phone: phone,
-              contactUsers:contactUsers,
-              referenDatas:referenDatas,
+              contactUsers_s:JSON.stringify(contactUsers),
+              referenDatas_s:JSON.stringify(referenDatas),
               description: description}).then(function (res) {
               //console.log('编辑一个合作伙伴', res);
               if(res.data.success){
@@ -271,7 +287,8 @@
               name: obj.name, // 伙伴名称
               imgUrl:obj.cover, // 图片
               pkg: obj.productPackageId, // 产品包关联
-              country: obj.country, // 国家关联
+              classType: obj.classType, // 国家关联
+              classId: obj.classId, // 国家关联
               template: obj.templateId, // 合同模板关联
               phoneNo: obj.phone, // 联系方式
               referenDatas: obj.referenDatas ||  [{},{},{}], // 联系方式
@@ -286,6 +303,7 @@
             that.ruleForm.contactemail2 = that.ruleForm.contactUsers[1].email
             that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
             that.$refs.upOrg.isImageState = 1;
+              that.getCountryList(obj.classType)
             setTimeout(function () {
               myEditor.setData(obj.description);
             }, 1000);
@@ -303,12 +321,6 @@
           }else{}
         });
       },
-      // 获得国家
-      getCountry () {
-        let that = this;
-        that.countryList = world.nameMap;
-        //console.log('国家', that.countryList );
-      },
       // 获得合同模板
       getTemplate () {
         let that = this;
@@ -324,6 +336,13 @@
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
         //myEditor.setData("");
+      },
+      getCountryList(v){
+          let that = this
+          that.ruleForm.classId = null
+          systemService.getClassifyList({type: v}).then(function(res){
+              that.countryList = res.data.datas
+          })
       }
     }
   }

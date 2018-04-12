@@ -13,13 +13,14 @@
         </el-select>
       </el-form-item>
       <el-form-item v-if="pType==2" label="区域" prop="area"  size="mini">
-        <el-select v-model="ruleForm.area" placeholder="请选择区域">
-          <el-option v-for="(value, index, key) in areaList" :label="value" :value="value" :key="key"></el-option>
+        <el-select v-model="ruleForm.area" placeholder="请选择区域"
+                   @change="getCountryList">
+          <el-option v-for="(value, index, key) in areaList" :label="value.name" :value="value.typeId" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item v-if="pType==2" label="国家" prop="country"  size="mini">
         <el-select v-model="ruleForm.country" placeholder="请选择国家">
-          <el-option v-for="(value, index, key) in countryList" :label="value" :value="value" :key="key"></el-option>
+          <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
@@ -81,6 +82,7 @@
 import uploadOriginal from '../../../component/upload/uploadOriginal.vue'
 import {world} from '../../../service/worldService'
 import {contentService} from '../../../service/contentService'
+import {systemService} from '../../../service/systemService'
 
 let myEditor;// 富文本编辑器
 
@@ -89,6 +91,13 @@ export default {
   data () {
     return {
       pkgList: [], // 产品包数组
+      areaList: [
+          { name:'亚太',typeId:4,list:[] },
+          { name:'中东/北非',typeId:5,list:[] },
+          { name:'中东欧/中亚',typeId:6,list:[] },
+          { name:'西欧',typeId:7,list:[] },
+          { name:'撒哈拉以南非洲',typeId:8,list:[] },
+          { name:'美洲',typeId:9,list:[] },], // 国家数组
       countryList: [], // 国家数组
       templateList: [], // 合同模板数组
       pType: 1, // 哪种合作伙伴类型1.白标；2.国际；3.国内；partnerTyp
@@ -178,7 +187,6 @@ export default {
     }
     else if(that.pType === 2){ // 国际合作伙伴
       //console.log(2)
-      that.getCountry(); //国家
       that.getTemplate(); //合同模板
     }
   },
@@ -192,6 +200,7 @@ export default {
           let cover = that.ruleForm.imgUrl;
           let productPackageId = that.ruleForm.pkg;
           let templateId = that.ruleForm.template;
+          let area = that.ruleForm.area;
           let country = that.ruleForm.country;
           let prov = '';
           let provCode = '';
@@ -212,7 +221,8 @@ export default {
             productPackageId = that.ruleForm.pkg;
           }
           else if(that.pType === 2){ // 国际合作伙伴
-            templateId = that.ruleForm.template;
+              area = that.ruleForm.area;
+              templateId = that.ruleForm.template;
             country = that.ruleForm.country;
           }
           var params = {
@@ -221,6 +231,7 @@ export default {
             type: that.pType,
             productPackageId: productPackageId,
             templateId: templateId,
+            area: area,
             country: country,
             prov: prov,
             provCode: provCode,
@@ -228,8 +239,8 @@ export default {
             cityCode: cityCode,
             phone: phone,
             description: description,
-            contactUsers:contactUsers,
-            referenDatas:referenDatas
+            contactUsers_s:contactUsers,
+            referenDatas_s:referenDatas
           }
           // 表单提交
           contentService.addPartner(params).then(function (res) {
@@ -271,12 +282,6 @@ export default {
         }else{}
       });
     },
-    // 获得国家
-    getCountry () {
-      let that = this;
-      that.countryList = world.nameMap;
-      //console.log('国家', that.countryList );
-    },
     // 获得合同模板
     getTemplate () {
       let that = this;
@@ -292,6 +297,12 @@ export default {
       let CKEDITOR = window.CKEDITOR;
       myEditor = CKEDITOR.replace("detail");
       myEditor.setData("");
+    },
+    getCountryList(v){
+        let that = this
+        systemService.getClassifyList({type: v}).then(function(res){
+          that.countryList = res.data.datas
+        })
     }
   }
 }

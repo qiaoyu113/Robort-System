@@ -93,7 +93,7 @@
                                 label="订阅">
                             <template slot-scope="cope">
                                 <div class="potHand"  @click="getUserDetail(cope.row.id)">
-                                <span v-if="cope.row.subscribeItems">是</span>
+                                <span v-if="cope.row.expense">是</span>
                                 <span v-else>否</span>
                                 </div>
                             </template>

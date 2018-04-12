@@ -2,17 +2,17 @@
  * Created by zhong on 2017/10/27.
  */
 import axios from 'axios';
-// import store from '../vuex/'
 
 // axios.defaults.baseURL = 'http://admin.api.docqbot.com';
-// axios.defaults.baseURL = 'http://39.106.114.64:8097';
-axios.defaults.baseURL = 'http://yx4vgt.natappfree.cc';
+axios.defaults.baseURL = 'http://39.106.114.64:8097';
+// axios.defaults.baseURL = 'http://wbxvgr.natappfree.cc';
 
 let win = typeof window
 let isClient = false
 if(win && win != 'undefined'){
     isClient = true
 }
+
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     // 在发送请求之前加toke

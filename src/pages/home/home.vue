@@ -265,7 +265,7 @@
     /* 主内容区 */
     a{text-decoration: none;color: inherit;}
     main{  min-width: 1200px;  display: -webkit-box;  display: -ms-flexbox;  display: flex;  position:fixed; top:0;left:0;right:0;bottom:0;margin:auto;overflow:overlay; background-color: #FCFCFC;  }
-    main .main-left{position:absolute;text-align: center;width: 181px;height:100%;float: left;background:#304156; overflow-y: overlay;}
+    main .main-left{position:absolute;text-align: center;width: 181px;height:100%;float: left;background:#304156; overflow-y: scroll;}
     main .main-left::-webkit-scrollbar {display:none}
     main .main-left .logo{width:100%;height:60px;font-size:16px;font-weight: bold;line-height:60px;color:#BFCBD9;}
     main .main-left .el-menu{background:#304156;}
@@ -277,7 +277,7 @@
     /*.is-opened{background:#1F2D3D;}*/
     .el-submenu .el-menu-item:hover, .el-submenu__title:hover{background:#1F2D3D;}
     .el-submenu .el-menu-item, .el-submenu__title{color:#BFCBD9;text-align:left;}
-    main .main-right{  position: absolute;left:180px;right:0;top:0;bottom:0;margin:auto;-webkit-box-flex: 1;  -ms-flex: 1;  flex: 1;  background-color: #fff;overflow: overlay;}
+    main .main-right{  position: absolute;left:180px;right:0;top:0;bottom:0;margin:auto;-webkit-box-flex: 1;  -ms-flex: 1;  flex: 1;  background-color: #fff;overflow: scroll;}
     .right-top{width:100%;height:60px;border-bottom: 1px solid #e6e6e6;padding:0 40px;box-sizing: border-box;}
     .right-top .topLeft{width:300px;height:60px;line-height:60px;float:left;font-size: 14px;color:#97a8be;font-weight: bold;}
     .right-top .topRight{width:300px;height:60px;float:right;}

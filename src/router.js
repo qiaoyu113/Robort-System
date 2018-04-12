@@ -37,6 +37,9 @@ const contractTemplate = (resolve) => {require(['./pages/contract/contract-templ
 const contractServices = (resolve) => {require(['./pages/contract/custom-services.vue'],resolve)}
 const contractServiceDetail = (resolve) => {require(['./pages/contract/services/detail.vue'],resolve)}
 // 内容管理
+const contentValue = (resolve) => {require(['./pages/content/value.vue'],resolve)}
+const valueAdd = (resolve) => {require(['./pages/content/value/add.vue'],resolve)}
+const valueEdit = (resolve) => {require(['./pages/content/value/edit.vue'],resolve)}
 const partner = (resolve) => {require(['./pages/content/partner.vue'],resolve)}
 const partnerAdd = (resolve) => {require(['./pages/content/partner/add.vue'],resolve)}
 const partnerEdit = (resolve) => {require(['./pages/content/partner/edit.vue'],resolve)}
@@ -97,7 +100,6 @@ const routers = [
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
                {name: 'productScan',path:'/contract/product/scan/:prodId',component: productScan},
                // 合同管理—》价值定位
-               {name: 'productValue',path:'/content/value',component: productPackage},
                {name: 'productAdd',path:'/contract/product/add',component: productAdd},
                {name: 'productEdit',path:'/contract/product/edit/:prodId',component: productEdit},
                {name: 'productDetail',path:'/contract/product/detail/:prodId',component: productDetail},
@@ -116,6 +118,10 @@ const routers = [
                {name: 'partnerEdit',path:'/content/partner/:partnerTyp/edit/:partnerId',component: partnerEdit},
                // 内容管理—》产品功能
                {name: 'productFunc',path:'/content/product',component: productFunc},
+               // 内容管理—》价值定位
+               {name: 'contentValue',path:'/content/value',component: contentValue},
+               {name: 'valueAdd',path:'/content/value/add',component: valueAdd},
+               {name: 'valueEdit',path:'/content/value/edit/:valueId',component: valueEdit},
                // 内容管理—》演示视频
                {name: 'videoDemo',path:'/content/video',component: videoDemo},
                {name: 'videoDemoAdd',path:'/content/video/add',component: videoDemoAdd},

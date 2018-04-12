@@ -183,13 +183,13 @@
                 that.templateListList.push(array[i]);// 合同模板分类
               }
               if(array[i].type == 4){
-                that.areaList[0].list.push(array[i]);// 合同模板分类
+                that.areaList[0].list.push(array[i]);// 亚太
               }
               if(array[i].type == 5){
-                that.areaList[1].list.push(array[i]);// 合同模板分类
+                that.areaList[1].list.push(array[i]);// 中东/北非
               }
               if(array[i].type == 6){
-                that.areaList[2].list.push(array[i]);// 合同模板分类
+                that.areaList[2].list.push(array[i]);// 中东欧/中亚
               }
               if(array[i].type == 7){
                 that.areaList[3].list.push(array[i]);// 合同模板分类

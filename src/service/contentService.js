@@ -8,10 +8,15 @@ export const contentService = {
         return axios.get('/admin/partners'+ this.getParams(params));
     },
     addPartner: function (params) {
-        return axios.post('/admin/partners', qs.stringify(params));
+        return axios.post('/admin/partners',  qs.stringify(params));
     },
     editPartner: function (params) {
-        return axios.put('/admin/partners', params);
+        let config = {
+            headers:{
+                'enctype': 'application/x-www-form-urlencoded'
+            },
+        }
+        return axios.put('/admin/partners',  qs.stringify(params),config);
     },
     disStickPartner: function (params) {
         return axios.put('/admin/partners/disstick', qs.stringify(params));
@@ -107,6 +112,28 @@ export const contentService = {
     },
     getNews: function (params) { // 获得新闻详情
         return axios.get('/admin/articles/' + params);
+    },
+    // 新闻管理
+    getValues: function (params) { // 获得新闻列表
+        return axios.get('/admin/valuelocation' + this.getParams(params));
+    },
+    addValue: function (params) { // 添加新闻
+        return axios.post('/admin/valuelocation', qs.stringify(params));
+    },
+    editValue: function (params) { // 编辑新闻
+        return axios.put('/admin/valuelocation', qs.stringify(params));
+    },
+    /*stickValue: function (params) { // 置顶新闻
+        return axios.put('/admin/articles/stick', qs.stringify(params));
+    },
+    disStickValue: function (params) { // 取消置顶新闻
+        return axios.put('/admin/articles/disstick', qs.stringify(params));
+    },*/
+    deleteValue: function (params) { // 删除新闻
+        return axios.delete('/admin/valuelocation/' + params);
+    },
+    getValue: function (params) { // 获得新闻详情
+        return axios.get('/admin/valuelocation/' + params);
     },
     // 焦点图管理
     getBanners: function (params) {
