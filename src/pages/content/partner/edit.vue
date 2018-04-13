@@ -45,22 +45,28 @@
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
-          <el-form-item prop="contactname1" size="mini">
+          <el-form-item prop="contactname1" size="mini" class="mar10">
             <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item prop="contactemail1" size="mini">
-            <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="联系邮箱"></el-input>
+          <el-form-item prop="contactphone1" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactphone1" class="contact-input" placeholder="phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail1" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="email"></el-input>
           </el-form-item>
         </div>
         <el-form-item prop="contactcover2" size="mini" class="par-contact">
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
-          <el-form-item prop="contactname2" size="mini">
+          <el-form-item prop="contactemail2" size="mini" class="mar10">
             <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item prop="contactemail2" size="mini">
-            <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="联系邮箱"></el-input>
+          <el-form-item prop="contactphone2" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactphone2" class="contact-input" placeholder="phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail2" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="email"></el-input>
           </el-form-item>
         </div>
       </div>
