@@ -23,11 +23,11 @@
           <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
+      <!--<el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
         <el-select v-model="ruleForm.template" placeholder="请选择合同模板">
           <el-option v-for="(item, index, key) in templateList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="联系方式" prop="phoneNo" size="mini" v-if="pType==1">
         <el-input v-model="ruleForm.phoneNo" class="iptFormLen" placeholder="可填写邮箱/手机号/座机等"></el-input>
       </el-form-item>
@@ -126,6 +126,8 @@
         uploadOrg1: {
             limit: 1,
             nodesc:true,
+            imgWidth: 140,
+            imgHeight: 140,
         },
         rules: {
           name: [
@@ -144,9 +146,9 @@
           classId: [
             { required: true, message: '请选择国家', trigger: 'change' }
           ],
-          template: [
+          /*template: [
             { required: true, message: '合同模板关联', trigger: 'change' }
-          ],
+          ],*/
           detail: [
             { required: true, message: '请填写简介', trigger: 'blur' }
           ]
@@ -393,7 +395,7 @@
   .cke_chrome{width: 600px;}
     .contact-box{
       width: 100%;
-      height: 130px;
+      height: 135px;
       .partner-image {
         width: 180px;
         overflow:  hidden;

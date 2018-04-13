@@ -74,6 +74,7 @@
                 },
                 uploadOrg: {
                     limit:1,
+                    noSizeLimit:true,
                     // 描述文字一
                     des: '建议不大于1m，支持.png .jpg .jpeg',
                     // 描述文字二

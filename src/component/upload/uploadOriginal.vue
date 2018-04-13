@@ -10,8 +10,8 @@
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
             <!--<input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >-->
-            <input v-if="isImageState==1" type="button" class="file">
-            <input  v-show="isImageState==0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
+            <input v-show="isImageState==1" type="button" class="file" disabled>
+            <input  v-if="isImageState==0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
 
         </div>
         <p class="des" v-if='options.des'>1. {{options.des}}</p>
@@ -35,12 +35,14 @@
     },
     components: {},
     created () {
-//        console.log(this.options,111);
+        if(this.imgUrl){
+            this.isImageState = 0; // 显示图片上传按钮
+        }
     },
     methods: {
       //删除图片路径
       delImgUrl () {
-        let that = this;
+          let that = this;
         that.isImageState = 0; // 显示图片上传按钮
         that.imgUrl = ''; // 清空页面显示的图片路径
         that.$emit('getPictureUrl', '');// 清空form表单要提交的图片路径
@@ -48,8 +50,8 @@
       // 图片上传至服务器
       uploadImg (event) {
         let that = this;
-        //
-        let e = event || window.event;
+          that.isImageState = 1; // 关闭图片上传按钮
+          let e = event || window.event;
         let file = e.target.files[0];
           let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
           // 是否符合m*n
@@ -107,6 +109,22 @@
           };
           reader.readAsDataURL(file);
 
+      },
+      resetInputFile(inputfile){
+          if (inputfile[0].value) {
+              try {
+                  inputfile[0].value = "";
+              } catch (error) {
+              }
+              if (inputfile[0].value) {
+                  var form = document.createElement('form');
+                  var existingItem = inputfile.nextSibling;
+                  var parent = inputfile.parentNode;
+                  form.appendChild(inputfile);
+                  form.reset();
+                  parent.insertBefore(inputfile, existingItem);
+              }
+          }
       }
     },
     watch: {
