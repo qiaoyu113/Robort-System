@@ -69,7 +69,7 @@
             center>
       <el-form ref="areaform" :model="areaform" :rules="areaRules" label-width="80px">
         <el-form-item label="国家logo" prop="image">
-          <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upLogo"></upload-original>
+          <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upLogo" v-if="areaDialogVisible"></upload-original>
         </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="areaform.name"></el-input>

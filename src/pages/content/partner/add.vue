@@ -28,7 +28,7 @@
           <el-option v-for="(item, index, key) in templateList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>-->
-      <el-form-item label="联系方式" prop="phoneNo" size="mini" v-if="pType==1">
+      <el-form-item label="联系方式" prop="phoneNo" size="mini">
         <el-input v-model="ruleForm.phoneNo" class="iptFormLen" placeholder="可填写邮箱/手机号/座机等"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email" size="mini" v-if="pType==2">
@@ -158,6 +158,9 @@ export default {
         classId: [
           { required: true, message: '请选择国家', trigger: 'change' }
         ],
+        phoneNo:[
+            { required: true, message: '请输入联系方式', trigger: 'blur' },
+        ],
         /*template: [
           { required: true, message: '合同模板关联', trigger: 'change' }
         ],*/
@@ -180,9 +183,6 @@ export default {
     if(that.pType === 1){ // 白标合作伙伴
       //console.log(1)
       that.getPackage(); //产品包
-        this.rules.phoneNo= [
-            { required: true, message: '请输入联系方式', trigger: 'blur' },
-        ]
     }
     else if(that.pType === 2){ // 国际合作伙伴
 
@@ -295,7 +295,7 @@ export default {
     },
     // 获得封面图路径
     myPicUrl (val) {
-      let that = this;
+        let that = this;
       that.ruleForm.imgUrl = val;// 封面图
     },
     // 获得封面图路径
@@ -364,17 +364,19 @@ export default {
         margin-bottom: 0!important;
       }
       width: 100%;
-      height: 135px;
+      height: 160px;
+      overflow: hidden;
       .partner-image {
         width: 180px;
         overflow:  hidden;
         display:  inline-block;
         position: relative;
         float: left;
+        height: 135px;
         .right{
           position: absolute;
-          left: 20px;
-          opacity: .4;
+          left: 18px;
+          top:108px;
         }
       }
       .contact {
