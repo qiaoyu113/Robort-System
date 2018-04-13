@@ -35,6 +35,16 @@
       <el-form-item label="简介" prop="description">
         <el-input type="textarea" v-model="ruleForm.description" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
+      <el-form-item label="常见问题" prop="question1">
+        <div class="questions" v-for="question,id in ruleForm.questions">
+          <el-input v-model="ruleForm.questions[id].question" class="iptLength" placeholder="请填写" @blur="checkquestion()"></el-input>
+          <el-input type="textarea" v-model="ruleForm.questions[id].answer" :name="'add'+id" class="iptLength" placeholder="请填写"></el-input>
+          <el-button type="primary" @click="deleteQuestion(id)" size="mini" class="delete-question" plain>删除</el-button>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="addQuestion()" size="mini" plain>新增常见问题</el-button>
+      </el-form-item>
       <el-form-item label="目录" prop="catalogue">
         <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
@@ -71,6 +81,8 @@
           description: '', // 简介
           catalogue: '', // 目录
           price_s: '', // 价格
+          question1:1,
+          questions:[],
           isTry: false // 是否为试用模板
         },
         rules: {
@@ -99,7 +111,10 @@
           ],
           catalogue: [
             { required: true, message: '请填写合同模板目录', trigger: 'blur' }
-          ]
+          ],
+            question1: [
+                { required: true, message: '请填写问题', trigger: 'blur' }
+            ],
         }
       }
     },
@@ -125,7 +140,8 @@
         let that = this;
         that.ruleForm.description = myEditor.getData();
         that.ruleForm.catalogue = myEditor2.getData();
-        this.$refs[formName].validate((valid) => {
+          that.checkquestions();
+          this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             let pakName = '';
             let className = '';
@@ -151,7 +167,8 @@
               connProductPkgId: that.ruleForm.packages,
               productPkgName: pakName,
               description: that.ruleForm.description,
-              catalogue: that.ruleForm.catalogue,
+                questions_s  : JSON.stringify(that.ruleForm.questions),
+                catalogue: that.ruleForm.catalogue,
               price_s: that.ruleForm.price_s, tryUse: that.ruleForm.isTry}).then(function (res) {
               //console.log(res, '添加一个模板信息');
               if(res.data.success){
@@ -185,12 +202,50 @@
               hotTemplateId: obj.hotTemplateId, // 模板
               packages: obj.productPkgId, // 添加到产品包,关联到产品包
               description: obj.description, // 简介
+              questions  : obj.questions || [],
               catalogue: obj.catalogue, // 目录
               price_s: obj.price_s, // 价格
               isTry: obj.tryUse
             };
+            if(obj.questions && obj.questions.length){
+                setTimeout(function () {
+                    window.editors=[]
+                    for(let i =0;i<obj.questions.length;i++){
+                        window.editors[i]= CKEDITOR.replace("add"+i);
+                        window.editors[i].setData(obj.questions[i].answer);
+                    }
+                },100)
+            }
           }else{}
         });
+      },
+      //检查是否填写问题
+      checkquestion () {
+          let that = this
+          that.ruleForm.question1 = '1'
+          if(that.ruleForm.questions.length){
+              for(let i in that.ruleForm.questions){
+                  let q = that.ruleForm.questions[i]
+                  if(!q.question){
+                      that.ruleForm.question1 = null
+                  }
+              }
+          }
+      },
+      // 检查是否填写答案
+      checkquestions () {
+          let that = this
+          that.ruleForm.question1 = '1'
+          if(that.ruleForm.questions.length){
+              for(let i in that.ruleForm.questions){
+                  console.log(window.editors[i].getData())
+                  that.ruleForm.questions[i].answer = window.editors[i].getData();
+                  let q = that.ruleForm.questions[i]
+                  if(!q.answer || !q.question){
+                      that.ruleForm.question1 = null
+                  }
+              }
+          }
       },
       // 获取模板分类
       getTemplateType () {
@@ -239,8 +294,28 @@
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
         myEditor2 = CKEDITOR.replace("list");
-        that.getOneTemplate(); // 得到信息
+        that.getOneTemplate();
       },
+        // 富文本编辑器
+        addQuestion(){
+            let that = this
+            that.ruleForm.questions.push({question:'',answer:''})
+            let id = that.ruleForm.questions.length-1
+            setTimeout(function () {
+                window.editors[id]= CKEDITOR.replace("add"+(id));
+                window.editors[id].setData("");
+            },100)
+        },
+        // 富文本编辑器
+        deleteQuestion(id){
+            let that = this
+            console.log(id,that.ruleForm.questions.length);
+            for(let i=id ;i+1<that.ruleForm.questions.length;i++){
+                let data = editors[i+1].getData()
+                window.editors[i].setData(data);
+            }
+            that.ruleForm.questions.splice(id,1)
+        },
     }
   }
 </script>

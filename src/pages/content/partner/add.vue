@@ -39,22 +39,28 @@
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1" class="partner-image"></upload-original>
         </el-form-item>
           <div class="contact">
-            <el-form-item prop="contactname1" size="mini">
+            <el-form-item prop="contactname1" size="mini" class="mar10">
             <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
             </el-form-item>
-            <el-form-item prop="contactemail1" size="mini">
-            <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="联系邮箱"></el-input>
+            <el-form-item prop="contactphone1" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactphone1" class="contact-input" placeholder="phone"></el-input>
+            </el-form-item>
+            <el-form-item prop="contactemail1" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="email"></el-input>
             </el-form-item>
           </div>
         <el-form-item prop="contactcover2" size="mini" class="par-contact">
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
-          <el-form-item prop="contactemail2" size="mini">
+          <el-form-item prop="contactemail2" size="mini" class="mar10">
           <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item prop="contactemail2" size="mini">
-          <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="联系邮箱"></el-input>
+          <el-form-item prop="contactphone2" size="mini" class="mar10">
+          <el-input v-model="ruleForm.contactphone2" class="contact-input" placeholder="phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail2" size="mini" class="mar10">
+          <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="email"></el-input>
           </el-form-item>
         </div>
       </div>
@@ -144,6 +150,9 @@ export default {
         contactname1: [
           { required: true, message: '请输入联系人', trigger: 'blur' },
         ],
+        contactphone1: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+        ],
         contactemail1: [
           { required: true, message: '请输入联系邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
@@ -153,6 +162,9 @@ export default {
         ],*/
         contactname2: [
           { required: true, message: '请输入联系人', trigger: 'blur' },
+        ],
+        contactphone2: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
         ],
         contactemail2: [
           { required: true, message: '请输入联系邮箱', trigger: 'blur' },
@@ -204,9 +216,11 @@ export default {
           let contactUsers = [
                   {name:that.ruleForm.contactname1,
                   cover:that.ruleForm.contactcover1,
+                  phone:that.ruleForm.contactphone1,
                   email:that.ruleForm.contactemail1},
                   {name:that.ruleForm.contactname2,
                   cover:that.ruleForm.contactcover2,
+                  phone:that.ruleForm.contactphone2,
                   email:that.ruleForm.contactemail2},
               ]
           let referenDatas = that.ruleForm.referenDatas;
@@ -313,6 +327,9 @@ export default {
     .flexStart .upload-btn{margin-left:0;}
     .cke_chrome{width: 600px;}
     .contact-box{
+      .mar10{
+        margin-bottom: 0!important;
+      }
       width: 100%;
       height: 130px;
       .partner-image {
@@ -339,7 +356,7 @@ export default {
         float: left;
       }
       .contact-input{
-        margin-top: 10px;
+        margin-bottom: 10px;
         width:  110px;
       }
     }
