@@ -229,9 +229,11 @@
               let contactUsers = [
                   {name:that.ruleForm.contactname1,
                       cover:that.ruleForm.contactcover1,
+                      phone:that.ruleForm.contactphone1,
                       email:that.ruleForm.contactemail1},
                   {name:that.ruleForm.contactname2,
                       cover:that.ruleForm.contactcover2,
+                      phone:that.ruleForm.contactphone2,
                       email:that.ruleForm.contactemail2},
               ]
               let referenDatas = that.ruleForm.referenDatas;
