@@ -12,14 +12,14 @@
           <el-option v-for="item in pkgList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-if="pType==2" label="区域" prop="area"  size="mini">
-        <el-select v-model="ruleForm.area" placeholder="请选择区域"
+      <el-form-item v-if="pType==2" label="区域" prop="classType"  size="mini">
+        <el-select v-model="ruleForm.classType" placeholder="请选择区域"
                    @change="getCountryList">
           <el-option v-for="(value, index, key) in areaList" :label="value.name" :value="value.typeId" :key="key"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item v-if="pType==2" label="国家" prop="country"  size="mini">
-        <el-select v-model="ruleForm.country" placeholder="请选择国家">
+      <el-form-item v-if="pType==2" label="国家" prop="classId"  size="mini">
+        <el-select v-model="ruleForm.classId" placeholder="请选择国家">
           <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
@@ -42,7 +42,9 @@
       </el-form-item>
       <div class="contact-box" v-show="pType==2">
         <el-form-item label="联系人" prop="contactname1" size="mini" class="par-contact">
-          <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1" class="partner-image"></upload-original>
+          <el-form-item prop="contactcover1" size="mini" class="par-contact">
+            <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1" ref="upOrg1" class="partner-image"></upload-original>
+          </el-form-item>
         </el-form-item>
           <div class="contact">
             <el-form-item prop="contactname1" size="mini" class="mar10">
@@ -56,7 +58,7 @@
             </el-form-item>
           </div>
         <el-form-item prop="contactcover2" size="mini" class="par-contact">
-          <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
+          <upload-original :options="uploadOrg2" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
           <el-form-item prop="contactemail2" size="mini" class="mar10">
@@ -122,6 +124,12 @@ export default {
         imgWidth: 140,
         imgHeight: 140,
       },
+      uploadOrg2: {
+        limit: 1,
+        nodesc:true,
+        imgWidth: 140,
+        imgHeight: 140,
+      },
       ruleForm: {
         name: '', // 伙伴名称
         imgUrl: '', // 图片
@@ -144,10 +152,10 @@ export default {
         pkg: [
           { required: true, message: '请选择产品包关联', trigger: 'change' }
         ],
-        area: [
+        classType: [
           { required: true, message: '请选择区域', trigger: 'change' }
         ],
-        country: [
+        classId: [
           { required: true, message: '请选择国家', trigger: 'change' }
         ],
         /*template: [
@@ -227,6 +235,8 @@ export default {
           let phone = that.ruleForm.phoneNo;
           let email = that.ruleForm.email;
           let url = that.ruleForm.url;
+          let classType = that.ruleForm.classType;
+          let classId = that.ruleForm.classId;
           let description = that.ruleForm.detail;
           let contactUsers = [
                   {name:that.ruleForm.contactname1,
@@ -261,12 +271,15 @@ export default {
             cityCode: cityCode,
             phone: phone,
             email: email,
+            classType: classType,
+            classId: classId,
             url: url,
             description: description,
-            contactUsers_s:contactUsers,
-            referenDatas_s:referenDatas
+            contactUsers_s:JSON.stringify(contactUsers),
+            referenDatas_s:JSON.stringify(referenDatas)
           }
-          // 表单提交
+            console.log(params);
+            // 表单提交
           contentService.addPartner(params).then(function (res) {
             //console.log('添加一个合作伙伴', res);
             if(res.data.success){
@@ -288,7 +301,7 @@ export default {
     // 获得封面图路径
     myPicUrl1 (val) {
       let that = this;
-      that.ruleForm.contactcover1= val;// 封面图
+        that.ruleForm.contactcover1= val;// 封面图
     },
     // 获得封面图路径
     myPicUrl2 (val) {
@@ -361,6 +374,7 @@ export default {
         .right{
           position: absolute;
           left: 20px;
+          opacity: .4;
         }
       }
       .contact {

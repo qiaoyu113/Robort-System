@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // axios.defaults.baseURL = 'http://admin.api.docqbot.com';
 axios.defaults.baseURL = 'http://39.106.114.64:8097';
-// axios.defaults.baseURL = 'http://wbxvgr.natappfree.cc';
+// axios.defaults.baseURL = 'http://qka2a2.natappfree.cc';
 
 let win = typeof window
 let isClient = false

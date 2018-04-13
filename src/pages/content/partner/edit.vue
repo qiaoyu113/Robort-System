@@ -266,7 +266,6 @@
               classId = that.ruleForm.classId;
             }
             // 表单提交
-              console.log(111,id);
               contentService.editPartner({
               id: id,
               name: name,
@@ -305,7 +304,7 @@
       },
       // 获得封面图路径
       myPicUrl1 (val) {
-          let that = this;
+          let that = this
           that.ruleForm.contactcover1= val;// 封面图
       },
       // 获得封面图路径
@@ -330,19 +329,26 @@
               classId: obj.classId, // 国家关联
               template: obj.templateId, // 合同模板关联
               phoneNo: obj.phone, // 联系方式
+              email: obj.email, // 联系方式
+              url: obj.url, // 联系方式
               referenDatas: obj.referenDatas ||  [{},{},{}], // 联系方式
               contactUsers: obj.contactUsers || [{},{}], // 联系方式
               detail: obj.description // 简介
             }
             that.ruleForm.contactcover1 = that.ruleForm.contactUsers[0].cover
             that.ruleForm.contactname1 = that.ruleForm.contactUsers[0].name
+            that.ruleForm.contactphone1 = that.ruleForm.contactUsers[0].phone
             that.ruleForm.contactemail1 = that.ruleForm.contactUsers[0].email
             that.ruleForm.contactcover2 = that.ruleForm.contactUsers[1].cover
+            that.ruleForm.contactphone2 = that.ruleForm.contactUsers[1].phone
             that.ruleForm.contactname2 = that.ruleForm.contactUsers[1].name
             that.ruleForm.contactemail2 = that.ruleForm.contactUsers[1].email
+
             that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
+            that.$refs.upOrg1.imgUrl = that.$store.state.picHead +  that.ruleForm.contactcover1;
+            that.$refs.upOrg2.imgUrl = that.$store.state.picHead +  that.ruleForm.contactcover2;
             that.$refs.upOrg.isImageState = 1;
-              that.getCountryList(obj.classType)
+              that.getCountryList(obj.classType,1)
             setTimeout(function () {
               myEditor.setData(obj.description);
             }, 1000);
@@ -376,9 +382,9 @@
         myEditor = CKEDITOR.replace("detail");
         //myEditor.setData("");
       },
-      getCountryList(v){
+      getCountryList(v,f){
           let that = this
-          that.ruleForm.classId = null
+          if(!f) that.ruleForm.classId = null
           systemService.getClassifyList({type: v}).then(function(res){
               that.countryList = res.data.datas
           })
@@ -404,6 +410,9 @@
     .contact-box{
       width: 100%;
       height: 135px;
+      .mar10{
+        margin-bottom: 0px!important;
+      }
       .partner-image {
         width: 180px;
         overflow:  hidden;
@@ -413,6 +422,7 @@
         .right{
           position: absolute;
           left: 20px;
+          opacity: .4;
         }
       }
       .contact {
@@ -428,7 +438,7 @@
         float: left;
       }
       .contact-input{
-        margin-top: 10px;
+        margin-bottom: 10px;
         width:  110px;
       }
     }

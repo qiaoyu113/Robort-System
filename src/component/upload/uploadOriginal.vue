@@ -11,7 +11,7 @@
           <el-button type="primary" size="mini">上传文件</el-button>
             <!--<input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >-->
             <input v-show="isImageState==1" type="button" class="file" disabled>
-            <input  v-if="isImageState==0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
+            <input  v-if="isImageState==0" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
 
         </div>
         <p class="des" v-if='options.des'>1. {{options.des}}</p>
@@ -49,7 +49,7 @@
       },
       // 图片上传至服务器
       uploadImg (event) {
-        let that = this;
+          let that = this;
           that.isImageState = 1; // 关闭图片上传按钮
           let e = event || window.event;
         let file = e.target.files[0];
@@ -88,8 +88,8 @@
                                   that.imgUrl = that.$store.state.picHead + res.data.datas.myFile;
                                   that.isImageState=1;
                                   // 清空 文件选择器
-                                  var obj = document.getElementById("uploads") ;
-                                  obj.outerHTML = obj.outerHTML;
+//                                  var obj = document.getElementById("uploads") ;
+//                                  obj.outerHTML = obj.outerHTML;
                               }
                           });
                       }else{

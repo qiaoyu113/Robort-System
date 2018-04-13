@@ -86,10 +86,10 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
-        if(that.ruleForm.desc.length == 0){
+        /*if(that.ruleForm.desc.length == 0){
           let textEditor = myEditor.document.getBody().getText();
           that.ruleForm.desc = textEditor.substring(0, 120);
-        }
+        }*/
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             // 根据classID获得className
@@ -110,7 +110,7 @@
               type: 1}).then(function (res) {
               //console.log(res, '添加一个新闻');
               if(res.data.success){
-                that.$router.push({name: 'value'}); //
+                that.$router.push({name: 'contentValue'}); //
               }else{}
             });
           } else {
@@ -135,7 +135,7 @@
         that.ruleForm.cover = val;
       },
       // 摘要框输入
-      zy (event) {
+      /*zy (event) {
         let cur = event.currentTarget;
         let text = cur.childNodes[0];
         let old = text.value;
@@ -144,7 +144,7 @@
         }else{
           text.value = old;
         }
-      },
+      },*/
       // 富文本编辑器
       editor(){
         let CKEDITOR = window.CKEDITOR;
