@@ -51,7 +51,7 @@
         //
         let e = event || window.event;
         let file = e.target.files[0];
-        let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+          let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
           // 是否符合m*n
           let reader = new FileReader();
           let imgFile;

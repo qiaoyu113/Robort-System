@@ -43,7 +43,7 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addQuestion()" size="mini" plain>新增常见问题</el-button>
+        <el-button type="primary"  icon="el-icon-plus" @click="addQuestion()" size="mini" plain>新增常见问题</el-button>
       </el-form-item>
       <el-form-item label="目录" prop="catalogue">
         <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>

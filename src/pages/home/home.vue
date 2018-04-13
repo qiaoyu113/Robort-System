@@ -158,7 +158,7 @@
                 {name: 'label',path:'/setup/label',component: label},
                 {name: 'operPhone',path:'/operation/operPhone',component: operPhone},*/
 //                产品7，内容8，渠道1，用户4，消息2，财务3，系统9
-            console.log(this.$refs.menu);
+//            console.log(this.$refs.menu);
             this.$refs.menu.open(7);
             switch (r) {
                 case 'sysClassify': that.titleName = "字典设置";this.$refs.menu.open(9);break;
@@ -178,7 +178,9 @@
                 case 'partnerAdd' : that.titleName = "合作伙伴";this.$refs.menu.open(8);break;
                 case 'partnerEdit' : that.titleName = "合作伙伴";this.$refs.menu.open(8);break;
                 case 'productFunc' : that.titleName = "产品功能";this.$refs.menu.open(8);break;
-                case 'productValue' : that.titleName = "价值定位";this.$refs.menu.open(8);break;
+                case 'contentValue' : that.titleName = "价值定位";this.$refs.menu.open(8);break;
+                case 'valueAdd' : that.titleName = "价值定位";this.$refs.menu.open(8);break;
+                case 'valueEdit' : that.titleName = "价值定位";this.$refs.menu.open(8);break;
                 case 'videoDemo' : that.titleName = "演示视频";this.$refs.menu.open(8);break;
                 case 'videoDemoAdd' : that.titleName = "演示视频";this.$refs.menu.open(8);break;
                 case 'videoDemoEdit' : that.titleName = "演示视频";this.$refs.menu.open(8);break;

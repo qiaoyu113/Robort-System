@@ -28,8 +28,14 @@
           <el-option v-for="(item, index, key) in templateList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="联系方式" prop="phoneNo" size="mini">
+      <el-form-item label="联系方式" prop="phoneNo" size="mini" v-if="pType==1">
         <el-input v-model="ruleForm.phoneNo" class="iptFormLen" placeholder="可填写邮箱/手机号/座机等"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email" size="mini" v-if="pType==2">
+        <el-input v-model="ruleForm.email" class="iptFormLen" placeholder="请输入邮箱"></el-input>
+      </el-form-item>
+      <el-form-item label="网址" prop="url" size="mini" v-if="pType==2">
+        <el-input v-model="ruleForm.url" class="iptFormLen" placeholder="请输入网址"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="detail">
         <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
@@ -65,9 +71,10 @@
         </div>
       </div>
       <el-form-item label="参考资料" size="mini" v-show="pType==2">
-        <div class="media" v-for="referenDatas in ruleForm.referenDatas">
+        <div class="media" v-for="referenDatas,id in ruleForm.referenDatas">
           <el-input v-model="referenDatas.name" class="title-input" placeholder="标题"></el-input>
           <el-input v-model="referenDatas.link" class="src-input" placeholder="地址"></el-input>
+          <el-button type="line" @click="removeRefer(id)" size="mini" plain>删除</el-button>
         </div>
         <el-button type="line"  icon="el-icon-plus" @click="addRefer()" size="mini" plain>新增参考资料</el-button>
       </el-form-item>
@@ -144,32 +151,6 @@ export default {
         template: [
           { required: true, message: '合同模板关联', trigger: 'change' }
         ],
-        phoneNo: [
-          { required: true, message: '请输入联系方式', trigger: 'blur' },
-        ],
-        contactname1: [
-          { required: true, message: '请输入联系人', trigger: 'blur' },
-        ],
-        contactphone1: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-        ],
-        contactemail1: [
-          { required: true, message: '请输入联系邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
-        ],
-        /*contactcover1: [
-          { required: true, message: '请上传联系人头像', trigger: 'blur' },
-        ],*/
-        contactname2: [
-          { required: true, message: '请输入联系人', trigger: 'blur' },
-        ],
-        contactphone2: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-        ],
-        contactemail2: [
-          { required: true, message: '请输入联系邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
-        ],
         /*contactcover2: [
           { required: true, message: '请上传联系人头像', trigger: 'blur' },
         ],*/
@@ -189,8 +170,38 @@ export default {
     if(that.pType === 1){ // 白标合作伙伴
       //console.log(1)
       that.getPackage(); //产品包
+        this.rules.phoneNo= [
+            { required: true, message: '请输入联系方式', trigger: 'blur' },
+        ]
     }
     else if(that.pType === 2){ // 国际合作伙伴
+
+        this.rules.email= [
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+        ]
+        this.rules.url= [
+            { required: true, message: '请输入网址', trigger: 'blur' },
+        ]
+        this.rules.contactname1= [
+            { required: true, message: '请输入联系人', trigger: 'blur' },
+        ]
+        this.rules.contactphone1= [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+        ]
+        this.rules.contactemail1= [
+            { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
+        ]
+        this.rules.contactname2= [
+            { required: true, message: '请输入联系人', trigger: 'blur' },
+        ]
+        this.rules.contactphone2= [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+        ]
+        this.rules.contactemail2= [
+            { required: true, message: '请输入联系邮箱', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
+        ]
       //console.log(2)
       that.getTemplate(); //合同模板
     }
@@ -212,6 +223,8 @@ export default {
           let city = '';
           let cityCode = '';
           let phone = that.ruleForm.phoneNo;
+          let email = that.ruleForm.email;
+          let url = that.ruleForm.url;
           let description = that.ruleForm.detail;
           let contactUsers = [
                   {name:that.ruleForm.contactname1,
@@ -245,6 +258,8 @@ export default {
             city: city,
             cityCode: cityCode,
             phone: phone,
+            email: email,
+            url: url,
             description: description,
             contactUsers_s:contactUsers,
             referenDatas_s:referenDatas
@@ -313,6 +328,9 @@ export default {
     },
     addRefer(v){
         this.ruleForm.referenDatas.push({})
+    },
+    removeRefer(id){
+        this.ruleForm.referenDatas.splice(id,1)
     }
   }
 }
