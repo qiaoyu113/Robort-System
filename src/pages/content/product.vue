@@ -73,7 +73,9 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
-          <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="uploadOrg"></upload-original>
+          <div class="upload-cover">
+            <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upCover"></upload-original>
+          </div>
           <!--<div class="upload-img" v-model="form.pic">
             <img id="uploadImage" class="image" v-show="isImageState==1" :src="imgUrl">
             <div class="btn" v-show="isImageState==0"><i class="el-icon-plus"></i>
@@ -111,6 +113,7 @@ import pagination from '../../component/pagination/pagination.vue'
 import VueCropper from 'vue-cropper'
 import {pluginService} from '../../service/pluginService'
 import {contentService} from '../../service/contentService'
+import uploadOriginal from '../../component/upload/uploadOriginal.vue'
 
   export default {
     props: [],
@@ -129,9 +132,9 @@ import {contentService} from '../../service/contentService'
             limit: 5,
             noSizeLimit: true,
             // 描述文字一
-            des: '建议尺寸为600*300，不大于5m，支持.png .jpg .jpeg',
+            des: '建议不大于5m，支持.png .jpg .jpeg',
             // 描述文字二
-            des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+            des2: '说明：该图片将显示在产品功能页。'
         },
         rules: {
           pic: [
@@ -184,7 +187,7 @@ import {contentService} from '../../service/contentService'
         tableData: [] //列表数据
       }
     },
-    components: { 'vue-cropper': VueCropper,pagination},
+    components: { 'vue-cropper': VueCropper,pagination,uploadOriginal},
     mounted () {
       let that = this;
       that.getList();
@@ -430,7 +433,7 @@ import {contentService} from '../../service/contentService'
     }
     .del{font-size: 20px;position:absolute;top: 30px;right: -8px;z-index:1;/*color:#ddd;*/cursor:pointer;}
   }
-  .container{padding: 20px;}
+  .container{padding: 20px; .upload-cover{width: 100%;clear: both}}
   .container .img-cover{width:100px;height:80px;margin-right:10px;float:left;display:flex;justify-content:center;align-items:center;border:1px solid #ddd;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
   .container .img-cover .image{max-width:100px;max-height:80px;width:auto;height:auto;}
   .container .txt{word-wrap:break-word;}

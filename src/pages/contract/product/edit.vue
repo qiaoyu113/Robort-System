@@ -17,11 +17,11 @@
             <el-form-item label="宣传语">
                 <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
             </el-form-item>
-            <el-form-item label="演示视频" prop="selItem"  size="mini">
+            <!--<el-form-item label="演示视频" prop="selItem"  size="mini">
                 <el-select v-model="ruleForm.selItem" placeholder="请选择">
                     <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item.id" :key="key"></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="简介" prop="detail">
                 <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
             </el-form-item>
@@ -122,9 +122,9 @@ export default {
     //            { required: true, message: '请填写简介', trigger: 'blur' },
     //            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
     //          ],
-                selItem: [
+               /* selItem: [
                     { required: true, message: '请选择演示视频', trigger: 'change' }
-                ],
+                ],*/
                 detail: [
                     { required: true, message: '请填写产品包详情', trigger: 'blur' }
                 ],
@@ -158,7 +158,7 @@ export default {
                         banner: that.ruleForm.banner,
                         description: that.ruleForm.desc,
                         content: that.ruleForm.detail,
-                        demoVideoId: that.ruleForm.selItem,
+//                        demoVideoId: that.ruleForm.selItem,
                         oriPrice_s: that.ruleForm.oriPrice_s,
                         price_s: that.ruleForm.price}).then(function (res) {
                         // console.log(res, '编辑一个产品包');
