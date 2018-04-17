@@ -1,8 +1,24 @@
+<!--
+author: Zhong Yanlin
+create: 2017-12-01
+desc:底部导航栏组件
+options: listFoot
+listFoot:[
+  {
+    imgType:链接类型
+    name:导航名称
+  }
+]
+update: 2018-01-10 by Mu Jinhong
+-->
 <template>
   <div class="index-bottom" id="index-bottom">
-     <router-link v-for="(item, index) in listFoot" :key="item.type" :to="{ name: item.imgType == '1'? 'home' : item.imgType == '5'? 'activity':item.imgType == '4'? 'knowledge': item.imgType == '2'? 'mycenter': 'article' }" class="single-bottom index-page" ref="myBoxa" replace>
-        <i v-if="item.imgType == footName"  class="iconfont changecolor footer-btn" v-bind:class="{'icon-shouyetianchong': item.imgType == '1','icon-huodongtianchong': item.imgType == '5','icon-zhishitianchong': item.imgType == '4','icon-wodetianchong': item.imgType == '2','icon-wenzhangtianchong': item.imgType == '3'}"></i>
-        <i v-else class="iconfont" v-bind:class="{'icon-shouye1': item.imgType == '1','icon-huodong4': item.imgType == '5','icon-zhishi3': item.imgType == '4','icon-wode1': item.imgType == '2','icon-wenzhang1': item.imgType == '3'}"></i>
+     <router-link v-for="(item, index) in listFoot" :key="item.type" :to="{ name: routeList[item.imgType]}" class="single-bottom index-page" ref="myBoxa" replace>
+         <i v-if="item.imgType == footName"  class="iconfont changecolor footer-btn" v-bind:class="actIconList[item.imgType]"></i>
+         <i v-else class="iconfont" v-bind:class="iconList[item.imgType]"></i>
+     <!--<router-link v-for="(item, index) in listFoot" :key="item.type" :to="{ name: item.imgType == '1'? 'home' : item.imgType == '5'? 'activity':item.imgType == '4'? 'knowledge': item.imgType == '2'? 'mycenter': 'article' }" class="single-bottom index-page" ref="myBoxa" replace>-->
+        <!--<i v-if="item.imgType == footName"  class="iconfont changecolor footer-btn" v-bind:class="{'icon-shouyetianchong': item.imgType == '1','icon-huodongtianchong': item.imgType == '5','icon-zhishitianchong': item.imgType == '4','icon-wodetianchong': item.imgType == '2','icon-wenzhangtianchong': item.imgType == '3'}"></i>-->
+        <!--<i v-else class="iconfont" v-bind:class="{'icon-shouye1': item.imgType == '1','icon-huodong4': item.imgType == '5','icon-zhishi3': item.imgType == '4','icon-wode1': item.imgType == '2','icon-wenzhang1': item.imgType == '3'}"></i>-->
         <p>{{item.name}}</p>
     </router-link>
   </div>
@@ -15,7 +31,10 @@
                 listFoot:[],
                 footName: '',
                 routePath: '',
-                routeName: ''
+                routeName: '',
+                routeList:['','home','mycenter','article','knowledge','activity'], //通过数组来进行类型-路由映射
+                iconList:['','icon-shouye1','icon-wode1','icon-wenzhang1','icon-zhishi3','icon-huodong4'], //通过数组来进行类型-路由映射
+                actIconList:['','icon-shouyetianchong','icon-wodetianchong','icon-wenzhangtianchong','icon-zhishitianchong','icon-huodongtianchong'], //通过数组来进行类型-路由映射
             }
         },
         mounted() {

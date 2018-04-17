@@ -1,3 +1,9 @@
+<!--
+author: Zhong Yanlin
+create: 2017-12-01
+desc:在任何页面增加一个返回主页按钮
+options: none
+-->
 <template>
   <div id="back-home" >
     <router-link :to="{name:'home'}">

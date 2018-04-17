@@ -1,3 +1,15 @@
+<!--
+author: Liuxiaohong
+create: 2018-03-28
+update: 2018-04-10 by ZhongYanlin
+desc:上传图片
+props: options
+noSizeLimit 是否限制宽高 true没有，false有
+imgWidth/imgHeight 图片限制宽高
+limit 限制大小，M单位
+des/des2 描述
+事件：getPictureUrl 返回图片地址
+-->
 <template>
   <div>
     <!--上传图片，左边图片，右边上传按钮和描述文字（原始尺寸，不裁剪）-->

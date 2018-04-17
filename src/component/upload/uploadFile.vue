@@ -1,3 +1,9 @@
+<!--
+author: Liu xiaohong
+create: 2018-03-15
+desc:上传文件
+
+-->
 <template>
   <div class="uploadFile"><!--普通上传文件组件-->
     <div class="upload-btn">

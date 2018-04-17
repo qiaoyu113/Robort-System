@@ -1,3 +1,10 @@
+<!--
+author: Liu Xiaohong
+create: 2018-02-28
+desc:折线图
+options: none
+
+-->
 <template>
   <div class="chartCover">
     <div class="selectBox">

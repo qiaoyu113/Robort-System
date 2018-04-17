@@ -1,3 +1,13 @@
+<!--
+author: ZhongYanlin
+create: 2017-11-28
+desc:消息弹窗
+options: msgs
+msgs{
+  type: 1,无操作；2,确定关闭提示框；3,确定带事件提示窗
+  text: 提示信息
+}
+-->
 <template>
   <div id="modal">
     <div class="modal"  v-if="msgs.type" >

@@ -1,4 +1,16 @@
-<!--suppress ALL -->
+<!--
+author: Liu Xiaohong
+create: 2017-12-01
+update: 2018-01-10 by Zhong Yanlin
+options: playerOptions
+playerOptions{
+   poster: 封面
+   sources: [{
+      url: 视频地址
+   }]
+}
+
+-->
 <template>
    <video-player class="video-player-box" :options="playerOptions"></video-player>
 </template><!--id="videoPlayer" -->

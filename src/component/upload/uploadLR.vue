@@ -1,3 +1,14 @@
+<!--
+author: Liuxiaohong
+create: 2018-03-28
+update: 2018-04-10 by ZhongYanlin
+desc:带裁剪窗上传图片
+props: options
+autoCropWidth 默认裁剪宽度
+autoCropHeight 默认裁剪高度
+事件：getPictureUrl
+返回图片上传的地址
+-->
 <template>
   <div class="upload-pic">
     <!--上传图片，左边图片，右边上传按钮和描述文字图片比例3:2（裁剪图片）-->

@@ -337,6 +337,7 @@ export default {
     },
     getCountryList(v){
         let that = this
+        that.ruleForm.classId = null
         systemService.getClassifyList({type: v}).then(function(res){
           that.countryList = res.data.datas
         })

@@ -1,3 +1,11 @@
+<!--
+author: ZhongYanlin
+create: 2017-12-28
+desc:记录返回路径，按历史返回
+options: type
+type: 1 ==》灰底圆型icon返回
+      其他 ==》白底返回
+-->
 <template>
   <div id="history">
     <div v-on:click="goHistory()">

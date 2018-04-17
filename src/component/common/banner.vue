@@ -1,3 +1,16 @@
+<!--
+author: Zhong Yanlin
+create: 2017-12-01
+desc:轮播图组件
+options: listImg
+listImg:[
+  {
+    picUrl:图片地址
+    picLink:点击图片时的链接地址
+    picTitle:图片底部显示的标题（不传则不显示）
+  }
+]
+-->
 <template>
   <div class="swiper-container" v-if="listImg.length">
     <div class="swiper-wrapper">
