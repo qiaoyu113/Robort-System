@@ -6,6 +6,7 @@
       </el-form-item>
       <el-form-item label="产品包封面图" prop="cover">
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
+        <!--<upload-original :options="uploadOrgth" v-on:getPictureUrl="myPicUrl"></upload-original>-->
       </el-form-item>
       <!--<el-form-item label="合作伙伴LOGO" prop="logo">
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myLogoPicUrl"></upload-original>
@@ -59,6 +60,15 @@
           autoCropHeight: 600,
           // 开启宽度和高度比例
           fixedNumber: [3, 2],
+          // 描述文字一
+          des: '建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg',
+          // 描述文字二
+          des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+        },
+        uploadOrgth: {
+          limit: 2,
+          imgWidth: 900,
+          imgHeight: 600,
           // 描述文字一
           des: '建议尺寸为900*600，不大于2m，支持.png .jpg .jpeg',
           // 描述文字二

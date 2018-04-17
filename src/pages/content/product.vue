@@ -73,13 +73,14 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
-          <div class="upload-img" v-model="form.pic">
+          <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="uploadOrg"></upload-original>
+          <!--<div class="upload-img" v-model="form.pic">
             <img id="uploadImage" class="image" v-show="isImageState==1" :src="imgUrl">
             <div class="btn" v-show="isImageState==0"><i class="el-icon-plus"></i>
               <input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
             </div>
             <i class="el-icon-circle-close del" v-show="isImageState==1" @click="delImgUrl"></i>
-          </div>
+          </div>-->
         </el-form-item>
         <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
           <el-input v-model="form.title" auto-complete="off"></el-input>
@@ -124,6 +125,14 @@ import {contentService} from '../../service/contentService'
           intro: '',
           order: ''
         }, // 新增表单
+        uploadOrg: {
+            limit: 5,
+            noSizeLimit: true,
+            // 描述文字一
+            des: '建议尺寸为600*300，不大于5m，支持.png .jpg .jpeg',
+            // 描述文字二
+            des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
+        },
         rules: {
           pic: [
             { required: true, message: '请上传产品功能封面图', trigger: 'blur' },
@@ -247,7 +256,8 @@ import {contentService} from '../../service/contentService'
             }
             that.isAddEdit = 2;
             that.isImageState=1;
-            that.imgUrl = that.$store.state.picHead + obj.cover;
+            that.$refs.upCover.imgUrl = that.$store.state.picHead + obj.cover; // 图片显示路径
+//          that.imgUrl = that.$store.state.picHead + obj.cover;
             that.dialogTitle = '编辑产品功能';
             that.dialogFormVisible = true;
           }
@@ -263,6 +273,11 @@ import {contentService} from '../../service/contentService'
           index: index,
           id: id
         };
+      },
+      // 获得封面图路径
+      myPicUrl (val) {
+          let that = this;
+          that.form.pic = val;// 封面图
       },
       // 表单提交
       submit (form) {

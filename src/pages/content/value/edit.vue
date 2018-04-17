@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-      <el-form-item label="新闻标题" prop="title" size="mini">
+      <el-form-item label="标题" prop="title" size="mini">
         <el-input v-model="ruleForm.title" class="iptLength" placeholder="60个字内"></el-input>
       </el-form-item>
       <!--<el-form-item label="作者" prop="author" size="mini">
@@ -15,7 +15,7 @@
           <el-option  v-for="item in demoList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>-->
-      <el-form-item label="新闻详情" prop="detail">
+      <el-form-item label="详情" prop="detail">
         <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
       </el-form-item>
       <!--<el-form-item label="摘要" prop="desc">
@@ -48,7 +48,7 @@
         },
         rules: {
           title: [
-            { required: true, message: '请输入新闻标题', trigger: 'blur' },
+            { required: true, message: '请输入标题', trigger: 'blur' },
             { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
           ],
           /*author: [
@@ -58,7 +58,7 @@
             { required: true, message: '请上传封面图', trigger: 'blur' }
           ],
           detail: [
-            { required: true, message: '请填写新闻详情', trigger: 'blur' }
+            { required: true, message: '请填写详情', trigger: 'blur' }
           ]
         },
         myOption: {

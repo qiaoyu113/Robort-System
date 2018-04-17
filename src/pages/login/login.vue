@@ -91,14 +91,14 @@
                     //console.log('geetesst', geetesst);
                     if (valid) {
                         if(geetesst){
-                            that.$notify({
-                                title: '登陆成功',
-                                type: 'success'
-                            });
                             loginService.login({account: that.ruleForm2.user, password: that.ruleForm2.pass, platform: 'PCH5',challenge: that.geetestInfo.geetest_challenge, validate: that.geetestInfo.geetest_validate, seccode: that.geetestInfo.geetest_seccode}).then(function (res) {
                                 //console.log('登录成功', res);
                                 if(res.data.success){
                                     localStorage.token = res.data.datas;
+                                    that.$notify({
+                                        title: '登陆成功',
+                                        type: 'success'
+                                    });
                                     that.$router.push({name: 'home'});
                                 }else{
                                     that.$notify({

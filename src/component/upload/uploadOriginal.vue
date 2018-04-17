@@ -52,7 +52,7 @@
           let that = this;
           that.isImageState = 1; // 关闭图片上传按钮
           let e = event || window.event;
-        let file = e.target.files[0];
+          let file = e.target.files[0];
           let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
           // 是否符合m*n
           let reader = new FileReader();
@@ -93,12 +93,14 @@
                               }
                           });
                       }else{
+                          that.isImageState=0;
                           that.$message({
                               type: 'error',
                               message: '上传图片大小不能超过'+ that.options.limit + 'M'});
                       }
                   }
                   else{
+                      that.isImageState=0;
                       that.$message({
                           type: 'error',
                           message: '请上传宽高为' + that.options.imgWidth +'*' + that.options.imgHeight + '的图片'});

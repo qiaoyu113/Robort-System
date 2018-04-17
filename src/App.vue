@@ -55,6 +55,7 @@
         /*max-width: 450px;*/
         position:relative;
     }
+    img{max-width: 100%}
     body {
         font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Helvetica Neue,Arial,sans-serif;
     }

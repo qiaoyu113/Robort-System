@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="upload-pic">
     <!--上传图片，左边图片，右边上传按钮和描述文字图片比例3:2（裁剪图片）-->
     <div class="picUpload iptFormLen">
       <div class="thumb-zone">
@@ -9,7 +9,7 @@
       <div class="right">
         <div class="upload-btn">
           <el-button type="primary" size="mini">上传文件</el-button>
-          <input v-show="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
+          <input v-if="isImageState===0" type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file">
           <input v-show="isImageState===1" type="button" class="file">
         </div>
         <p class="des">1. {{options.des}}</p>
@@ -18,7 +18,7 @@
     </div>
     <!--截图-->
     <el-dialog title="" :visible.sync="dialogCropperVisible" :show-close="false">
-      <vue-cropper
+      <vue-cropper v-if=""
               ref="cropper"
               :img="option.img"
               :outputSize="option.size"
@@ -114,7 +114,7 @@
           //alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种');
           return false
         }
-        let reader = new FileReader();
+          let reader = new FileReader();
         reader.onload = (e) => {
             let data;
           if (typeof e.target.result === 'object') {
@@ -122,7 +122,6 @@
             //data = window.URL.createObjectURL(new Blob([e.target.result]))
           } else {
             data = e.target.result;
-              console.log(data,555);
           }
           that.option.img = data; //赋值到图片截取弹出层
           that.dialogCropperVisible = true; //确定弹出图片截取层
@@ -162,7 +161,7 @@
   }
 </script>
 <style lang="less" scope>
-  .el-dialog{margin:0 auto 50px!important;height: 100%}
+  .upload-pic .el-dialog{margin:0 auto 15vh!important;height: 100%}
   .vue-cropper{height: 60%!important;;img{width: 100%}}
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;
