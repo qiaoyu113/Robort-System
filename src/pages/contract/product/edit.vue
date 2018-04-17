@@ -129,10 +129,10 @@ export default {
                     { required: true, message: '请填写产品包详情', trigger: 'blur' }
                 ],
                 price: [
-                    { required: true, message: '请填写该产品包的定价', trigger: 'blur' }
+                    { required: false, message: '请填写该产品包的定价', trigger: 'blur' }
                 ],
                 oriPrice_s: [
-                    { required: true, message: '请填写该产品包的原价', trigger: 'blur' }
+                    { required: false, message: '请填写该产品包的原价', trigger: 'blur' }
                 ]
             }
         }

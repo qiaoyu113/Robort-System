@@ -71,7 +71,7 @@
     </el-dialog>
     <!--新增-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="form">
+      <el-form :model="form" :rules="rules" ref="form" v-if="dialogFormVisible">
         <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
           <div class="upload-cover">
             <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upCover"></upload-original>
@@ -259,10 +259,12 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
             }
             that.isAddEdit = 2;
             that.isImageState=1;
-            that.$refs.upCover.imgUrl = that.$store.state.picHead + obj.cover; // 图片显示路径
 //          that.imgUrl = that.$store.state.picHead + obj.cover;
             that.dialogTitle = '编辑产品功能';
             that.dialogFormVisible = true;
+            setTimeout(function () {
+                that.$refs.upCover.imgUrl = that.$store.state.picHead + obj.cover; // 图片显示路径
+            },50)
           }
         });
 
@@ -295,6 +297,7 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
                     //console.log('submit success', res);
                     if(res.data.success){
                         that.dialogFormVisible = false;
+                        that.$router.push({name:'productFunc'})
                     }
                 });
             }else if(that.isAddEdit == 2){
@@ -302,6 +305,7 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
                     //console.log('submit success', res);
                     if(res.data.success){
                         that.dialogFormVisible = false;
+                        that.$router.push({name:'productFunc'})
                     }
                 });
             }
