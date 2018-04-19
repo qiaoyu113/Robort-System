@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item v-if="pType==2" label="国家" prop="classId"  size="mini">
         <el-select v-model="ruleForm.classId" placeholder="请选择国家">
-          <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
+          <el-option v-for="(value, index, key) in countryList" v-if="value.connPartner==false || ruleForm.classId==value.id" :label="value.name" :value="value.id" :key="key"></el-option>
         </el-select>
       </el-form-item>
       <!--<el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
@@ -400,9 +400,15 @@
       },
       getCountryList(v,f){
           let that = this
-          systemService.getClassifyList({type: v,connPartner:false}).then(function(res){
+          var params
+          if(!f){
+              params = {type: v,connPartner:false}
+          }else{
+              params = {type: v}
+          }
+          systemService.getClassifyList(params).then(function(res){
               that.countryList = res.data.datas
-              if(!f) that.ruleForm.classId = that.countryList[0].id
+              if(!f) that.ruleForm.classId = null
           })
       },
       addRefer(v){
