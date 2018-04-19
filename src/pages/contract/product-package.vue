@@ -253,7 +253,7 @@
           let rows = that.dialog.rows;
           let index = that.dialog.index;
           contractService.deleteProductPackage(id).then(function (res) {
-            console.log('删除', res);
+//            console.log('删除', res);
             if(res.data.success){
               that.centerDialogVisible = false;
               rows.splice(index, 1);

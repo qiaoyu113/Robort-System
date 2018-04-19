@@ -902,8 +902,8 @@
 
                 this.headerImageSrc = roundedCanvas.toDataURL();
                 let that = this;
-                console.log(that.headerImageSrc)
-                console.log(that.width,that.height);
+//                console.log(that.headerImageSrc)
+//                console.log(that.width,that.height);
                 commonService.myImage({base64Img:that.headerImageSrc,width:that.width,height:that.height}).then(function(res){
                     let img = res.data.datas;
                     commonService.myCenterSet({headImg:img}).then(function(res){

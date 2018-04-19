@@ -47,16 +47,16 @@
           </el-form-item>
         </el-form-item>
           <div class="contact">
-            <el-form-item prop="contactname1" size="mini" class="mar10">
+            <el-form-item prop="contactname1" size="mini">
             <el-input v-model="ruleForm.contactname1" class="contact-input" placeholder="姓名"></el-input>
             </el-form-item>
-            <el-form-item prop="contactphone1" size="mini" class="mar10">
+            <el-form-item prop="contactphone1" size="mini">
             <el-input v-model="ruleForm.contactphone1" class="contact-input" placeholder="phone"></el-input>
             </el-form-item>
-            <el-form-item prop="contactemail1" size="mini" class="mar10">
+            <el-form-item prop="contactemail1" size="mini">
             <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="email"></el-input>
             </el-form-item>
-            <el-form-item prop="contactlink1" size="mini" class="mar10">
+            <el-form-item prop="contactlink1" size="mini">
             <el-input v-model="ruleForm.contactlink1" class="contact-input" placeholder="link"></el-input>
             </el-form-item>
           </div>
@@ -64,16 +64,16 @@
           <upload-original :options="uploadOrg2" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
         </el-form-item>
         <div class="contact">
-          <el-form-item prop="contactemail2" size="mini" class="mar10">
+          <el-form-item prop="contactname2" size="mini">
           <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item prop="contactphone2" size="mini" class="mar10">
+          <el-form-item prop="contactphone2" size="mini" >
           <el-input v-model="ruleForm.contactphone2" class="contact-input" placeholder="phone"></el-input>
           </el-form-item>
-          <el-form-item prop="contactemail2" size="mini" class="mar10">
+          <el-form-item prop="contactemail2" size="mini">
           <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="email"></el-input>
           </el-form-item>
-          <el-form-item prop="contactlink2" size="mini" class="mar10">
+          <el-form-item prop="contactlink2" size="mini" >
           <el-input v-model="ruleForm.contactlink2" class="contact-input" placeholder="link"></el-input>
           </el-form-item>
         </div>
@@ -381,7 +381,7 @@ export default {
         margin-bottom: 0!important;
       }
       width: 100%;
-      height: 160px;
+      height: 180px;
       overflow: hidden;
       .partner-image {
         width: 180px;
@@ -409,7 +409,7 @@ export default {
         float: left;
       }
       .contact-input{
-        margin-bottom: 10px;
+        /*margin-bottom: 10px;*/
         width:  110px;
       }
     }

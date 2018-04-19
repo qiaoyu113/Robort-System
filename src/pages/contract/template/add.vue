@@ -307,7 +307,7 @@
       // 富文本编辑器
       deleteQuestion(id){
           let that = this
-          console.log(id,that.ruleForm.questions.length);
+//          console.log(id,that.ruleForm.questions.length);
           for(let i=id ;i+1<that.ruleForm.questions.length;i++){
             let data = editors[i+1].getData()
               window.editors[i].setData(data);

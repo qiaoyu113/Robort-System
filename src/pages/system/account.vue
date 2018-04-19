@@ -146,7 +146,7 @@
             getUsers:function(){
                 let that=this;
                 financialService.getAdminInfo().then(function(res){
-                    console.log(res.data.datas)
+//                    console.log(res.data.datas)
                     that.list=res.data.datas
                     that.userForm.hostName=that.list.hostName
                     that.userForm.hostPhone=that.list.hostPhone
@@ -164,7 +164,7 @@
                 let that=this;
                 if(url){
                     that.userForm.hostLogo = url
-                    console.log(url)
+//                    console.log(url)
                 } else {
                     that.userForm.imgUrl = that.$store.state.picHead+that.userForm.hostLogo
                     that.userForm.hostLogo = url = that.list.hostLogo

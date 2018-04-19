@@ -155,7 +155,7 @@
                         for (let i = 0; i < dataArr.length; i++) {
                             that.commentlists.push(dataArr[i]);
                         }
-                        console.log(that.commentlists)
+//                        console.log(that.commentlists)
                         //          加载完成后busy为false，如果最后一页则lastpage为true
                         if(that.page.num < res.data.datas.totalPage){
                             that.busy = false

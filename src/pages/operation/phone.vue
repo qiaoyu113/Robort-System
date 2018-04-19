@@ -161,7 +161,7 @@
             },
             //添加备注
             handleClick2(index) {
-                console.log(index)
+//                console.log(index)
                 this.$prompt('请输入备注', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -178,7 +178,7 @@
                 });
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+//                console.log(`当前页: ${val}`);
             }
         }
     }
