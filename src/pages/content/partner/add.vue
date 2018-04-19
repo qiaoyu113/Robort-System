@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item v-if="pType==2" label="国家" prop="classId"  size="mini">
         <el-select v-model="ruleForm.classId" placeholder="请选择国家">
-          <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="key"></el-option>
+          <el-option v-for="(value, index, key) in countryList" :label="value.name" :value="value.id" :key="value.id"></el-option>
         </el-select>
       </el-form-item>
       <!--<el-form-item v-if="pType==2" label="合同模板" prop="template"  size="mini">
@@ -145,7 +145,9 @@ export default {
         phoneNo: '', // 联系方式
         referenDatas: [{},{},{}], // 联系方式
         contactUsers: [{},{}], // 联系方式
-        detail: '' // 简介
+        detail: '', // 简介
+        classType: '', // 区域
+        classId: '', // 国家关联
       },
       rules: {
         name: [
@@ -353,7 +355,7 @@ export default {
         let that = this
         systemService.getClassifyList({type: v,connPartner:false}).then(function(res){
             that.countryList = res.data.datas
-            that.ruleForm.classId = that.countryList[0].id
+            that.ruleForm.classId = ''
         })
     },
     addRefer(v){

@@ -1,208 +1,94 @@
 /*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or https://ckeditor.com/legal/terms-of-use/#open-source-licences
+所见即所得排版样式
+目前支持PC端编辑
+更新日期:2017年4月11日
 */
 
-body
-{
-	/* Font */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
 
-	/* Text color */
-	color: #333;
+/* 重置浏览器样式 */
 
-	/* Remove the background color to make it transparent */
-	background-color: #fff;
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,li,form,img,dl,dt,dd,table,th,td,blockquote,fieldset,div,strong,label,em{margin:0;padding:0;border:0;}
+ul,ol,li{list-style:none;}
+input,button,textarea{margin:0;font-size:12px;vertical-align:middle;font-family:microsoft yahei, arial, helvetica, sans-serif arial, helvetica, sans-serif;}
+body{font:12px microsoft yahei, arial, helvetica, sans-serif arial, helvetica, sans-serif;margin:0;color:#515567;}
+table{border-collapse:collapse;border-spacing:0;}
+a{text-decoration:none;outline:none;color:#515567;-webkit-transition:all 200ms ease-out;-mozilla-transition:all 200ms ease-out;-ms-transition:all 200ms ease-out;-o-transition:all 200ms ease-out;transition:all 200ms ease-out;}
+img{-webkit-transition:all 200ms ease-out;-mozilla-transition:all 200ms ease-out;-ms-transition:all 200ms ease-out;-o-transition:all 200ms ease-out;transition:all 200ms ease-out;}
+a:hover{text-decoration:none;-moz-transition:color .2s linear;-webkit-transition:color .2s linear;transition:color .15s linear;}
+.cl{height:0;font-size:1px;clear:both;line-height:0;}
+a,img,button,input,textarea{-webkit-tap-highlight-color:rgba(255,255,255,0);-webkit-appearance:none;}
+.none{display:none;}
+:focus{outline:none;}
+i,em,ins,u{font-style:normal;text-decoration:none;}
+nav,footer,section,header,article{display:block;}
 
-	margin: 20px;
-}
 
-.cke_editable
-{
-	font-size: 13px;
-	line-height: 1.6;
+/* ckeditor一些样式重置 */
 
-	/* Fix for missing scrollbars with RTL texts. (#10488) */
-	word-wrap: break-word;
-}
+img.right{border:1px solid #ccc;float:right;margin-left:15px;padding:5px;}
+img.left{border:1px solid #ccc;float:left;margin-right:15px;padding:5px;}
+pre{white-space:pre-wrap;/* CSS 2.1 */word-wrap:break-word;/* IE7 */-moz-tab-size:4;tab-size:4;}
+.marker{background-color:#FF0;}
+span[lang]{font-style:normal;}
+figure{text-align:center;border:solid 1px #ccc;border-radius:2px;background:rgba(0,0,0,0.05);padding:10px;margin:10px 20px;display:inline-block;}
+figure > figcaption{text-align:center;display:block;/* For IE8 */}
+a > img{ box-shadow: 0 0 8px rgba(103, 166, 217, 1);}
 
-blockquote
-{
-	font-style: italic;
-	font-family: Georgia, Times, "Times New Roman", serif;
-	padding: 2px 0;
-	border-style: solid;
-	border-color: #ccc;
-	border-width: 0;
-}
 
-.cke_contents_ltr blockquote
-{
-	padding-left: 20px;
-	padding-right: 8px;
-	border-left-width: 5px;
-}
+/* 全局设定 */
 
-.cke_contents_rtl blockquote
-{
-	padding-left: 8px;
-	padding-right: 20px;
-	border-right-width: 5px;
-}
+body { margin:20px;font:14px "Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;color: #333;background: #fff;}
+.cke_editable {font-size:16px; color:#3e3e3e;line-height:1.7;/* Fix for missing scrollbars with RTL texts. (#10488) */word-wrap:break-word;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto;}
 
-a
-{
-	color: #0782C1;
-}
 
-ol,ul,dl
-{
-	/* IE7: reset rtl list margin. (#7334) */
-	*margin-right: 0px;
-	/* preserved spaces for list items with text direction other than the list. (#6249,#8049)*/
-	padding: 0 40px;
-}
+/* 自己布局 */
+.cke_editable *{max-width:100%!important;box-sizing:border-box!important;-webkit-box-sizing:border-box!important;word-wrap:break-word!important;}
+.cke_editable *:first-child{ padding-top: 0; margin-top: 0}
 
-h1,h2,h3,h4,h5,h6
-{
-	font-weight: normal;
-	line-height: 1.2;
-}
 
-hr
-{
-	border: 0px;
-	border-top: 1px solid #ccc;
-}
+.cke_editable hr{height:1px;border:none;border-bottom:1px solid #ddd;margin:0;padding:0;margin-top:.4em;}
+.cke_editable p,.cke_editable blockquote{margin-top:1em;}
+.cke_editable h1,.cke_editable h2,.cke_editable h3,.cke_editable h4,.cke_editable h5,.cke_editable h6{font-weight:700;padding-top:1em;}
+.cke_editable h1{font-size:24px;line-height:1.4;}
+.cke_editable h2{font-size:22px;line-height:1.5;}
+.cke_editable h3{font-size:18px;}
+.cke_editable h4{font-size:16px;}
+.cke_editable h5{font-size:14px;}
+.cke_editable h5{font-size:12px;}
+.cke_editable a,.cke_editable a:visited,.cke_editable a:link{color:#0035A4;text-decoration:none;/* cursor:pointer; ckeditor中隐藏*/zoom:1;border-bottom:2px dotted transparent;}
+.cke_editable a:active{color:#000;}
+.cke_editable a:hover{text-decoration:none;border-bottom:2px dotted #ddd;}
+.cke_editable a img{text-decoration:none;border:none!important;}
+.cke_editable img a:hover{text-decoration:none;border:none!important;}
 
-img.right
-{
-	border: 1px solid #ccc;
-	float: right;
-	margin-left: 15px;
-	padding: 5px;
-}
+.cke_editable .pindent{text-indent: 2em;}
 
-img.left
-{
-	border: 1px solid #ccc;
-	float: left;
-	margin-right: 15px;
-	padding: 5px;
-}
 
-pre
-{
-	white-space: pre-wrap; /* CSS 2.1 */
-	word-wrap: break-word; /* IE7 */
-	-moz-tab-size: 4;
-	tab-size: 4;
-}
+.cke_editable img{max-width:100%;height:auto;}
 
-.marker
-{
-	background-color: Yellow;
-}
+.cke_editable b,.cke_editable strong{font-weight:700;}
 
-span[lang]
-{
-	font-style: italic;
-}
+.cke_editable i,.cke_editable em{ font-style: italic; }
+.cke_editable u,.cke_editable ins{text-decoration:underline!important;}
 
-figure
-{
-	text-align: center;
-	border: solid 1px #ccc;
-	border-radius: 2px;
-	background: rgba(0,0,0,0.05);
-	padding: 10px;
-	margin: 10px 20px;
-	display: inline-block;
-}
+/* .cke_editable section{clear:both;} */
+.cke_editable p{clear:both;min-height:1em;}
+.cke_editable p > h1,h2,h3,h4,h5,h6{margin:0!important;}
+.cke_editable blockquote{padding-left:10px;border-left:3px solid #dbdbdb;}
+.cke_editable ul,.cke_editable ol{padding-left:2em;line-height:inherit!important;margin-top:1em;}
+.cke_editable >li{margin:0;padding:0;}
+.cke_editable ul>li:first-child > ol,.cke_editable ul>li:first-child > ul,.cke_editable ol>li:first-child > ul,.cke_editable ol>li:first-child > ol,.cke_editable ol >ul,.cke_editable ul >ol{margin-top:0!important;}
+.cke_editable ul>li{list-style-type:disc;}
+.cke_editable ol>li{list-style-type:decimal;}
+.cke_editable table{border-collapse:collapse;border-spacing:0;margin-top:1em;}
+.cke_editable table p{margin:0!important;}
+.cke_editable table th,.cke_editable table td,.cke_editable th,.cke_editable td,.cke_editable table caption{border:1px solid #ddd;padding:.5em;color:#666;}
+.cke_editable table th,.cke_editable th{background:#fbfbfb;}
+.cke_editable table thead th,.cke_editable thead th{background:#f1f1f1;}
+.cke_editable table caption{border-bottom:none;}
 
-figure > figcaption
-{
-	text-align: center;
-	display: block; /* For IE8 */
-}
-
-a > img {
-	padding: 1px;
-	margin: 1px;
-	border: none;
-	outline: 1px solid #0782C1;
-}
-
-/* Widget Styles */
-.code-featured
-{
-	border: 5px solid red;
-}
-
-.math-featured
-{
-	padding: 20px;
-	box-shadow: 0 0 2px rgba(200, 0, 0, 1);
-	background-color: rgba(255, 0, 0, 0.05);
-	margin: 10px;
-}
-
-.image-clean
-{
-	border: 0;
-	background: none;
-	padding: 0;
-}
-
-.image-clean > figcaption
-{
-	font-size: .9em;
-	text-align: right;
-}
-
-.image-grayscale
-{
-	background-color: white;
-	color: #666;
-}
-
-.image-grayscale img, img.image-grayscale
-{
-	filter: grayscale(100%);
-}
-
-.embed-240p
-{
-	max-width: 426px;
-	max-height: 240px;
-	margin:0 auto;
-}
-
-.embed-360p
-{
-	max-width: 640px;
-	max-height: 360px;
-	margin:0 auto;
-}
-
-.embed-480p
-{
-	max-width: 854px;
-	max-height: 480px;
-	margin:0 auto;
-}
-
-.embed-720p
-{
-	max-width: 1280px;
-	max-height: 720px;
-	margin:0 auto;
-}
-
-.embed-1080p
-{
-	max-width: 1920px;
-	max-height: 1080px;
-	margin:0 auto;
-}
+/* 一般第三方的编辑器以article、section包裹，这里统一清除了article、section的样式 */
+.cke_editable article>p,.cke_editable section>p{margin:0!important;}
+.cke_editable article>blockquote{padding:0!important;border:none!important;background:none!important;}
+.cke_editable article>h1,.cke_editable article>h2,.cke_editable article>h3,.cke_editable article>h4,.cke_editable article>h5,.cke_editable article>h6,.cke_editable section>h1,.cke_editable section>h2,.cke_editable section>h3,.cke_editable section>h4,.cke_editable section>h5,.cke_editable section>h6{padding-top:0!important;}
+.cke_editable article>table{margin:0!important;padding:0!important;}
