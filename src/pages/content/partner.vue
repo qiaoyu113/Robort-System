@@ -42,8 +42,8 @@
               label="操作"
               width="150">
         <template slot-scope="scope">
-          <el-button @click="doTop(1, scope.row.id)" type="text" size="small" v-if="scope.row.sortNum > 0">取消置顶</el-button>
-          <el-button @click="doTop(2, scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0">置顶</el-button>
+          <el-button @click="doTop(1, scope.row.id)" type="text" size="small" v-if="scope.row.sortNum > 0 && tabIndex==1">取消置顶</el-button>
+          <el-button @click="doTop(2, scope.row.id)" type="text" size="small" v-if="scope.row.sortNum <= 0 && tabIndex==1">置顶</el-button>
           <el-button @click="doEdit(scope.row.id)" type="text" size="small">编辑</el-button>
           <el-button @click.native.prevent="doDelete(scope.row.id, scope.$index, tableData)" type="text" size="small">删除</el-button>
         </template>

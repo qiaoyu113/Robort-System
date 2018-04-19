@@ -63,8 +63,8 @@
                 <el-table-column
                         label="支付方式">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.channelId=='ALIPAY_PC'||scope.row.channelId=='ALIPAY_MOBILE'||scope.row.channelId=='ALIPAY_WAP'||scope.row.channelId=='ALIPAY_QR'">微信支付</span>
-                        <span v-if="scope.row.channelId=='WX_JSAPI'||scope.row.channelId=='WX_NATIVE'||scope.row.channelId=='WX_APP'||scope.row.channelId=='WX_MWEB'">支付宝</span>
+                        <span v-if="scope.row.channelId=='ALIPAY_PC'||scope.row.channelId=='ALIPAY_MOBILE'||scope.row.channelId=='ALIPAY_WAP'||scope.row.channelId=='ALIPAY_QR'">支付宝</span>
+                        <span v-if="scope.row.channelId=='WX_JSAPI'||scope.row.channelId=='WX_NATIVE'||scope.row.channelId=='WX_APP'||scope.row.channelId=='WX_MWEB'">微信支付</span>
                         <span v-if="scope.row.channelId=='IAP'">苹果支付</span>
                     </template>
                 </el-table-column>

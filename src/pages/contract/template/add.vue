@@ -48,6 +48,9 @@
       <el-form-item label="目录" prop="catalogue">
         <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
       </el-form-item>
+      <el-form-item label="重要免责声明" prop="disclaimer">
+        <el-input type="textarea" v-model="ruleForm.disclaimer" name="disclaimer" class="iptLength" placeholder="重要免责声明"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
       </el-form-item>
@@ -58,7 +61,7 @@
   import {world} from '../../../service/worldService'
   import {contractService} from '../../../service/contractService'
 
-  let myEditor, myEditor2;// 富文本编辑器
+  let myEditor, myEditor2,myEditor3;// 富文本编辑器
 
   export default {
     props: [],
@@ -110,6 +113,9 @@
           catalogue: [
             { required: true, message: '请填写合同模板目录', trigger: 'blur' }
           ],
+          disclaimer: [
+            { required: true, message: '请填写重要免责声明', trigger: 'blur' }
+          ],
           question1: [
             { required: true, message: '请填写问题', trigger: 'blur' }
           ],
@@ -137,6 +143,7 @@
         let that = this;
         that.ruleForm.description = myEditor.getData();
         that.ruleForm.catalogue = myEditor2.getData();
+        that.ruleForm.disclaimer = myEditor3.getData();
         that.checkquestions();
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
@@ -164,6 +171,7 @@
                     productPkgName: pakName,
                     description: that.ruleForm.description,
                     catalogue: that.ruleForm.catalogue,
+                    disclaimer: that.ruleForm.disclaimer,
                     questions_s  : JSON.stringify(that.ruleForm.questions),
                     price_s: that.ruleForm.price_s,
                     tryUse: that.ruleForm.isTry}
@@ -215,7 +223,7 @@
           that.ruleForm.question1 = '1'
           if(that.ruleForm.questions.length){
               for(let i in that.ruleForm.questions){
-                  console.log(window.editors[i].getData())
+//                  console.log(window.editors[i].getData())
                 that.ruleForm.questions[i].answer = window.editors[i].getData();
                 let q = that.ruleForm.questions[i]
                 if(!q.answer || !q.question){
@@ -276,8 +284,10 @@
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
         myEditor2 = CKEDITOR.replace("list");
+        myEditor3 = CKEDITOR.replace("disclaimer");
         myEditor.setData("");
         myEditor2.setData("");
+        myEditor3.setData("");
         setTimeout(function () {
             window.editors=[]
             window.editors[0]= CKEDITOR.replace("add0");

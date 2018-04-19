@@ -54,6 +54,9 @@
           <el-form-item prop="contactemail1" size="mini" class="mar10">
             <el-input v-model="ruleForm.contactemail1" class="contact-input" placeholder="email"></el-input>
           </el-form-item>
+          <el-form-item prop="contactlink1" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactlink1" class="contact-input" placeholder="link"></el-input>
+          </el-form-item>
         </div>
         <el-form-item prop="contactcover2" size="mini" class="par-contact">
           <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl2" ref="upOrg2" class="partner-image"></upload-original>
@@ -67,6 +70,9 @@
           </el-form-item>
           <el-form-item prop="contactemail2" size="mini" class="mar10">
             <el-input v-model="ruleForm.contactemail2" class="contact-input" placeholder="email"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactlink2" size="mini" class="mar10">
+            <el-input v-model="ruleForm.contactlink2" class="contact-input" placeholder="link"></el-input>
           </el-form-item>
         </div>
       </div>
@@ -191,6 +197,12 @@
               { required: true, message: '请输入联系邮箱', trigger: 'blur' },
               { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' },
           ]
+          this.rules.contactlink1= [
+              { required: true, message: '请输入链接', trigger: 'blur' },
+          ]
+          this.rules.contactlink2= [
+              { required: true, message: '请输入链接', trigger: 'blur' },
+          ]
           this.rules.contactname2= [
               { required: true, message: '请输入联系人', trigger: 'blur' },
           ]
@@ -230,10 +242,12 @@
                   {name:that.ruleForm.contactname1,
                       cover:that.ruleForm.contactcover1,
                       phone:that.ruleForm.contactphone1,
+                      link:that.ruleForm.contactlink1,
                       email:that.ruleForm.contactemail1},
                   {name:that.ruleForm.contactname2,
                       cover:that.ruleForm.contactcover2,
                       phone:that.ruleForm.contactphone2,
+                      link:that.ruleForm.contactlink2,
                       email:that.ruleForm.contactemail2},
               ]
               let referenDatas = that.ruleForm.referenDatas;
@@ -339,10 +353,12 @@
             that.ruleForm.contactname1 = that.ruleForm.contactUsers[0].name
             that.ruleForm.contactphone1 = that.ruleForm.contactUsers[0].phone
             that.ruleForm.contactemail1 = that.ruleForm.contactUsers[0].email
+            that.ruleForm.contactlink1 = that.ruleForm.contactUsers[0].link
             that.ruleForm.contactcover2 = that.ruleForm.contactUsers[1].cover
             that.ruleForm.contactphone2 = that.ruleForm.contactUsers[1].phone
             that.ruleForm.contactname2 = that.ruleForm.contactUsers[1].name
             that.ruleForm.contactemail2 = that.ruleForm.contactUsers[1].email
+            that.ruleForm.contactlink2 = that.ruleForm.contactUsers[1].link
 
             that.$refs.upOrg.imgUrl = that.$store.state.picHead +  that.ruleForm.imgUrl;
             that.$refs.upOrg1.imgUrl = that.$store.state.picHead +  that.ruleForm.contactcover1;
@@ -384,9 +400,9 @@
       },
       getCountryList(v,f){
           let that = this
-          if(!f) that.ruleForm.classId = null
-          systemService.getClassifyList({type: v}).then(function(res){
+          systemService.getClassifyList({type: v,connPartner:false}).then(function(res){
               that.countryList = res.data.datas
+              if(!f) that.ruleForm.classId = that.countryList[0].id
           })
       },
       addRefer(v){
