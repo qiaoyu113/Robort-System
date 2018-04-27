@@ -54,6 +54,9 @@
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
+        <el-form-item label="name" prop="name">
+          <el-input v-model="form.name_en"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
             <el-button size="mini" @click="formDialogVisible = false">取 消</el-button>
@@ -73,6 +76,9 @@
         </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="areaform.name"></el-input>
+        </el-form-item>
+        <el-form-item label="name" prop="name">
+          <el-input v-model="areaform.name_en"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -130,10 +136,18 @@
             { required: true, message: '请输入分类名称', trigger: 'blur' },
             { min: 0, max: 10, message: '分类名称的字数需在10字以内', trigger: 'blur' }
           ],
+          name_en: [
+            { required: true, message: '请输入英文名称', trigger: 'blur' },
+            { min: 0, max: 10, message: '分类名称的字数需在10字以内', trigger: 'blur' }
+          ],
         },
         areaRules: {
           name: [
             { required: true, message: '请输入国家名称', trigger: 'blur' },
+            { min: 0, max: 10, message: '国家名称的字数需在10字以内', trigger: 'blur' }
+          ],
+          name_en: [
+            { required: true, message: '请输入英文名称', trigger: 'blur' },
             { min: 0, max: 10, message: '国家名称的字数需在10字以内', trigger: 'blur' }
           ],
           image: [
@@ -211,7 +225,7 @@
             this.$refs[formName].validate((valid) => {
                 if (valid) { // 验证成功
                     if(that.form.addOrEdit == 0){
-                        systemService.addClassify({name: that.form.name, type: that.form.typ}).then(function (res) {
+                        systemService.addClassify({name: that.form.name,name_en: that.form.name_en, type: that.form.typ}).then(function (res) {
                             //console.log('add', res);
                             if(res.data.success){
                                 that.formDialogVisible = false;
@@ -220,7 +234,7 @@
                         });
                     }
                     if(that.form.addOrEdit == 1){
-                        systemService.editClassify({id: that.form.id, name: that.form.name, type: that.form.typ}).then(function (res) {
+                        systemService.editClassify({id: that.form.id, name: that.form.name, name_en: that.form.name_en, type: that.form.typ}).then(function (res) {
                             //console.log('edit 修改分类', res);
                             if(res.data.success){
                                 that.formDialogVisible = false;
@@ -238,7 +252,7 @@
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if(that.areaform.addOrEdit == 0){
-                        systemService.addClassify({name: that.areaform.name, type: that.areaform.typ,image:that.areaform.image}).then(function (res) {
+                        systemService.addClassify({name: that.areaform.name,name_en: that.areaform.name_en, type: that.areaform.typ,image:that.areaform.image}).then(function (res) {
                             //console.log('edit 修改分类', res);
                             if(res.data.success){
                                 that.areaDialogVisible = false;
@@ -247,7 +261,7 @@
                         });
                     }
                     if(that.areaform.addOrEdit == 1){
-                        systemService.editClassify({id: that.areaform.id, name: that.areaform.name, type: that.areaform.typ,image:that.areaform.image}).then(function (res) {
+                        systemService.editClassify({id: that.areaform.id, name_en: that.areaform.name_en, name: that.areaform.name, type: that.areaform.typ,image:that.areaform.image}).then(function (res) {
                             //console.log('edit 修改分类', res);
                             if(res.data.success){
                                 that.areaDialogVisible = false;

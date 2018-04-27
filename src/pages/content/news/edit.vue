@@ -21,6 +21,25 @@
       <el-form-item label="摘要" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item label="新闻标题" prop="title_en" size="mini">
+        <el-input v-model="ruleForm.title_en" class="iptLength" placeholder="60个字内"></el-input>
+      </el-form-item>
+      <el-form-item label="作者" prop="author_en" size="mini">
+        <el-input v-model="ruleForm.author_en" class="iptLength"></el-input>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover_en">
+        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en" ref="uImg_en"></upload-img>
+      </el-form-item>
+      <el-form-item label="新闻详情" prop="detail_en">
+        <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+      </el-form-item>
+      <el-form-item label="摘要" prop="desc_en">
+        <el-input type="textarea" v-model="ruleForm.desc_en" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
       </el-form-item>
@@ -32,6 +51,7 @@
   import {contentService} from '../../../service/contentService'
 
   let myEditor;// 富文本编辑器
+  let myEditor_en;// 富文本编辑器
   export default {
     props: [],
     data () {
@@ -40,11 +60,16 @@
         ruleForm: {
           id: '',
           title: '', // 新闻名称
+          title_en: '', // 新闻名称
           author: '', // 作者
+          author_en: '', // 作者
           cover: '', // 封面图
+          cover_en: '', // 封面图
           selItem: '', // 分类
           detail: '', // 详情
-          desc: '' // 简介
+          detail_en: '', // 详情
+          desc: '', // 简介
+          desc_en: '' // 简介
         },
         rules: {
           title: [
@@ -91,9 +116,12 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
+        that.ruleForm.detail_en = myEditor_en.getData();
         if(that.ruleForm.desc.length == 0){
           let textEditor = myEditor.document.getBody().getText();
           that.ruleForm.desc = textEditor.substring(0, 120);
+          let textEditor_en = myEditor_en.document.getBody().getText();
+          that.ruleForm.desc_en = textEditor_en.substring(0, 120);
         }
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
@@ -108,12 +136,17 @@
             contentService.editNews({
               id: that.ruleForm.id,
               name: that.ruleForm.title,
+              name_en: that.ruleForm.title_en,
               author: that.ruleForm.author,
+              author_en: that.ruleForm.author_en,
               description: that.ruleForm.desc,
+              description_en: that.ruleForm.desc_en,
               content: that.ruleForm.detail,
+              content_en: that.ruleForm.detail_en,
               classId: that.ruleForm.selItem,
               className: className,
               cover: that.ruleForm.cover,
+              cover_en: that.ruleForm.cover_en,
               type: 1}).then(function (res) {
               //console.log(res, '编辑一个新闻');
               if(res.data.success){
@@ -141,6 +174,11 @@
         let that = this;
         that.ruleForm.cover = val;
       },
+      // 获取图片服务器路径
+      myPicUrl_en(val){
+        let that = this;
+        that.ruleForm.cover_en = val;
+      },
       // 详情
       getNews () {
         let that = this;
@@ -151,18 +189,26 @@
             let obj = res.data.datas;
             setTimeout(function () {
               myEditor.setData(obj.content);
+              myEditor_en.setData(obj.content_en);
             },1);
             that.ruleForm = {
               id: obj.id,
               title: obj.name, // 新闻名称
+              title_en: obj.name_en, // 新闻名称
               author: obj.author, // 作者
+              author_en: obj.author_en, // 作者
               cover: obj.cover, // 封面图
+              cover_en: obj.cover_en, // 封面图
               selItem: obj.classId,
               detail: obj.content, // 详情
-              desc: obj.description // 简介
+              detail_en: obj.content_en, // 详情
+              desc: obj.description, // 简介
+              desc_en: obj.description_en // 简介
             };
             that.$refs.uImg.isImageState = 1;
             that.$refs.uImg.imgUrl = that.$store.state.picHead + obj.cover;
+            that.$refs.uImg_en.isImageState = 1;
+            that.$refs.uImg_en.imgUrl = that.$store.state.picHead + obj.cover_en;
           }else{}
         });
       },
@@ -181,6 +227,7 @@
       editor(){
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
+        myEditor_en = CKEDITOR.replace("detail_en");
       },
     }
   }

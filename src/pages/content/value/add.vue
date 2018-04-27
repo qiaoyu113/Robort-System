@@ -1,26 +1,27 @@
 <template>
   <div class="container">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-    <el-form-item label="标题" prop="title" size="mini">
-      <el-input v-model="ruleForm.title" class="iptLength" placeholder="60个字内"></el-input>
-    </el-form-item>
-    <!--<el-form-item label="作者" prop="author" size="mini">
-      <el-input v-model="ruleForm.author" class="iptLength"></el-input>
-    </el-form-item>-->
-    <el-form-item label="封面" prop="cover">
-      <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
-    </el-form-item>
-   <!-- <el-form-item label="分类" prop="selItem"  size="mini">
-      <el-select v-model="ruleForm.selItem" placeholder="请选择">
-        <el-option v-for="(item, key, index) in demoList" :label="item.name" :value="item.id" :key="key"></el-option>
-      </el-select>
-    </el-form-item>-->
-    <el-form-item label="详情" prop="detail">
-       <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
-    </el-form-item>
-    <!--<el-form-item label="摘要" prop="desc">
-    <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
-    </el-form-item>-->
+      <el-form-item label="标题" prop="title" size="mini">
+        <el-input v-model="ruleForm.title" class="iptLength" placeholder="60个字内"></el-input>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover">
+        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
+      </el-form-item>
+      <el-form-item label="详情" prop="detail">
+         <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+      </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item label="标题" prop="title_en" size="mini">
+        <el-input v-model="ruleForm.title_en" class="iptLength" placeholder="60个字内"></el-input>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover_en">
+        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en"></upload-img>
+      </el-form-item>
+      <el-form-item label="详情" prop="detail_en">
+         <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+      </el-form-item>
     <el-form-item>
     <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
     </el-form-item>
@@ -32,6 +33,7 @@
   import {contentService} from '../../../service/contentService'
 
   let myEditor;// 富文本编辑器
+  let myEditor_en;// 富文本编辑器
   export default {
     props: [],
     data () {
@@ -39,11 +41,15 @@
         demoList: [], // 演示视频下拉列表
         ruleForm: {
           title: '', // 产品包名称
+          title_en: '', // 产品包名称
 //          author: '', // 作者
           cover: '', // 封面图
+          cover_en: '', // 封面图
           selItem: '', // 分类
           detail: '', // 详情
-          desc: '' // 简介
+          detail_en: '', // 详情
+          desc: '', // 简介
+          desc_en: '' // 简介
         },
         rules: {
           title: [
@@ -86,6 +92,7 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
+        that.ruleForm.detail_en = myEditor_en.getData();
         /*if(that.ruleForm.desc.length == 0){
           let textEditor = myEditor.document.getBody().getText();
           that.ruleForm.desc = textEditor.substring(0, 120);
@@ -101,12 +108,15 @@
             }
             // 表单
             contentService.addValue({name: that.ruleForm.title,
+              name_en: that.ruleForm.title_en,
 //              author: that.ruleForm.author,
 //              description: that.ruleForm.desc,
               content: that.ruleForm.detail,
+              content_en: that.ruleForm.detail_en,
 //              classId: that.ruleForm.selItem,
 //              className: className,
               cover: that.ruleForm.cover,
+              cover_en: that.ruleForm.cover_en,
               type: 1}).then(function (res) {
               //console.log(res, '添加一个新闻');
               if(res.data.success){
@@ -134,6 +144,10 @@
         let that = this;
         that.ruleForm.cover = val;
       },
+      myPicUrl_en(val){
+        let that = this;
+        that.ruleForm.cover_en = val;
+      },
       // 摘要框输入
       /*zy (event) {
         let cur = event.currentTarget;
@@ -149,7 +163,9 @@
       editor(){
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
+        myEditor_en = CKEDITOR.replace("detail_en");
         myEditor.setData("");
+        myEditor_en.setData("");
       },
     }
   }

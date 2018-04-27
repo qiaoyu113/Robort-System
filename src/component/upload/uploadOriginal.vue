@@ -24,7 +24,6 @@ des/des2 描述
             <!--<input type="file" id="uploads" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >-->
             <input v-show="isImageState==1" type="button" class="file" disabled>
             <input  v-if="isImageState==0" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg" class="file" >
-
         </div>
         <p class="des" v-if='options.des'>1. {{options.des}}</p>
         <p class="des" v-if='options.des2'>2. {{options.des2}}</p>

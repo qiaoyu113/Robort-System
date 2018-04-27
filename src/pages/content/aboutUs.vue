@@ -16,6 +16,15 @@
       <el-form-item label="视频链接" v-if="isShowLink">
         <el-input v-model="form.link" class="iptLength" placeholder="http://"></el-input>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item :label="textTitle" prop="content_en">
+        <el-input v-model="form.content_en" type="textarea" resize="none" :rows="8" class="iptLength"></el-input>
+      </el-form-item>
+      <el-form-item label="视频链接" v-if="isShowLink">
+        <el-input v-model="form.link_en" class="iptLength" placeholder="http://"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit('form')" size="mini">保 存</el-button>
       </el-form-item>
@@ -33,7 +42,9 @@
         form: {
           id: '',
           content: '',
-          link: ''
+          content_en: '',
+          link: '',
+          link_en: ''
         }, // 新增表单
         rules: {
           content: [
@@ -63,8 +74,10 @@
               that.tabIndex = '' + obj.type; // 显示对应选项卡
               that.form = {
                 id: obj.id,
-                content: obj.description.replace(/@@@@/g,'\n\r'),
-                link: obj.videoLink
+                content: obj.description ? obj.description.replace(/@@@@/g,'\n\r'):'',
+                content_en: obj.description_en ? obj.description_en.replace(/@@@@/g,'\n\r'):'',
+                link: obj.videoLink,
+                link_en: obj.videoLink_en
               }
             }
           }
@@ -77,8 +90,9 @@
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功bannerType 0：图片；1：视频
             let typ = parseInt(that.tabIndex);
-            let desc = that.form.content.replace(/\n/g, '@@@@');
-            contentService.editIntroduce({id: that.form.id, description: desc, videoLink: that.form.link, type: typ}).then(function (res) {
+            let desc = that.form.content ? that.form.content.replace(/\n/g, '@@@@') :'';
+            let desc_en = that.form.content_en ? that.form.content_en.replace(/\n/g, '@@@@') :'';
+            contentService.editIntroduce({id: that.form.id, description: desc, videoLink: that.form.link,description_en: desc_en, videoLink_en: that.form.link_en, type: typ}).then(function (res) {
               //console.log('编辑', res);
               if(res.data.success){
                   that.$message({
@@ -116,7 +130,9 @@
         that.form = {
           id: '',
           content: '',
-          link: ''
+          content_en: '',
+          link: '',
+          link_en: ''
         };
         that.getList();
       }

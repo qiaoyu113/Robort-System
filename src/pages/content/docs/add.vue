@@ -7,6 +7,15 @@
       <el-form-item label="封面" prop="cover">
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="upOrg"></upload-original>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item label="用户名称" prop="author_en" size="mini">
+        <el-input v-model="ruleForm.author_en" class="iptLength"></el-input>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover_en">
+        <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upOrg_en"></upload-original>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
       </el-form-item>
@@ -23,7 +32,9 @@
       return {
         ruleForm: {
           author: '', // 作者
+          author_en: '', // 作者
           cover: '', // 封面图
+          cover_en: '', // 封面图
         },
         rules: {
           author: [
@@ -54,7 +65,10 @@
           if (valid) { // 验证成功
             contentService.addHotUser({
               name: that.ruleForm.author,
-              cover: that.ruleForm.cover}).then(function (res) {
+              name_en: that.ruleForm.author_en,
+              cover: that.ruleForm.cover,
+              cover_en: that.ruleForm.cover_en,
+            }).then(function (res) {
               if(res.data.success){
                 that.$router.push({name: 'HotDocs'}); //
               }else{}
@@ -69,6 +83,11 @@
       myPicUrl(val){
         let that = this;
         that.ruleForm.cover = val;
+      },
+      // 获取图片服务器路径
+      myPicUrl_en(val){
+        let that = this;
+        that.ruleForm.cover_en = val;
       }
     }
   }

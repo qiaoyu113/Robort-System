@@ -38,6 +38,28 @@
           <el-input size="mini" class="iptPriceLength" v-model="ruleForm.oriPrice_s"></el-input>
         </div>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+
+      <el-form-item label="产品包名称" prop="title_en" size="mini">
+        <el-input v-model="ruleForm.title_en" class="iptLength"></el-input>
+      </el-form-item>
+
+      <el-form-item label="产品包封面图" prop="cover_en">
+        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en"></upload-img>
+      </el-form-item>
+      <el-form-item label="生成合同banner" prop="banner_en">
+        <upload-original :options="uploadOrgBanner" v-on:getPictureUrl="myBannerPicUrl_en"></upload-original>
+      </el-form-item>
+      <el-form-item label="宣传语">
+        <el-input type="textarea" v-model="ruleForm.desc_en" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
+      </el-form-item>
+      <el-form-item label="简介" prop="detail_en">
+        <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+      </el-form-item>
+
+
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
       </el-form-item>
@@ -50,6 +72,7 @@
   import {contractService} from '../../../service/contractService'
 
   let myEditor;// 富文本编辑器
+  let myEditor_en;// 富文本编辑器
   export default {
     props: [],
     data () {
@@ -95,12 +118,15 @@
         demoList: [], // 演示视频下拉列表
         ruleForm: {
           title: '', // 产品包名称
+          title_en: '', // 产品包名称
           cover: '', // 封面图
           logo: '', // 合作伙伴logo
           banner: '', // banner
           desc: '', // 简介
+          desc_en: '', // 简介
           selItem: '', // 演示视频
           detail: '', // 详情
+          detail_en: '', // 详情
           price: '' // 价格
         },
         rules: {
@@ -146,15 +172,21 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
+        that.ruleForm.detail_en = myEditor_en.getData();
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
             contractService.addProductPackage({
               name: that.ruleForm.title,
+              name_en: that.ruleForm.title_en,
               cover: that.ruleForm.cover,
+              cover_en: that.ruleForm.cover_en,
 //              logo: that.ruleForm.logo,
               banner: that.ruleForm.banner,
+              banner_en: that.ruleForm.banner_en,
               description: that.ruleForm.desc,
+              description_en: that.ruleForm.desc_en,
               content: that.ruleForm.detail,
+              content_en: that.ruleForm.detail_en,
               demoVideoId: that.ruleForm.selItem,
               oriPrice_s: that.ruleForm.oriPrice_s,
               price_s: that.ruleForm.price}).then(function (res) {
@@ -184,6 +216,16 @@
         let that = this;
         that.ruleForm.banner = val;// banner
       },
+      // 获得封面图路径
+      myPicUrl_en (val) {
+        let that = this;
+        that.ruleForm.cover_en = val;// 封面图
+      },
+      // 获得banner图路径
+      myBannerPicUrl_en (val) {
+        let that = this;
+        that.ruleForm.banner_en = val;// banner
+      },
       // 获得演示视频列表
       getVideoDemo () {
         let that = this;
@@ -200,6 +242,8 @@
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
         myEditor.setData("");
+        myEditor_en = CKEDITOR.replace("detail_en");
+        myEditor_en.setData("");
       },
     }
   }

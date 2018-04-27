@@ -55,7 +55,8 @@
           </span>
     </el-dialog>
     <!--新增-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :show-close="false">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :show-close="false" :before-close="resetForm">
+      <div v-if="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="上传主显图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
           <div class="upload-img">
@@ -92,10 +93,48 @@
         <el-form-item label="排序号" :label-width="formLabelWidth" prop="order">
           <el-input v-model.number="form.order" placeholder="请填写排序号"></el-input>
         </el-form-item>
+
+
+        <div class="switch-lang">以下请填写对应英文版本：</div>
+
+
+        <el-form-item label="上传主显图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic">
+          <div class="upload-img">
+            <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upOrgs_en"></upload-original>
+          </div>
+        </el-form-item>
+        <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
+          <el-input v-model="form.title_en" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="" :label-width="formLabelWidth" prop="link_en">
+          <el-radio-group v-model="form.radio_en">
+            <el-radio :label="1" >跳转链接</el-radio>
+            <el-radio :label="2" >添加视频</el-radio>
+          </el-radio-group>
+          <el-input placeholder="http://" v-model="form.link_en" v-if="form.radio_en==1"></el-input>
+          <div style="margin-top:10px;" v-if="form.radio_en==2">
+            <div class="v-upload-btn">
+              <el-button size="mini" type="primary">点击上传</el-button>
+              <input type="file" id="uploadVideo_en" accept="*" @change="uploadVideo_en" class="file">
+            </div>
+            <p class="v-des">请上传mp4格式，且不超过500M</p>
+            <div class="video-list">
+              <p class="v-des" v-for="(item, key, index) in fileList_en">
+                <span>{{ item.name }}</span>
+                <i class="el-icon-close" @click="delVideo_en" v-if="fileList_en.length > 0"></i>
+                <i class="el-icon-circle-check"  v-if="fileList_en.length > 0"></i>
+              </p>
+              <p class="barProg">
+                <img class="progress" :width="progressBar_en">
+              </p>
+            </div>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="resetForm('form')" size="mini">取 消</el-button>
         <el-button type="primary" @click="submit('form')" size="mini">保 存</el-button>
+      </div>
       </div>
     </el-dialog>
   </div>
@@ -116,9 +155,13 @@
         form: {
           id: '',
           pic: '',
+          pic_en: '',
           title: '',
+          title_en: '',
           radio: 1,
+          radio_en: 1,
           link: '',
+          link_en: '',
           order: 1
         }, // 新增表单
         rules: {
@@ -148,6 +191,7 @@
           des2: '说明：该图片将显示在活动列表页，用于向用户直观传达该活动的内容。'
         },
         fileList: [], // 视频
+        fileList_en: [], // 视频
         ossOption: { // oss上传
           region: 'oss-cn-shanghai',
           accessKeyId: '',
@@ -159,7 +203,8 @@
         dialogFormVisible: false, // 表单弹窗
         dialogCropperVisible: false, // 截图弹框
         tableData: [], //列表数据
-        progressBar: 0 // 进度条
+        progressBar: 0, // 进度条
+        progressBar_en: 0 // 进度条
       }
     },
     components: {'upload-original': uploadOriginal},
@@ -189,9 +234,15 @@
         // 重置一下数据
         that.form = {
           pic: '',
+          pic_en: '',
           title: '',
+          title_en: '',
           radio: 1,
+          radio_en: 1,
           link: '',
+          link_en: '',
+          fileList: [],
+          fileList_en: [],
           order: 1
         };
         that.isAddEdit = 1;
@@ -199,6 +250,8 @@
         setTimeout(function () {
           that.$refs.upOrgs.imgUrl = '';
           that.$refs.upOrgs.isImageState = 0;
+          that.$refs.upOrgs_en.imgUrl_en = '';
+          that.$refs.upOrgs_en.isImageState = 0;
         }, 1);
         that.dialogFormVisible = true;
       },
@@ -208,17 +261,20 @@
         contentService.getBanner(id).then(function (res) {
           if (res.data.success) {
             let obj = res.data.datas;
-            that.form = {
-              id: obj.id,
-              pic: obj.picUrl,
-              title: obj.picTitle,
-              //radio: 1,
-              link: ''
-            };
+            that.form.id = obj.id,
+            that.form.pic = obj.picUrl,
+            that.form.pic_en = obj.picUrl_en,
+            that.form.title = obj.picTitle,
+            that.form.title_en = obj.picTitle_en,
+            that.form.link=''
+            that.form.link_en=''
+
             that.form.order = Number(obj.sortNum);
             setTimeout(function () {
               that.$refs.upOrgs.imgUrl = that.$store.state.picHead + obj.picUrl;
               that.$refs.upOrgs.isImageState = 1;
+              that.$refs.upOrgs_en.imgUrl = that.$store.state.picHead + obj.picUrl_en;
+              that.$refs.upOrgs_en.isImageState = 1;
             }, 1);
             if (obj.bannerType == '0') {
               that.form.radio = 1;
@@ -229,6 +285,19 @@
               that.form.link = obj.videoUrl;
               let arr = obj.videoUrl.split('/');
               that.fileList = [{
+                name: arr[arr.length - 1],
+                size: '',
+              }];
+            }
+            if (obj.bannerType_en == '0') {
+              that.form.radio_en = 1;
+              that.form.link_en = obj.picLink_en;
+            }
+            else if (obj.bannerType_en == '1') {
+              that.form.radio_en = 2;
+              that.form.link_en = obj.videoUrl_en;
+              let arr = obj.videoUrl_en.split('/');
+              that.fileList_en = [{
                 name: arr[arr.length - 1],
                 size: '',
               }];
@@ -252,7 +321,20 @@
       // 重置
       resetForm (form) {
         let that = this;
-        that.$refs[form].resetFields();
+          that.form = {
+              pic: '',
+              pic_en: '',
+              title: '',
+              title_en: '',
+              radio: 1,
+              radio_en: 1,
+              link: '',
+              link_en: '',
+              order: 1
+          };
+
+          that.fileList = [],
+          that.fileList_en = [],
         that.dialogFormVisible = false;
       },
       // 表单提交
@@ -262,8 +344,11 @@
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功bannerType 0：图片；1：视频
             let videoUrl = '';
+            let videoUrl_en = '';
             let picLink = '';
+            let picLink_en = '';
             let bannerType = 0;
+            let bannerType_en = 0;
             if (that.form.radio == 1) {
               bannerType = 0;
               picLink = that.form.link;
@@ -271,18 +356,31 @@
               bannerType = 1;
               videoUrl = that.form.link;
             }
+            if (that.form.radio_en == 1) {
+              bannerType_en = 0;
+              picLink = that.form.link_en;
+            } else if (that.form.radio_en == 2) {
+              bannerType_en = 1;
+              videoUrl_en = that.form.link_en;
+            }
             if (that.isAddEdit == 1) {
               contentService.addBanner({
                 picUrl: that.form.pic,
+                picUrl_en: that.form.pic_en,
                 videoUrl: videoUrl,
+                videoUrl_en: videoUrl_en,
                 picTitle: that.form.title,
+                picTitle_en: that.form.title_en,
                 picLink: picLink,
+                picLink_en: picLink_en,
                 type: 0,
                 bannerType: bannerType,
+                bannerType_en: bannerType_en,
                 sortNum: that.form.order
               }).then(function (res) {
                 if (res.data.success) {
                   that.$refs[form].resetFields();
+
                   that.dialogFormVisible = false;
                   that.getList();
                 }
@@ -291,15 +389,21 @@
               contentService.editBanner({
                 id: that.form.id,
                 picUrl: that.form.pic,
+                picUrl_en: that.form.pic_en,
                 videoUrl: videoUrl,
+                videoUrl_en: videoUrl_en,
                 picTitle: that.form.title,
+                picTitle_en: that.form.title_en,
                 picLink: picLink,
+                picLink_en: picLink_en,
                 type: 0,
                 bannerType: bannerType,
+                bannerType_en: bannerType_en,
                 sortNum: that.form.order
               }).then(function (res) {
                 if (res.data.success) {
                   that.$refs[form].resetFields();
+                  that.resetForm();
                   that.dialogFormVisible = false;
                   that.getList();
                 }
@@ -317,8 +421,13 @@
         let that = this;
         that.form.pic = cur;
       },
+      // 获取图片路径
+      myPicUrl_en (cur) {
+        let that = this;
+        that.form.pic_en = cur;
+      },
       // 视频上传
-      uploadVideo (event) {
+      uploadVideo () {
         let that = this;
         let e = event || window.event;
         let file = e.target.files[0];
@@ -378,6 +487,67 @@
           });
         }
       },
+      // 视频上传
+      uploadVideo_en (event) {
+        let that = this;
+        let e = event || window.event;
+        let file = e.target.files[0];
+        let fileName = file.name;
+        let limit = parseFloat(file.size / 1024 / 1024); //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+        let key = 'upload/' + that.getNowFormatDate() + '/' + file.name; // 新文件名称
+        let suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
+        // 只可以上传一个视频
+        if (that.fileList_en.length >= 1) {
+          this.$alert('只可以上传一个视频', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+          return false;
+        }
+        // 请上传mp4格式的视频
+        if (suffix != '.mp4') {
+          this.$alert('请上传MP4格式的视频', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+          return false;
+        }
+        // 视频小于500mb
+        if (limit < 500) {
+          let client = new OSS.Wrapper(that.ossOption);
+          // 上传
+          client.multipartUpload(key, file, {
+            progress: function*(percentage, cpt) {
+              // 上传进度
+              //_this.percentage = percentage
+              that.progressBar_en = percentage*100 + '%';
+//              console.log('percentage', percentage);
+//              console.log('cpt', cpt);
+            }
+          }).then((results) => {
+            // 上传完成
+            //console.log(results,'上传完成');
+            that.form.link_en = "http://shiatang.oss-cn-shanghai.aliyuncs.com/" + key;
+            let option = {
+              name: fileName,
+              size: Math.floor(limit),
+            }
+            that.fileList_en.push(option);
+          }).catch((err) => {
+            console.log(err)
+          });
+
+        } else {
+          // 不超过500m
+          this.$alert('上传视频的大小不能超过500mb', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+        }
+      },
       getYunToken () { // 获取阿里云token
         let that = this;
         pluginService.getYunToken().then(function (res) {
@@ -391,6 +561,11 @@
         });
       },
       progress (p) {
+        return function (done) {
+          done();
+        };
+      },
+      progress_en (p) {
         return function (done) {
           done();
         };
@@ -414,6 +589,12 @@
         let that = this;
         that.fileList = [];
         that.form.video = '';
+//          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
+      },
+      delVideo_en () {// 删除视频
+        let that = this;
+        that.fileList_en = [];
+        that.form.video_en = '';
 //          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
       },
       //弹出框按钮的操作

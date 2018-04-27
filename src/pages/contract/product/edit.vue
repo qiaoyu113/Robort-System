@@ -37,6 +37,29 @@
                     <el-input size="mini" class="iptPriceLength" v-model="ruleForm.oriPrice_s"></el-input>
                 </div>
             </el-form-item>
+
+
+            <div class="switch-lang">以下请填写对应英文版本：</div>
+
+
+            <el-form-item label="产品包名称" prop="title_en" size="mini">
+                <el-input v-model="ruleForm.title_en" class="iptLength"></el-input>
+            </el-form-item>
+
+            <el-form-item label="产品包封面图" prop="cover_en">
+                <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en" ref="upCover_en"></upload-img>
+            </el-form-item>
+            <el-form-item label="生成合同banner" prop="banner_en">
+                <upload-original :options="uploadOrgBanner" v-on:getPictureUrl="myBannerPicUrl_en" ref="upBanner_en"></upload-original>
+            </el-form-item>
+            <el-form-item label="宣传语">
+                <el-input type="textarea" v-model="ruleForm.desc_en" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
+            </el-form-item>
+            <el-form-item label="简介" prop="detail_en">
+                <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+            </el-form-item>
+
+
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
             </el-form-item>
@@ -49,6 +72,7 @@ import uploadOriginal from '../../../component/upload/uploadOriginal.vue'
 import {contractService} from '../../../service/contractService'
 
 let myEditor;// 富文本编辑器
+let myEditor_en;// 富文本编辑器
 export default {
     props: [],
     data () {
@@ -96,26 +120,42 @@ export default {
             ruleForm: {
                 id: '',
                 title: '', // 产品包名称
+                title_en: '', // 产品包名称
                 cover: '', // 封面图
+                cover_en: '', // 封面图
                 logo: '', // 合作伙伴logo
                 banner: '', // banner
+                banner_en: '', // banner
                 desc: '', // 简介
+                desc_en: '', // 简介
                 selItem: '', // 演示视频
                 detail: '', // 详情
-                price: '' // 价格
+                detail_en: '', // 详情
+                price_s: '', // 详情
+                oriPrice_s: '' // 价格
             },
             rules: {
                 title: [
                     { required: true, message: '请输入产品包名称', trigger: 'blur' },
                     { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
                 ],
+                title_en: [
+                    { required: true, message: '请输入产品包名称', trigger: 'blur' },
+                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
+                ],
                 cover: [
+                    { required: true, message: '请上传封面图', trigger: 'blur' }
+                ],
+                cover_en: [
                     { required: true, message: '请上传封面图', trigger: 'blur' }
                 ],
                 /*logo: [
                     { required: true, message: '请上传合作伙伴logo图', trigger: 'blur' }
                 ],*/
                 banner: [
+                    { required: true, message: '请上传生成合同所需banner图', trigger: 'blur' }
+                ],
+                banner_en: [
                     { required: true, message: '请上传生成合同所需banner图', trigger: 'blur' }
                 ],
     //          desc: [
@@ -126,6 +166,9 @@ export default {
                     { required: true, message: '请选择演示视频', trigger: 'change' }
                 ],*/
                 detail: [
+                    { required: true, message: '请填写产品包详情', trigger: 'blur' }
+                ],
+                detail_en: [
                     { required: true, message: '请填写产品包详情', trigger: 'blur' }
                 ],
                 price: [
@@ -148,16 +191,22 @@ export default {
         submitForm(formName) {
             let that = this;
             that.ruleForm.detail = myEditor.getData();
+            that.ruleForm.detail_en = myEditor_en.getData();
             this.$refs[formName].validate((valid) => {
                 if (valid) { // 验证成功
                     contractService.editProductPackage({
                         id: that.ruleForm.id,
                         name: that.ruleForm.title,
+                        name_en: that.ruleForm.title_en,
                         cover: that.ruleForm.cover,
+                        cover_en: that.ruleForm.cover_en,
 //                        logo: that.ruleForm.logo,
                         banner: that.ruleForm.banner,
+                        banner_en: that.ruleForm.banner_en,
                         description: that.ruleForm.desc,
+                        description_en: that.ruleForm.desc_en,
                         content: that.ruleForm.detail,
+                        content_en: that.ruleForm.detail_en,
 //                        demoVideoId: that.ruleForm.selItem,
                         oriPrice_s: that.ruleForm.oriPrice_s,
                         price_s: that.ruleForm.price}).then(function (res) {
@@ -187,6 +236,16 @@ export default {
             let that = this;
             that.ruleForm.banner = val;// banner
         },
+        // 获得封面图路径
+        myPicUrl_en (val) {
+            let that = this;
+            that.ruleForm.cover_en = val;// 封面图
+        },
+        // 获得banner图路径
+        myBannerPicUrl_en (val) {
+            let that = this;
+            that.ruleForm.banner_en = val;// banner
+        },
         // 获得演示视频列表
         getVideoDemo () {
             let that = this;
@@ -207,23 +266,35 @@ export default {
                   that.ruleForm = {
                        id: obj.id,
                        title: obj.name, // 产品包名称
+                       title_en: obj.name_en, // 产品包名称
                        cover: obj.cover, // 封面图
-                       logo: obj.logo, // 合作伙伴logo
+                       cover_en: obj.cover_en, // 封面图
+//                       logo: obj.logo, // 合作伙伴logo
                        banner: obj.banner, // banner
+                       banner_en: obj.banner_en, // banner
                        desc: obj.description, // 简介
+                       desc_en: obj.description_en, // 简介
                        selItem: obj.demoVideoId, // 演示视频
                        detail: obj.content, // 详情
+                       detail_en: obj.content_en, // 详情
                        price: obj.price_s, // 价格
                       oriPrice_s: obj.oriPrice_s // 价格
                   }
-                  myEditor.setData(obj.content);
+                  setTimeout(function () {
+                      myEditor.setData(obj.content);
+                      myEditor_en.setData(obj.content_en);
+                  },100)
                   let imgBaseUrl = that.$store.state.picHead;
                   that.$refs.upCover.isImageState = 1; // 显示删除图片图标
                   that.$refs.upCover.imgUrl = imgBaseUrl + obj.cover; // 图片显示路径
+                  that.$refs.upCover_en.isImageState = 1; // 显示删除图片图标
+                  that.$refs.upCover_en.imgUrl = imgBaseUrl + obj.cover_en; // 图片显示路径
 //                  that.$refs.upLogo.isImageState = 1; // 显示删除图片图标
 //                  that.$refs.upLogo.imgUrl = imgBaseUrl + obj.logo; // 图片显示路径
                   that.$refs.upBanner.isImageState = 1; // 显示删除图片图标
                   that.$refs.upBanner.imgUrl = imgBaseUrl + obj.banner; // 图片显示路径
+                  that.$refs.upBanner_en.isImageState = 1; // 显示删除图片图标
+                  that.$refs.upBanner_en.imgUrl = imgBaseUrl + obj.banner_en; // 图片显示路径
 
                }else{}
            });
@@ -232,6 +303,7 @@ export default {
         editor(){
             let CKEDITOR = window.CKEDITOR;
             myEditor = CKEDITOR.replace("detail");
+            myEditor_en = CKEDITOR.replace("detail_en");
             //myEditor.setData("");
         },
     }

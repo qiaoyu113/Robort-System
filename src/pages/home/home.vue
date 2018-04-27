@@ -75,6 +75,8 @@
                                 </template>
                                 <el-menu-item-group>
                                     <el-menu-item index="站内信"><router-link to="/message/messages">站内信</router-link></el-menu-item>
+                                    <el-menu-item index="邮件"><router-link to="/message/emails">邮件</router-link></el-menu-item>
+                                    <el-menu-item index="短信"><router-link to="/message/texts">短信</router-link></el-menu-item>
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
@@ -193,6 +195,8 @@
                 case 'newsEdit' : that.titleName = "新闻管理";this.$refs.menu.open(8);break;
                 case 'banner' : that.titleName = "焦点图管理";this.$refs.menu.open(8);break;
                 case 'messages' : that.titleName = "站内信";this.$refs.menu.open(2);break;
+                case 'emails' : that.titleName = "邮件";this.$refs.menu.open(2);break;
+                case 'texts' : that.titleName = "短信";this.$refs.menu.open(2);break;
                 case 'manage' : that.titleName = "提现审核";this.$refs.menu.open(3);break;
                 case 'accounts' : that.titleName = "账户总览";this.$refs.menu.open(3);break;
                 case 'orders' : that.titleName = "订单管理";this.$refs.menu.open(3);break;

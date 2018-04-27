@@ -67,6 +67,8 @@ const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve
 const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
 // 站内信
 const messages= (resolve) => {require(['./pages/message/messages.vue'],resolve)}
+const emails= (resolve) => {require(['./pages/message/emails.vue'],resolve)}
+const texts= (resolve) => {require(['./pages/message/texts.vue'],resolve)}
 // 用户管理
 const usersList= (resolve) => {require(['./pages/users/user-list.vue'],resolve)}
 const userDetail= (resolve) => {require(['./pages/users/user-detail.vue'],resolve)}
@@ -142,6 +144,8 @@ const routers = [
                {name: 'banner',path:'/content/banner',component: banner},
                // 站内信
                {name: 'messages',path:'/message/messages',component: messages},
+               {name: 'emails',path:'/message/emails',component: emails},
+               {name: 'texts',path:'/message/texts',component: texts},
                // 财务
                {name: 'manage',path:'/financial/manage/:tabIndex',component: manage},
                {name: 'accounts',path:'/financial/accounts',component: accounts},

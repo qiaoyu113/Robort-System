@@ -27,6 +27,35 @@
       <el-form-item label="简介" prop="desc">
         <el-input placeholder="请输入简介" v-model="form.desc" name="desc" class="iptFormLen itemLeft"></el-input>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item label="视频名称" prop="title_en">
+        <el-input v-model="form.title_en" size="mini" class="iptFormLen"></el-input>
+      </el-form-item>
+      <el-form-item label="图片" prop="pic_en">
+        <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en"></upload-img>
+      </el-form-item>
+      <el-form-item label="选择视频" prop="video_en">
+          <div class="v-upload-btn">
+            <el-button size="mini" type="primary">点击上传</el-button>
+            <input type="file" id="uploadVideo_en" accept="*" @change="uploadVideo_en" class="file">
+          </div>
+          <p class="v-des">请上传mp4格式，且不超过500M</p>
+          <div class="video-list">
+            <p class="v-des" v-for="(item, key, index) in fileList_en">
+              <span>{{ item.name }}</span><!--<span style="margin-left:10px;color:#bbb;">{{item.size}}M</span>-->
+              <i class="el-icon-close" @click="delVideo_en" v-if="fileList_en.length > 0"></i>
+              <i class="el-icon-circle-check"  v-if="fileList_en.length > 0"></i>
+            </p><!-- v-if="percent<1 && percent>0"-->
+            <p class="barProg">
+              <img class="progress" :width="progressBar_en">
+            </p>
+          </div>
+      </el-form-item>
+      <el-form-item label="简介" prop="desc_en">
+        <el-input placeholder="请输入简介" v-model="form.desc_en" name="desc_en" class="iptFormLen itemLeft"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit('form')" size="mini">保 存</el-button>
       </el-form-item>
@@ -38,15 +67,20 @@
   import {pluginService} from '../../../service/pluginService'
   import {contentService} from '../../../service/contentService'
   let myEditor;// 富文本编辑器
+  let myEditor_en;// 富文本编辑器
   export default {
     props: [],
     data () {
       return {
         form: {
           title: '', // 名称
+          title_en: '', // 名称
           pic: '', // 图片
+          pic_en: '', // 图片
           video: '', // 视频
-          desc: '' //简介
+          video_en: '', // 视频
+          desc: '', //简介
+          desc_en: '' //简介
         }, // 新增表单
         rules: {
           title: [
@@ -64,7 +98,9 @@
           ]
         }, //表单验证
           progressBar: 0,
+          progressBar_en: 0,
         fileList: [],
+        fileList_en: [],
         ossOption: { // oss上传视频
             region: 'oss-cn-shanghai',
             accessKeyId: '',
@@ -97,15 +133,20 @@
       submit (form) {
         let that = this;
         that.form.desc = myEditor.getData();
+        that.form.desc_en = myEditor_en.getData();
         // 表单验证
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功
             //console.log('tijiao', that.form);
             contentService.addVideoDemo({
                 name: that.form.title,
+                name_en: that.form.title_en,
                 cover: that.form.pic,
+                cover_en: that.form.pic_en,
                 video: that.form.video,
-                description: that.form.desc}).then(function (res) {
+                video_en: that.form.video_en,
+                description: that.form.desc,
+                description_en: that.form.desc_en}).then(function (res) {
                   //console.log('submit success', res);
                   if(res.data.success){
                       that.$router.push({name: 'videoDemo'});
@@ -121,6 +162,11 @@
       myPicUrl (val) {
         let that = this;
         that.form.pic = val;// 封面图
+      },
+      // 图片上传
+      myPicUrl_en (val) {
+        let that = this;
+        that.form.pic_en = val;// 封面图
       },
       // 视频上传
       uploadVideo (event) {
@@ -183,6 +229,67 @@
             });
         }
       },
+      // 视频上传
+      uploadVideo_en (event) {
+        let that = this;
+        let e = event || window.event;
+        let file = e.target.files[0];
+        let fileName = file.name;
+        let limit = parseFloat(file.size / 1024 / 1024) ; //  kb=file.size / 1024; mb= file.size / 1024 / 1024;
+        let key ='upload/'+that.getNowFormatDate()+'/'+ file.name; // 新文件名称
+        let  suffix = file.name.substr(file.name.lastIndexOf(".")).toLowerCase(); // 文件后缀名
+          // 只可以上传一个视频
+        if(that.fileList_en.length >= 1){
+            this.$alert('只可以上传一个视频', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
+            return false;
+        }
+        // 请上传mp4格式的视频
+        if(suffix!='.mp4'){
+            this.$alert('请上传MP4格式的视频', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
+            return false;
+        }
+        // 视频小于500mb
+        if(limit < 500){
+            let client = new OSS.Wrapper(that.ossOption);
+            // 上传
+            client.multipartUpload(key, file, {
+                progress: function* (percentage, cpt) {
+                    // 上传进度
+                    that.progressBar_en = percentage*100 + '%';
+//                    console.log('percentage', percentage);
+//                    console.log('cpt', cpt);
+                }
+            }).then((results) => {
+                // 上传完成
+                //console.log(results,'上传完成');
+                that.form.video_en = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+                  let option = {
+                    name: fileName,
+                    size: Math.floor(limit),
+                  }
+                  that.fileList_en.push(option);
+            }).catch((err) => {
+                console.log(err)
+            });
+          var obj = document.getElementById("uploadVideo_en") ;
+          obj.outerHTML = obj.outerHTML;
+        }else{
+           // 不超过500m
+            this.$alert('上传视频的大小不能超过500mb', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+            });
+        }
+      },
       getYunToken () { // 获取阿里云token
           let that = this;
           pluginService.getYunToken().then(function (res) {
@@ -196,6 +303,11 @@
           });
       },
       progress (p) {
+            return function (done) {
+                done();
+            };
+      },
+      progress_en (p) {
             return function (done) {
                 done();
             };
@@ -223,11 +335,21 @@
 
 //          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
       },
+      // 删除视频
+      delVideo_en () {
+          let that = this;
+          that.fileList_en = [];
+          that.form.video_en = '';
+
+//          document.getElementById('uploadVideo').outerHTML = ''// 清空文件选择器;
+      },
       // 富文本编辑器
       editor(){
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("desc");
+        myEditor_en = CKEDITOR.replace("desc_en");
         myEditor.setData("");
+        myEditor_en.setData("");
       },
     }
   }

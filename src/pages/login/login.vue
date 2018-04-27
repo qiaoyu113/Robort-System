@@ -99,7 +99,7 @@
                                         title: '登陆成功',
                                         type: 'success'
                                     });
-                                    that.$router.push({name: 'home'});
+                                    that.$router.push({name: 'productPackage'});
                                 }else{
                                     that.$notify({
                                         title: '账号密码错误',

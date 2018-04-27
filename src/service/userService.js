@@ -55,6 +55,13 @@ export const userService = {
     getUserRecords: function (params) {
         return axios.get('/admin/users/' + params + '/watch');
     },
+    /* 发送邮件 */
+    sendEmails: function (params) {
+        return axios.post('/email/', qs.stringify(params));
+    },
+    getEmails: function (params) {
+        return axios.get('/email/'+ this.getParam(params));
+    },
     getParam: function(param){
         let url = '';
         for(let key in param){

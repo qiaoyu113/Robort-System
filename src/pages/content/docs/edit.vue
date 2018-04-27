@@ -7,6 +7,16 @@
       <el-form-item label="封面" prop="cover">
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl" ref="uImg"></upload-original>
       </el-form-item>
+
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+      <el-form-item label="用户名称" prop="author_en" size="mini">
+        <el-input v-model="ruleForm.author_en" class="iptLength"></el-input>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover_en">
+        <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="uImg_en"></upload-original>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
       </el-form-item>
@@ -23,7 +33,9 @@
         ruleForm: {
           id: '', // id
           author: '', // 作者
+          author_en: '', // 作者
           cover: '', // 封面图
+          cover_en: '', // 封面图
         },
         rules: {
           author: [
@@ -57,7 +69,10 @@
             contentService.editHotUser({
               id: that.ruleForm.id,
               name: that.ruleForm.author,
-              cover: that.ruleForm.cover}).then(function (res) {
+              name_en: that.ruleForm.author_en,
+              cover: that.ruleForm.cover,
+              cover_en: that.ruleForm.cover_en,
+            }).then(function (res) {
               if(res.data.success){
                 that.$router.push({name: 'HotDocs'}); //
               }else{}
@@ -77,10 +92,14 @@
             that.ruleForm = {
               id: obj.id,
               author: obj.name, // 名称
-              cover: obj.cover // 封面图
+              author_en: obj.name_en, // 名称
+              cover: obj.cover, // 封面图
+              cover_en: obj.cover_en // 封面图
             }
             that.$refs.uImg.isImageState = 1;
             that.$refs.uImg.imgUrl = that.$store.state.picHead + obj.cover;
+            that.$refs.uImg_en.isImageState = 1;
+            that.$refs.uImg_en.imgUrl = that.$store.state.picHead + obj.cover_en;
           }else{}
         });
       },
@@ -88,6 +107,11 @@
       myPicUrl(val){
         let that = this;
         that.ruleForm.cover = val;
+      },
+      // 获取图片服务器路径
+      myPicUrl_en(val){
+        let that = this;
+        that.ruleForm.cover_en = val;
       }
     }
   }

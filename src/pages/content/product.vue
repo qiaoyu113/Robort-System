@@ -100,6 +100,21 @@
             <!--<el-option label="5" value="5"></el-option>-->
           <!--</el-select>-->
         </el-form-item>
+
+        <div class="switch-lang">以下请填写对应英文版本：</div>
+
+        <el-form-item label="宣传图（大小不超过5M，支持图片格式）" :label-width="formLabelWidth" prop="pic_en">
+          <div class="upload-cover">
+            <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upCover_en"></upload-original>
+          </div>
+        </el-form-item>
+        <el-form-item label="标题" :label-width="formLabelWidth" prop="title_en">
+          <el-input v-model="form.title_en" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="介绍" :label-width="formLabelWidth" prop="intro_en">
+          <el-input type="textarea" :rows="2" resize="none" placeholder="请输入简介" v-model="form.intro_en"></el-input>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
@@ -124,8 +139,11 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
         form: {
           id: '',
           pic: '',
+          pic_en: '',
           title: '',
+          title_en: '',
           intro: '',
+          intro_en: '',
           order: ''
         }, // 新增表单
         uploadOrg: {
@@ -233,13 +251,17 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
         // 重置一下数据
         that.form = {
           pic: '',
+          pic_en: '',
           title: '',
+          title_en: '',
           intro: '',
+          intro_en: '',
           order: ''
         };
         that.isAddEdit = 1;
         that.isImageState = 0;
         that.imgUrl = '';
+        that.imgUrl_en = '';
         that.dialogTitle = '新增产品功能';
         that.dialogFormVisible = true;
       },
@@ -253,8 +275,11 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
             that.form={
               id: obj.id,
               pic: obj.cover,
+              pic_en: obj.cover_en,
               title: obj.name,
+              title_en: obj.name_en,
               intro: obj.description,
+              intro_en: obj.description_en,
               order: obj.sortNum
             }
             that.isAddEdit = 2;
@@ -264,6 +289,7 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
             that.dialogFormVisible = true;
             setTimeout(function () {
                 that.$refs.upCover.imgUrl = that.$store.state.picHead + obj.cover; // 图片显示路径
+                that.$refs.upCover_en.imgUrl = that.$store.state.picHead + obj.cover_en; // 图片显示路径
             },50)
           }
         });
@@ -284,6 +310,11 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
           let that = this;
           that.form.pic = val;// 封面图
       },
+      // 获得封面图路径
+      myPicUrl_en (val) {
+          let that = this;
+          that.form.pic_en = val;// 封面图
+      },
       // 表单提交
       submit (form) {
         let that = this;
@@ -293,7 +324,14 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
             //alert('submit!');
             //console.log('form', that.form);
             if(that.isAddEdit == 1){
-                contentService.addProductFuc({name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
+                contentService.addProductFuc({
+                    name: that.form.title,
+                    cover: that.form.pic,
+                    description: that.form.intro,
+                    name_en: that.form.title_en,
+                    cover_en: that.form.pic_en,
+                    description_en: that.form.intro_en,
+                    sortNum: that.form.order}).then(function (res) {
                     //console.log('submit success', res);
                     if(res.data.success){
                         that.dialogFormVisible = false;
@@ -301,7 +339,15 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
                     }
                 });
             }else if(that.isAddEdit == 2){
-                contentService.editProductFuc({id: that.form.id,name: that.form.title, cover: that.form.pic, description: that.form.intro, sortNum: that.form.order}).then(function (res) {
+                contentService.editProductFuc({
+                    id: that.form.id,
+                    name: that.form.title,
+                    name_en: that.form.title_en,
+                    cover: that.form.pic,
+                    cover_en: that.form.pic_en,
+                    description: that.form.intro,
+                    description_en: that.form.intro_en,
+                    sortNum: that.form.order}).then(function (res) {
                     //console.log('submit success', res);
                     if(res.data.success){
                         that.dialogFormVisible = false;
@@ -324,6 +370,13 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
           that.isImageState = 0; // 显示图片上传按钮
           that.imgUrl = ''; // 清空页面显示的图片路径
           that.form.pic = ''; // 清空form表单要提交的图片路径
+      },
+      //删除图片路径
+      delImgUrl_en () {
+          let that = this;
+          that.isImageState_en = 0; // 显示图片上传按钮
+          that.imgUrl_en = ''; // 清空页面显示的图片路径
+          that.form.pic_en = ''; // 清空form表单要提交的图片路径
       },
       // 图片上传至服务器
       postToService (base64, width, height) {

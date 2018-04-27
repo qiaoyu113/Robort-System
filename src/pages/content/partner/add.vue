@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container partner-add">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
       <el-form-item label="伙伴名称" prop="name" size="mini">
         <el-input v-model="ruleForm.name" class="iptFormLen"></el-input>
@@ -86,6 +86,65 @@
         </div>
         <el-button type="line"  icon="el-icon-plus" @click="addRefer()" size="mini" plain>新增参考资料</el-button>
       </el-form-item>
+
+      <div class="switch-lang">以下请填写对应英文版本：</div>
+
+
+      <el-form-item label="伙伴名称" prop="name_en" size="mini">
+        <el-input v-model="ruleForm.name_en" class="iptFormLen"></el-input>
+      </el-form-item>
+      <el-form-item label="图片" prop="imgUrl_en">
+        <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upOrg_en"></upload-original>
+      </el-form-item>
+      <el-form-item label="简介" prop="detail_en">
+        <textarea v-model="ruleForm.detail_en" class="iptFormLen" name="detail_en"></textarea>
+      </el-form-item>
+      <div class="contact-box" v-show="pType==2">
+        <el-form-item label="联系人" prop="contactname1_en" size="mini" class="par-contact">
+          <el-form-item prop="contactcover1" size="mini" class="par-contact">
+            <upload-original :options="uploadOrg1" v-on:getPictureUrl="myPicUrl1_en" ref="upOrg1_en" class="partner-image"></upload-original>
+          </el-form-item>
+        </el-form-item>
+          <div class="contact">
+            <el-form-item prop="contactname1_en" size="mini">
+            <el-input v-model="ruleForm.contactname1_en" class="contact-input" placeholder="姓名"></el-input>
+            </el-form-item>
+            <el-form-item prop="contactphone1_en" size="mini">
+            <el-input v-model="ruleForm.contactphone1_en" class="contact-input" placeholder="phone"></el-input>
+            </el-form-item>
+            <el-form-item prop="contactemail1_en" size="mini">
+            <el-input v-model="ruleForm.contactemail1_en" class="contact-input" placeholder="email"></el-input>
+            </el-form-item>
+            <el-form-item prop="contactlink1_en" size="mini">
+            <el-input v-model="ruleForm.contactlink1_en" class="contact-input" placeholder="link"></el-input>
+            </el-form-item>
+          </div>
+        <el-form-item prop="contactcover2_en" size="mini" class="par-contact">
+          <upload-original :options="uploadOrg2" v-on:getPictureUrl="myPicUrl2_en" ref="upOrg2_en" class="partner-image"></upload-original>
+        </el-form-item>
+        <div class="contact">
+          <el-form-item prop="contactname2_en" size="mini">
+          <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactphone2_en" size="mini" >
+          <el-input v-model="ruleForm.contactphone2_en" class="contact-input" placeholder="phone"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactemail2_en" size="mini">
+          <el-input v-model="ruleForm.contactemail2_en" class="contact-input" placeholder="email"></el-input>
+          </el-form-item>
+          <el-form-item prop="contactlink2_en" size="mini" >
+          <el-input v-model="ruleForm.contactlink2_en" class="contact-input" placeholder="link"></el-input>
+          </el-form-item>
+        </div>
+      </div>
+      <el-form-item label="参考资料" size="mini" v-show="pType==2">
+        <div class="media" v-for="referenDatas,id in ruleForm.referenDatas_en">
+          <el-input v-model="referenDatas.name" class="title-input" placeholder="标题"></el-input>
+          <el-input v-model="referenDatas.link" class="src-input" placeholder="地址"></el-input>
+          <el-button type="line" @click="removeRefer_en(id)" size="mini" plain>删除</el-button>
+        </div>
+        <el-button type="line"  icon="el-icon-plus" @click="addRefer_en()" size="mini" plain>新增参考资料</el-button>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
       </el-form-item>
@@ -99,6 +158,7 @@ import {contentService} from '../../../service/contentService'
 import {systemService} from '../../../service/systemService'
 
 let myEditor;// 富文本编辑器
+let myEditor_en;// 富文本编辑器
 
 export default {
   props: [],
@@ -138,14 +198,19 @@ export default {
       },
       ruleForm: {
         name: '', // 伙伴名称
+        name_en: '', // 伙伴名称
         imgUrl: '', // 图片
+        imgUrl_en: '', // 图片
         pkg: '', // 产品包关联
         country: '', // 国家关联
         template: '', // 合同模板关联
         phoneNo: '', // 联系方式
         referenDatas: [{},{},{}], // 联系方式
+        referenDatas_en: [{},{},{}], // 联系方式
         contactUsers: [{},{}], // 联系方式
+        contactUsers_en: [{},{}], // 联系方式
         detail: '', // 简介
+        detail_en: '', // 简介
         classType: '', // 区域
         classId: '', // 国家关联
       },
@@ -186,6 +251,7 @@ export default {
     let that = this;
     that.pType = parseInt(that.$route.params.partnerTyp);
     that.$refs.upOrg.isShowDes = true; // 上传图片组件显示描述文字
+    that.$refs.upOrg_en.isShowDes = true; // 上传图片组件显示描述文字
     //console.log(1233, that.pType);
     that.editor(); // 富文本编辑器初始化
     if(that.pType === 1){ // 白标合作伙伴
@@ -237,7 +303,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) { // 验证成功
           let name = that.ruleForm.name;
+          let name_en = that.ruleForm.name_en;
           let cover = that.ruleForm.imgUrl;
+          let cover_en = that.ruleForm.imgUrl_en;
           let productPackageId = that.ruleForm.pkg;
           let templateId = that.ruleForm.template;
           let area = that.ruleForm.area;
@@ -252,6 +320,7 @@ export default {
           let classType = that.ruleForm.classType;
           let classId = that.ruleForm.classId;
           let description = that.ruleForm.detail;
+          let description_en = that.ruleForm.detail_en;
           let contactUsers = [
                   {name:that.ruleForm.contactname1,
                   cover:that.ruleForm.contactcover1,
@@ -264,7 +333,20 @@ export default {
                   link:that.ruleForm.contactlink2,
                   email:that.ruleForm.contactemail2},
               ]
+          let contactUsers_en = [
+                  {name:that.ruleForm.contactname1_en,
+                  cover:that.ruleForm.contactcover1_en,
+                  phone:that.ruleForm.contactphone1_en,
+                  link:that.ruleForm.contactlink1_en,
+                  email:that.ruleForm.contactemail1_en},
+                  {name:that.ruleForm.contactname2_en,
+                  cover:that.ruleForm.contactcover2_en,
+                  phone:that.ruleForm.contactphone2_en,
+                  link:that.ruleForm.contactlink2_en,
+                  email:that.ruleForm.contactemail2_en},
+              ]
           let referenDatas = that.ruleForm.referenDatas;
+          let referenDatas_en = that.ruleForm.referenDatas_en;
           if(that.pType === 1){ // 白标合作伙伴
             productPackageId = that.ruleForm.pkg;
           }
@@ -275,7 +357,9 @@ export default {
           }
           var params = {
             name: name,
+            name_en: name_en,
             cover: cover,
+            cover_en: cover_en,
             type: that.pType,
             productPackageId: productPackageId,
             templateId: templateId,
@@ -291,10 +375,13 @@ export default {
             classId: classId,
             url: url,
             description: description,
+            description_en: description_en,
             contactUsers_s:JSON.stringify(contactUsers),
-            referenDatas_s:JSON.stringify(referenDatas)
+            contactUsers_s_en:JSON.stringify(contactUsers_en),
+            referenDatas_s:JSON.stringify(referenDatas),
+            referenDatas_s_en:JSON.stringify(referenDatas_en)
           }
-            console.log(params);
+//            console.log(params);
             // 表单提交
           contentService.addPartner(params).then(function (res) {
             //console.log('添加一个合作伙伴', res);
@@ -324,6 +411,21 @@ export default {
       let that = this;
       that.ruleForm.contactcover2 = val;// 封面图
     },
+    // 获得封面图路径
+    myPicUrl_en (val) {
+        let that = this;
+      that.ruleForm.imgUrl_en = val;// 封面图
+    },
+    // 获得封面图路径
+    myPicUrl1_en (val) {
+      let that = this;
+        that.ruleForm.contactcover1_en= val;// 封面图
+    },
+    // 获得封面图路径
+    myPicUrl2_en (val) {
+      let that = this;
+      that.ruleForm.contactcover2_en = val;// 封面图
+    },
     // 获得产品包列表
     getPackage () {
       let that = this;
@@ -349,7 +451,9 @@ export default {
     editor(){
       let CKEDITOR = window.CKEDITOR;
       myEditor = CKEDITOR.replace("detail");
+      myEditor_en = CKEDITOR.replace("detail_en");
       myEditor.setData("");
+      myEditor_en.setData("");
     },
     getCountryList(v){
         let that = this
@@ -361,14 +465,20 @@ export default {
     addRefer(v){
         this.ruleForm.referenDatas.push({})
     },
+    addRefer_en(v){
+        this.ruleForm.referenDatas_en.push({})
+    },
     removeRefer(id){
         this.ruleForm.referenDatas.splice(id,1)
+    },
+    removeRefer_en(id){
+        this.ruleForm.referenDatas_en.splice(id,1)
     }
   }
 }
 </script>
 <style lang="less" scope>
-  .container{
+  .container .partner-add{
     font-size:14px;color:#333;
     padding: 20px;
     .iptFormLen {
