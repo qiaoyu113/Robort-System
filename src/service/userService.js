@@ -5,7 +5,7 @@ import axios from './axios.js'
 import store from '../vuex/'
 import qs from 'qs'
 // const api = "http://6fpqir.natappfree.cc"
-// const api = 'http://39.106.114.64:8097';
+const api = 'http://39.106.114.64:8097';
 
 export const userService = {
     api: {},
@@ -61,6 +61,19 @@ export const userService = {
     },
     getEmails: function (params) {
         return axios.get('/email/'+ this.getParam(params));
+    },
+    /* 发送短信 */
+    saveTexts: function (params) {
+        return axios.post('/admin/sms/tempate/', qs.stringify(params));
+    },
+    sendTexts: function (params) {
+        return axios.post('/admin/sms/send/', qs.stringify(params));
+    },
+    getTexts: function (params) {
+        return axios.get('/admin/sms/history'+ this.getParam(params));
+    },
+    getTextTemps: function (params) {
+        return axios.get('/admin/sms/template'+ this.getParam(params));
     },
     getParam: function(param){
         let url = '';
