@@ -167,7 +167,9 @@
             //console.log('为一个产品包添加模板',res);
             if(res.data.success){
                 that.dialogFormVisible = false;
+                that.getInfo();
                 that.getList();
+                that.getTemplateOptions();
             }else{}
         });
     },
