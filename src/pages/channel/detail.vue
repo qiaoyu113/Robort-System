@@ -42,7 +42,7 @@
             <el-table-column
                     label="获得佣金总额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.totalAmount | moneyFormate}}</span>
+                    <span>{{scope.row.orderNum*scope.row.percent | moneyFormate}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -362,7 +362,7 @@
                         if(that.dialog.typeChose==3){
                             that.ruleForm = {
                                 id: obj.id,
-                                money: obj.percent,
+                                money: common.getFormatOfPrice(obj.percent),
                                 title: obj.name
                             };
                         }

@@ -33,12 +33,16 @@
         </el-select>
       </el-form-item>
       <el-form-item label="简介" prop="description">
-        <el-input type="textarea" v-model="ruleForm.description" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.description" name="detail" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="常见问题" prop="question1">
         <div class="questions" v-for="question,id in ruleForm.questions">
-          <el-input v-model="ruleForm.questions[id].question" class="iptLength db" placeholder="请填写" @blur="checkquestion()"></el-input>
-          <el-input type="textarea" v-model="ruleForm.questions[id].answer" :name="'add'+id" class="iptLength" placeholder="请填写"></el-input>
+          <el-input v-model="ruleForm.questions[id].question" class="iptLength db" placeholder="请填写"></el-input>
+          <div class="mw600">
+            <el-input type="textarea" v-model="ruleForm.questions[id].answer" :name="'add'+id" class="iptLength" placeholder="请填写"></el-input>
+          </div>
           <el-button type="primary" @click="deleteQuestion(id)" size="mini" class="delete-question" plain>删除</el-button>
         </div>
       </el-form-item>
@@ -46,10 +50,14 @@
         <el-button type="primary"  icon="el-icon-plus" @click="addQuestion()" size="mini" plain>新增常见问题</el-button>
       </el-form-item>
       <el-form-item label="目录" prop="catalogue">
-        <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="重要免责声明" prop="disclaimer">
-        <el-input type="textarea" v-model="ruleForm.disclaimer" name="disclaimer" class="iptLength" placeholder="重要免责声明"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.disclaimer" name="disclaimer" class="iptLength" placeholder="重要免责声明"></el-input>
+        </div>
       </el-form-item>
 
       <div class="switch-lang">以下请填写对应英文版本：</div>
@@ -61,12 +69,16 @@
         <el-input type="textarea" v-model="ruleForm.slogan_en" class="iptLength" resize="none"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="description_en">
-        <el-input type="textarea" v-model="ruleForm.description_en" name="detail_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.description_en" name="detail_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="常见问题" prop="question2">
         <div class="questions" v-for="question,id in ruleForm.questions_en">
-          <el-input v-model="ruleForm.questions_en[id].question" class="iptLength db" placeholder="请填写" @blur="checkquestion_en()"></el-input>
-          <el-input type="textarea" v-model="ruleForm.questions_en[id].answer" :name="'add_en'+id" class="iptLength" placeholder="请填写"></el-input>
+          <el-input v-model="ruleForm.questions_en[id].question" class="iptLength db" placeholder="请填写" ></el-input>
+          <div class="mw600">
+            <el-input type="textarea" v-model="ruleForm.questions_en[id].answer" :name="'add_en'+id" class="iptLength" placeholder="请填写"></el-input>
+          </div>
           <el-button type="primary" @click="deleteQuestion_en(id)" size="mini" class="delete-question" plain>删除</el-button>
         </div>
       </el-form-item>
@@ -74,10 +86,14 @@
         <el-button type="primary"  icon="el-icon-plus" @click="addQuestion_en()" size="mini" plain>新增常见问题</el-button>
       </el-form-item>
       <el-form-item label="目录" prop="catalogue_en">
-        <el-input type="textarea" v-model="ruleForm.catalogue_en" name="list_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.catalogue_en" name="list_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="重要免责声明" prop="disclaimer_en">
-        <el-input type="textarea" v-model="ruleForm.disclaimer_en" name="disclaimer_en" class="iptLength" placeholder="重要免责声明"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.disclaimer_en" name="disclaimer_en" class="iptLength" placeholder="重要免责声明"></el-input>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
@@ -91,7 +107,7 @@
   import {contractService} from '../../../service/contractService'
 
   let myEditor, myEditor2,myEditor3,myEditor_en, myEditor2_en,myEditor3_en;// 富文本编辑器
-
+  let editors_en=[] ,editors=[]
   export default {
     props: [],
     data () {
@@ -126,20 +142,20 @@
         rules: {
           name: [
             { required: true, message: '请输入合同模板名称', trigger: 'blur' },
-            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
+//            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
           ],
           slogan: [
             { required: true, message: '请填写宣传语', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
           ],
-            name_en: [
-                { required: true, message: '请输入合同模板名称', trigger: 'blur' },
-                { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
-            ],
-            slogan_en: [
-                { required: true, message: '请填写宣传语', trigger: 'blur' },
-                { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
-            ],
+          name_en: [
+              { required: true, message: '请输入合同模板名称', trigger: 'blur' },
+//              { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
+          ],
+          slogan_en: [
+              { required: true, message: '请填写宣传语', trigger: 'blur' },
+//              { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
+          ],
           classify: [
             { required: false, message: '请选择分类', trigger: 'change' }
           ],
@@ -155,27 +171,27 @@
           description: [
             { required: true, message: '请填写合同模板简介', trigger: 'blur' }
           ],
-          catalogue: [
+          /*catalogue: [
             { required: true, message: '请填写合同模板目录', trigger: 'blur' }
-          ],
+          ],*/
           disclaimer: [
             { required: true, message: '请填写重要免责声明', trigger: 'blur' }
           ],
-            question1: [
-                { required: true, message: '请填写问题', trigger: 'blur' }
-            ],
-            description_en: [
-                { required: true, message: '请填写合同模板简介', trigger: 'blur' }
-            ],
-            catalogue_en: [
-                { required: true, message: '请填写合同模板目录', trigger: 'blur' }
-            ],
-            disclaimer_en: [
-                { required: true, message: '请填写重要免责声明', trigger: 'blur' }
-            ],
-            question2: [
-                { required: true, message: '请填写问题', trigger: 'blur' }
-            ],
+          /*question1: [
+              { required: true, message: '请填写问题', trigger: 'blur' }
+          ],*/
+          description_en: [
+              { required: true, message: '请填写合同模板简介', trigger: 'blur' }
+          ],
+          /*catalogue_en: [
+              { required: true, message: '请填写合同模板目录', trigger: 'blur' }
+          ],*/
+          disclaimer_en: [
+              { required: true, message: '请填写重要免责声明', trigger: 'blur' }
+          ],
+          /*question2: [
+              { required: true, message: '请填写问题', trigger: 'blur' }
+          ],*/
         }
       }
     },
@@ -231,10 +247,11 @@
               className: className,
               country: that.ruleForm.country=='不选择'?'':that.ruleForm.country,
               hotTemplateId: that.ruleForm.hotTemplateId,
-              productPkgId: that.ruleForm.packages,
+              productPkgId: that.templateType==2 ? '':that.ruleForm.packages,
               connProductPkgId: that.ruleForm.packages,
               productPkgName: pakName,
               description: that.ruleForm.description,
+              description_en: that.ruleForm.description_en,
                 questions_s  : JSON.stringify(that.ruleForm.questions),
                 questions_s_en  : JSON.stringify(that.ruleForm.questions_en),
                 catalogue: that.ruleForm.catalogue,
@@ -267,12 +284,17 @@
               myEditor2.setData(obj.catalogue);
                 myEditor3.setData(obj.disclaimer);
                 myEditor3_en.setData(obj.disclaimer_en);
+                myEditor_en.setData(obj.description_en);
+                myEditor2_en.setData(obj.catalogue_en);
             },100);
             setTimeout(function () {
-//                console.log(obj.disclaimer_en);
-                myEditor_en.setData(obj.description_en);
-              myEditor2_en.setData(obj.catalogue_en);
-            },1000); // 延迟一秒加载数据，使编辑器完全加载上
+                if(!myEditor.getData())myEditor.setData(obj.description);
+                if(!myEditor2.getData())myEditor2.setData(obj.catalogue);
+                if(!myEditor3.getData())myEditor3.setData(obj.disclaimer);
+                if(!myEditor3_en.getData())myEditor3_en.setData(obj.disclaimer_en);
+                if(!myEditor_en.getData()) myEditor_en.setData(obj.description_en);
+                if(!myEditor2_en.getData()) myEditor2_en.setData(obj.catalogue_en);
+            },1500); // 延迟一秒加载数据，使编辑器完全加载上
             that.ruleForm = {
               name: obj.name, // 模板名称
               name_en: obj.name_en, // 模板名称
@@ -281,7 +303,7 @@
               classify: obj.classId, // 分类
               country: obj.country, // 国家
               hotTemplateId: obj.hotTemplateId, // 模板
-              packages: obj.productPkgId, // 添加到产品包,关联到产品包
+              packages: that.templateType==2 ? obj.connProductPkgId :obj.productPkgId, // 添加到产品包,关联到产品包
               description: obj.description, // 简介
               description_en: obj.description_en, // 简介
               questions  : obj.questions || [],
@@ -291,23 +313,37 @@
               price_s: obj.price_s, // 价格
               isTry: obj.tryUse
             };
-            if(obj.questions && obj.questions.length){
+            if(obj.questions || obj.questions_en){
                 setTimeout(function () {
-                    window.editors=[]
                     if(obj.questions) {
                         for (let i = 0; i < obj.questions.length; i++) {
-                            window.editors[i] = CKEDITOR.replace("add" + i);
-                            window.editors[i].setData(obj.questions[i].answer);
+                            editors[i] = CKEDITOR.replace("add" + i);
+                            editors[i].setData(obj.questions[i].answer);
                         }
                     }
-                    window.editors_en=[]
                     if(obj.questions_en){
                         for(let i =0;i<obj.questions_en.length;i++){
-                            window.editors_en[i]= CKEDITOR.replace("add_en"+i);
-                            window.editors_en[i].setData(obj.questions_en[i].answer);
+                            editors_en[i]= CKEDITOR.replace("add_en"+i);
+                            editors_en[i].setData(obj.questions_en[i].answer);
                         }
                     }
                 },100)
+                setTimeout(function () {
+                    if(obj.questions) {
+                        for (let i = 0; i < obj.questions.length; i++) {
+                            if(editors[i]) return
+                            editors[i] = CKEDITOR.replace("add" + i);
+                            editors[i].setData(obj.questions[i].answer);
+                        }
+                    }
+                    if(obj.questions_en){
+                        for(let i =0;i<obj.questions_en.length;i++){
+                           if(editors_en[i]) return
+                             editors_en[i]= CKEDITOR.replace("add_en"+i);
+                            editors_en[i].setData(obj.questions_en[i].answer);
+                        }
+                    }
+                },2000)
             }
           }else{}
         });
@@ -315,56 +351,56 @@
       //检查是否填写问题
       checkquestion () {
           let that = this
-          that.ruleForm.question1 = '1'
+//          that.ruleForm.question1 = '1'
           if(that.ruleForm.questions.length){
               for(let i in that.ruleForm.questions){
                   let q = that.ruleForm.questions[i]
-                  if(!q.question){
+                  /*if(!q.question){
                       that.ruleForm.question1 = null
-                  }
+                  }*/
               }
           }
       },
       //检查是否填写问题
       checkquestion_en () {
           let that = this
-          that.ruleForm.question2 = '1'
+//          that.ruleForm.question2 = '1'
           if(that.ruleForm.questions_en.length){
               for(let i in that.ruleForm.questions_en){
                   let q = that.ruleForm.questions_en[i]
-                  if(!q.question){
+                  /*if(!q.question){
                       that.ruleForm.question2 = null
-                  }
+                  }*/
               }
           }
       },
       // 检查是否填写答案
       checkquestions () {
           let that = this
-          that.ruleForm.question1 = '1'
-          if(that.ruleForm.questions.length){
+//          that.ruleForm.question1 = '1'
+          if(that.ruleForm.questions && that.ruleForm.questions.length){
               for(let i in that.ruleForm.questions){
 //                  console.log(window.editors[i].getData())
-                  that.ruleForm.questions[i].answer = window.editors[i].getData();
+                  that.ruleForm.questions[i].answer = editors[i].getData();
                   let q = that.ruleForm.questions[i]
-                  if(!q.answer || !q.question){
+                  /*if(!q.answer || !q.question){
                       that.ruleForm.question1 = null
-                  }
+                  }*/
               }
           }
       },
       // 检查是否填写答案
       checkquestions_en () {
           let that = this
-          that.ruleForm.question2 = '1'
+//          that.ruleForm.question2 = '1'
           if(that.ruleForm.questions_en.length){
               for(let i in that.ruleForm.questions_en){
 //                  console.log(window.editors[i].getData())
-                  that.ruleForm.questions_en[i].answer = window.editors_en[i].getData();
+                  that.ruleForm.questions_en[i].answer = editors_en[i].getData();
                   let q = that.ruleForm.questions_en[i]
-                  if(!q.answer || !q.question){
+                  /*if(!q.answer || !q.question){
                       that.ruleForm.question2 = null
-                  }
+                  }*/
               }
           }
       },
@@ -440,8 +476,8 @@
             that.ruleForm.questions_en.push({question:'',answer:''})
             let id = that.ruleForm.questions_en.length-1
             setTimeout(function () {
-                window.editors_en[id]= CKEDITOR.replace("add_en"+(id));
-                window.editors_en[id].setData("");
+                editors_en[id]= CKEDITOR.replace("add_en"+(id));
+                editors_en[id].setData("");
             },100)
         },
         // 富文本编辑器
@@ -450,7 +486,7 @@
 //            console.log(id,that.ruleForm.questions.length);
             for(let i=id ;i+1<that.ruleForm.questions.length;i++){
                 let data = editors[i+1].getData()
-                window.editors[i].setData(data);
+                editors[i].setData(data);
             }
             that.ruleForm.questions.splice(id,1)
         },
@@ -460,7 +496,7 @@
 //            console.log(id,that.ruleForm.questions.length);
             for(let i=id ;i+1<that.ruleForm.questions_en.length;i++){
                 let data = editors_en[i+1].getData()
-                window.editors_en[i].setData(data);
+                editors_en[i].setData(data);
             }
             that.ruleForm.questions_en.splice(id,1)
         },

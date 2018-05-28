@@ -37,19 +37,25 @@
       </el-form-item>
       <el-form-item label="常见问题" prop="question1">
         <div class="questions" v-for="question,id in ruleForm.questions">
-            <el-input v-model="ruleForm.questions[id].question" class="iptLength db" placeholder="请填写" @blur="checkquestion()"></el-input>
+            <el-input v-model="ruleForm.questions[id].question" class="iptLength db" placeholder="请填写"></el-input>
+          <div class="mw600">
             <el-input type="textarea" v-model="ruleForm.questions[id].answer" :name="'add'+id" class="iptLength" placeholder="请填写"></el-input>
-          <el-button type="primary" @click="deleteQuestion(id)" size="mini" class="delete-question" plain>删除</el-button>
+          </div>
+            <el-button type="primary" @click="deleteQuestion(id)" size="mini" class="delete-question" plain>删除</el-button>
         </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"  icon="el-icon-plus" @click="addQuestion()" size="mini" plain>新增常见问题</el-button>
       </el-form-item>
       <el-form-item label="目录" prop="catalogue">
-        <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.catalogue" name="list" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="重要免责声明" prop="disclaimer">
-        <el-input type="textarea" v-model="ruleForm.disclaimer" name="disclaimer" class="iptLength" placeholder="重要免责声明"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.disclaimer" name="disclaimer" class="iptLength" placeholder="重要免责声明"></el-input>
+        </div>
       </el-form-item>
 
       <div class="switch-lang">以下请填写对应英文版本：</div>
@@ -61,23 +67,31 @@
         <el-input type="textarea" v-model="ruleForm.slogan_en" class="iptLength" resize="none"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="description_en">
-        <el-input type="textarea" v-model="ruleForm.description_en" name="detail_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.description_en" name="detail_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="常见问题" prop="question2">
         <div class="questions" v-for="question,id in ruleForm.questions_en">
-            <el-input v-model="ruleForm.questions_en[id].question" class="iptLength db" placeholder="请填写" @blur="checkquestion_en()"></el-input>
+            <el-input v-model="ruleForm.questions_en[id].question" class="iptLength db" placeholder="请填写"></el-input>
+          <div class="mw600">
             <el-input type="textarea" v-model="ruleForm.questions_en[id].answer" :name="'add_en'+id" class="iptLength" placeholder="请填写"></el-input>
-          <el-button type="primary" @click="deleteQuestion_en(id)" size="mini" class="delete-question" plain>删除</el-button>
+          </div>
+            <el-button type="primary" @click="deleteQuestion_en(id)" size="mini" class="delete-question" plain>删除</el-button>
         </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"  icon="el-icon-plus" @click="addQuestion_en()" size="mini" plain>新增常见问题</el-button>
       </el-form-item>
       <el-form-item label="目录" prop="catalogue_en">
-        <el-input type="textarea" v-model="ruleForm.catalogue_en" name="list_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.catalogue_en" name="list_en" class="iptLength" placeholder="用户购买之前显示的内容"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="重要免责声明" prop="disclaimer_en">
-        <el-input type="textarea" v-model="ruleForm.disclaimer_en" name="disclaimer_en" class="iptLength" placeholder="重要免责声明"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.disclaimer_en" name="disclaimer_en" class="iptLength" placeholder="重要免责声明"></el-input>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即发布</el-button>
@@ -124,19 +138,19 @@
         rules: {
           name: [
             { required: true, message: '请输入合同模板名称', trigger: 'blur' },
-            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
+//            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
           ],
           slogan: [
             { required: true, message: '请填写宣传语', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
           ],
           name_en: [
             { required: true, message: '请输入合同模板名称', trigger: 'blur' },
-            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
+//            { min: 0, max: 15, message: '长度在 15 个字符内', trigger: 'blur' }
           ],
           slogan_en: [
             { required: true, message: '请填写宣传语', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在 30 个字符内', trigger: 'blur' }
           ],
           classify: [
             { required: false, message: '请选择分类', trigger: 'change' }
@@ -153,27 +167,27 @@
           description: [
             { required: true, message: '请填写合同模板简介', trigger: 'blur' }
           ],
-          catalogue: [
+          /*catalogue: [
             { required: true, message: '请填写合同模板目录', trigger: 'blur' }
-          ],
+          ],*/
           disclaimer: [
             { required: true, message: '请填写重要免责声明', trigger: 'blur' }
           ],
-          question1: [
+          /*question1: [
             { required: true, message: '请填写问题', trigger: 'blur' }
-          ],
+          ],*/
           description_en: [
             { required: true, message: '请填写合同模板简介', trigger: 'blur' }
           ],
-          catalogue_en: [
+          /*catalogue_en: [
             { required: true, message: '请填写合同模板目录', trigger: 'blur' }
-          ],
+          ],*/
           disclaimer_en: [
             { required: true, message: '请填写重要免责声明', trigger: 'blur' }
           ],
-          question2: [
+          /*question2: [
             { required: true, message: '请填写问题', trigger: 'blur' }
-          ],
+          ],*/
         }
       }
     },
@@ -250,7 +264,6 @@
                       className: className,
                       country: that.ruleForm.country=='不选择'?'':that.ruleForm.country,
                       hotTemplateId: that.ruleForm.hotTemplateId,
-                      productPkgId: that.ruleForm.packages,
                       connProductPkgId: that.ruleForm.packages,
                       productPkgName: pakName,
                       description: that.ruleForm.description,
@@ -293,28 +306,28 @@
       //检查是否填写问题
       checkquestion_en () {
           let that = this
-          that.ruleForm.question2 = '1'
+//          that.ruleForm.question2 = '1'
           if(that.ruleForm.questions_en.length){
               for(let i in that.ruleForm.questions_en){
                 let q = that.ruleForm.questions_en[i]
-                if(!q.question){
+                /*if(!q.question){
                     that.ruleForm.question2 = null
-                }
+                }*/
             }
           }
       },
       // 检查是否填写答案
       checkquestions () {
           let that = this
-          that.ruleForm.question1 = '1'
-          if(that.ruleForm.questions.length){
+//          that.ruleForm.question1 = '1'
+          if(that.ruleForm.questions && that.ruleForm.questions.length){
               for(let i in that.ruleForm.questions){
 //                  console.log(window.editors[i].getData())
                 that.ruleForm.questions[i].answer = window.editors[i].getData();
                 let q = that.ruleForm.questions[i]
-                if(!q.answer || !q.question){
+                /*if(!q.answer || !q.question){
                     that.ruleForm.question1 = null
-                }
+                }*/
             }
           }
       },
@@ -322,7 +335,7 @@
       checkquestions_en () {
           let that = this
           that.ruleForm.question2 = '1'
-          if(that.ruleForm.questions_en.length){
+          if(that.ruleForm.questions_en && that.ruleForm.questions_en.length){
               for(let i in that.ruleForm.questions_en){
 //                  console.log(window.editors[i].getData())
                 that.ruleForm.questions_en[i].answer = window.editors_en[i].getData();

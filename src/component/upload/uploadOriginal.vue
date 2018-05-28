@@ -151,6 +151,7 @@ des/des2 描述
   }
 </script>
 <style lang="less" scope>
+  .iptFormLen{width: 600px;}
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;
       .des{line-height: 24px;font-size:12px;color:#999;}

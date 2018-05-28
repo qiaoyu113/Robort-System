@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container content-product">
     <!--按钮、搜索-->
     <p class="opration-bar">
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新增</el-button>
@@ -160,11 +160,11 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
           ],
           title: [
             { required: true, message: '请输入产品功能名称', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
           ],
           intro: [
             { required: true, message: '请填写产品功能简介', trigger: 'blur' },
-            { min: 0, max: 60, message: '长度在60个字符以内', trigger: 'blur' }
+//            { min: 0, max: 60, message: '长度在60个字符以内', trigger: 'blur' }
           ],
           order: [
             { required: true, message: '请填写排序号', trigger: 'change' },
@@ -219,7 +219,7 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
           if(res.data.success) {
             let page = res.data.datas;
             let table = res.data.datas.datas;
-            //console.log('page', page);
+//            console.log('page', page);
             //console.log('table', table);
             that.page.totalPage = page.totalPage;
             that.page.totalCount = parseInt(page.totalCount);
@@ -478,7 +478,7 @@ import uploadOriginal from '../../component/upload/uploadOriginal.vue'
   .v-modal{display:none!important;}
   .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .el-dialog{z-index:2018;}
-  .vue-cropper{height:500px!important;}
+  .content-product .vue-cropper{height:500px!important;}
   .upload-img{width:300px;height:188px;position:relative;
     .image{width:300px;height:150px;}
     .btn{width:300px;height:150px;position:absolute;top:40px;right:0;bottom:0;left: 0;display:flex;justify-content: center;align-items: center;

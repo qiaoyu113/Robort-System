@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container content-banner">
     <!--切换选项卡-->
     <el-tabs v-model="tabIndex">
       <el-tab-pane label="首页" name="first"></el-tab-pane>
@@ -358,7 +358,7 @@
             }
             if (that.form.radio_en == 1) {
               bannerType_en = 0;
-              picLink = that.form.link_en;
+              picLink_en = that.form.link_en;
             } else if (that.form.radio_en == 2) {
               bannerType_en = 1;
               videoUrl_en = that.form.link_en;
@@ -629,7 +629,7 @@
   .v-modal{display:none!important;}
   .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .el-dialog{z-index:2018;}
-  .vue-cropper{height:500px!important;}
+  .content-banner .vue-cropper{height:500px!important;}
   .upload-img{height:138px;
     .picUpload{float:left;}
   }

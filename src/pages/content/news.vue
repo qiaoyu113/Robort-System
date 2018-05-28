@@ -6,6 +6,7 @@
     </p>
     <!--表格-->
     <el-table
+            @filter-change="handleFilter"
             :data="tableData"
             empty-text="暂无数据"
             style="width: 100%"><!--prop="name"style="width:40%"style="width:10%"style="width:10%"style="width:10%"              style="width:20%"-->
@@ -25,8 +26,25 @@
         </template>
       </el-table-column>
       <el-table-column
+              prop = 'englishType'
+              label="类别"
+              width="140"
+              :column-key="'englishType'"
+              filter-placement="bottom-end"
+              :filter-multiple = false
+              :filters="typeList">
+        <template slot-scope="scope">
+          <span v-if="scope.row.englishType">{{typeList[scope.row.englishType*1-1].text}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
               prop = 'className'
-              label="所属分类">
+              label="所属分类"
+              width="140"
+              :column-key="'filterclass'"
+              filter-placement="bottom-end"
+              :filter-multiple = false
+              :filters="classList">
       </el-table-column>
       <el-table-column
       prop="createTime"
@@ -84,19 +102,31 @@
         },//分页数
         query: '',// 查询条件
         centerDialogVisible: false, // 提示弹框
-        tableData: [] //列表数据
+        tableData: [], //列表数据
+        typeList: [{text:'中文/国内',value:1},{text:'英文/国外',value:2}], //列表数据
+        classList: [] //列表数据
       }
     },
     components: { 'vue-cropper': VueCropper,pagination},
     mounted () {
       let that = this;
       that.getList();
+      that.getDicKey()
     },
     methods: {
       //获得列表
-      getList () {
+      getList (p) {
         let that = this;
-        contentService.getNewses({pageNo: that.page.num, pageSize: that.page.size, name: that.query, type: 1}).then(function(res){
+        let params={
+            pageNo: that.page.num, pageSize: that.page.size, name: that.query, type: 1
+        }
+        if(p&&p.classId){
+            params.classId=p.classId
+        }
+        if(p&&p.englishType){
+            params.englishType=p.englishType
+        }
+        contentService.getNewses(params).then(function(res){
           //console.log('新闻列表', res);
           if(res.data.success) {
             let page = res.data.datas;
@@ -110,6 +140,19 @@
             that.tableData = table;
           }
         });
+      },// 获取分类
+      getDicKey() {
+          let that = this;
+          contentService.getDicKey({type: 1}).then(function (res) {
+//              console.log('分类', res);
+              if(res.data.success){
+                  let classList = res.data.datas;
+                  for(let i of classList){
+                      let c = {'text':i.name,'value':i.id}
+                      that.classList.push(c)
+                  }
+              }else{}
+          });
       },
       // 分页
       handleSizeChange (val) {
@@ -192,6 +235,23 @@
                   done();
                 })
                 .catch(_ => {});
+      },
+      // 分类筛选
+      handleFilter(filters) {
+          let that = this;
+//          console.log(1,filters,filters['englishType']);
+          if(filters['filterclass']){
+              that.classId = filters['filterclass'][0] || null;
+          }
+          if(filters['englishType']){
+              that.englishType = filters['englishType'][0] || null;
+          }
+          that.page.num =1
+          that.page.size =10
+          let params={}
+          if(that.classId) params.classId = that.classId
+          if(that.englishType) params.englishType = that.englishType
+          that.getList(params)
       }
     }
   }

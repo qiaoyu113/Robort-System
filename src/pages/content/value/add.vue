@@ -8,7 +8,9 @@
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
       </el-form-item>
       <el-form-item label="详情" prop="detail">
-         <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+        </div>
       </el-form-item>
 
       <div class="switch-lang">以下请填写对应英文版本：</div>
@@ -20,7 +22,9 @@
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en"></upload-img>
       </el-form-item>
       <el-form-item label="详情" prop="detail_en">
-         <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+        </div>
       </el-form-item>
     <el-form-item>
     <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -54,7 +58,7 @@
         rules: {
           title: [
             { required: true, message: '请输入标题', trigger: 'blur' },
-            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
+//            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
           ],
           /*author: [
             { required: true, message: '请填写作者名称', trigger: 'blur' }
@@ -86,7 +90,7 @@
     mounted () {
       let that = this;
       that.editor(); // 富文本编辑器初始化
-      that.getDicKey(); // 分类
+//      that.getDicKey(); // 分类
     },
     methods: {
       submitForm(formName) {

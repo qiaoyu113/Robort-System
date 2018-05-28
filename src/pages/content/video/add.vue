@@ -85,7 +85,7 @@
         rules: {
           title: [
             { required: true, message: '请输入演示视频名称', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
           ],
           pic: [
             { required: true, message: '请上传演示视频图片', trigger: 'blur' },

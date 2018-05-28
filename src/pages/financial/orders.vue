@@ -179,8 +179,8 @@
                 let that = this;
                 that.params.pageNo = 1;
                 if(that.timeRange){
-                    that.params.startTime = that.timeRange[0]
-                    that.params.endTime = that.timeRange[1]
+                    that.params.startTime = that.timeRange[0].getTime()
+                    that.params.endTime = that.timeRange[1].getTime()
                 }else{
                     that.params.startTime = ''
                     that.params.endTime = ''

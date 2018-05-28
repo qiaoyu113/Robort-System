@@ -8,7 +8,9 @@
           <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl" ref="uImg"></upload-img>
         </el-form-item>
         <el-form-item label="详情" prop="detail">
-          <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+            <div class="mw600">
+                <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+            </div>
         </el-form-item>
 
 
@@ -56,7 +58,7 @@
         rules: {
           title: [
             { required: true, message: '请输入标题', trigger: 'blur' },
-            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
+//            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
           ],
           /*author: [
             { required: true, message: '请填写作者名称', trigger: 'blur' }

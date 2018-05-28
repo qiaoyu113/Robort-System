@@ -114,12 +114,14 @@
         form: {
           id: '',
           name: '',
+          name_en: '',
           typ: 0, // 判断是新闻还是模板
           addOrEdit: 0, // 默认添加
         },
         areaform: {
           id: '',
           name: '',
+          name_en: '',
           typ: 0, // 判断是新闻还是模板
           addOrEdit: 0, // 默认添加
         },
@@ -185,37 +187,19 @@
         that.newsList = [];
         that.templateListList = [];
         that.areaList =  JSON.parse(JSON.stringify(that.areaLists))
-        systemService.getClassifyList({type: null}).then(function(res){
+        systemService.getClassifyAll({type: null}).then(function(res){
           //console.log('分类', res);
           if(res.data.success){
             let array = res.data.datas;
-            for(let i=0;i<array.length;i++){
-              if(array[i].type == 1){
-                that.newsList.push(array[i]); // 新闻分类
-              }
-              if(array[i].type == 2){
-                that.templateListList.push(array[i]);// 合同模板分类
-              }
-              if(array[i].type == 4){
-                that.areaList[0].list.push(array[i]);// 亚太
-              }
-              if(array[i].type == 5){
-                that.areaList[1].list.push(array[i]);// 中东/北非
-              }
-              if(array[i].type == 6){
-                that.areaList[2].list.push(array[i]);// 中东欧/中亚
-              }
-              if(array[i].type == 7){
-                that.areaList[3].list.push(array[i]);// 合同模板分类
-              }
-              if(array[i].type == 8){
-                that.areaList[4].list.push(array[i]);// 合同模板分类
-              }
-              if(array[i].type == 9){
-                that.areaList[5].list.push(array[i]);// 合同模板分类
-              }
+                that.newsList=array[1]; // 新闻分类
+                that.templateListList=array[2];// 合同模板分类
+                that.areaList[0].list=array[4];// 亚太
+                that.areaList[1].list=array[5];// 中东/北非
+                that.areaList[2].list=array[6];// 中东欧/中亚
+                that.areaList[3].list=array[7];// 合同模板分类
+                that.areaList[4].list=array[8];// 合同模板分类
+                that.areaList[5].list=array[9];// 合同模板分类
             }
-          }else{}
         });
       },
       //添加
@@ -301,6 +285,7 @@
         that.areaform = {
           id: '',
           name: '',
+          name_en: '',
           typ: 0,
           addOrEdit: 0 // 添加
         };
@@ -317,6 +302,7 @@
             that.form = {
               id: obj.id,
               name: obj.name,
+              name_en: obj.name_en,
               typ: obj.type,
               addOrEdit: 1 //编辑
             }
@@ -344,6 +330,7 @@
             that.areaform = {
               id: obj.id,
               name: obj.name,
+              name_en: obj.name_en,
               image:obj.image,
               typ: obj.type,
               addOrEdit: 1 //编辑

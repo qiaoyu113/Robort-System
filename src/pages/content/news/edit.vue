@@ -1,6 +1,13 @@
 <template>
   <div class="container">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
+
+      <el-form-item label="类别" prop="englishType"  size="mini">
+        <el-select v-model="ruleForm.englishType" placeholder="请选择">
+          <el-option :label="'中文/国内'" :value="1" key="1"></el-option>
+          <el-option :label="'英文/国外'" :value="2" key="2"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="新闻标题" prop="title" size="mini">
         <el-input v-model="ruleForm.title" class="iptLength" placeholder="60个字内"></el-input>
       </el-form-item>
@@ -16,13 +23,15 @@
         </el-select>
       </el-form-item>
       <el-form-item label="新闻详情" prop="detail">
-        <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="摘要" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
       </el-form-item>
 
-      <div class="switch-lang">以下请填写对应英文版本：</div>
+      <!--<div class="switch-lang">以下请填写对应英文版本：</div>
 
       <el-form-item label="新闻标题" prop="title_en" size="mini">
         <el-input v-model="ruleForm.title_en" class="iptLength" placeholder="60个字内"></el-input>
@@ -34,11 +43,13 @@
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl_en" ref="uImg_en"></upload-img>
       </el-form-item>
       <el-form-item label="新闻详情" prop="detail_en">
-        <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+        <div class="mw600">
+          <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="摘要" prop="desc_en">
         <el-input type="textarea" v-model="ruleForm.desc_en" class="iptLength" resize="none" placeholder="120字以内，不输入默认抓取新闻详情" @keyup.native="zy"></el-input>
-      </el-form-item>
+      </el-form-item>-->
 
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')" size="mini">发布</el-button>
@@ -60,27 +71,26 @@
         ruleForm: {
           id: '',
           title: '', // 新闻名称
-          title_en: '', // 新闻名称
           author: '', // 作者
-          author_en: '', // 作者
           cover: '', // 封面图
-          cover_en: '', // 封面图
           selItem: '', // 分类
+          englishType: '', // 分类
           detail: '', // 详情
-          detail_en: '', // 详情
           desc: '', // 简介
-          desc_en: '' // 简介
         },
         rules: {
           title: [
             { required: true, message: '请输入新闻标题', trigger: 'blur' },
-            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
+//            { min: 0, max: 60, message: '长度在 60 个字符内', trigger: 'blur' }
           ],
           author: [
             { required: true, message: '请填写作者名称', trigger: 'blur' }
           ],
           cover: [
             { required: true, message: '请上传封面图', trigger: 'blur' }
+          ],
+          englishType: [
+            { required: true, message: '请选择中英文', trigger: 'change' }
           ],
           selItem: [
             { required: true, message: '请选择分类', trigger: 'change' }
@@ -116,12 +126,9 @@
       submitForm(formName) {
         let that = this;
         that.ruleForm.detail = myEditor.getData();
-        that.ruleForm.detail_en = myEditor_en.getData();
-        if(that.ruleForm.desc.length == 0){
+          if(that.ruleForm.desc.length == 0){
           let textEditor = myEditor.document.getBody().getText();
           that.ruleForm.desc = textEditor.substring(0, 120);
-          let textEditor_en = myEditor_en.document.getBody().getText();
-          that.ruleForm.desc_en = textEditor_en.substring(0, 120);
         }
         this.$refs[formName].validate((valid) => {
           if (valid) { // 验证成功
@@ -136,17 +143,13 @@
             contentService.editNews({
               id: that.ruleForm.id,
               name: that.ruleForm.title,
-              name_en: that.ruleForm.title_en,
               author: that.ruleForm.author,
-              author_en: that.ruleForm.author_en,
               description: that.ruleForm.desc,
-              description_en: that.ruleForm.desc_en,
               content: that.ruleForm.detail,
-              content_en: that.ruleForm.detail_en,
+              englishType: that.ruleForm.englishType,
               classId: that.ruleForm.selItem,
               className: className,
               cover: that.ruleForm.cover,
-              cover_en: that.ruleForm.cover_en,
               type: 1}).then(function (res) {
               //console.log(res, '编辑一个新闻');
               if(res.data.success){
@@ -163,9 +166,9 @@
       getDicKey() {
         let that = this;
         contentService.getDicKey({type: 1}).then(function (res) {
-          //console.log('分类', res);
           if(res.data.success){
             that.demoList = res.data.datas;
+              console.log(that.demoList);
           }else{}
         });
       },
@@ -189,26 +192,20 @@
             let obj = res.data.datas;
             setTimeout(function () {
               myEditor.setData(obj.content);
-              myEditor_en.setData(obj.content_en);
             },1);
             that.ruleForm = {
               id: obj.id,
               title: obj.name, // 新闻名称
-              title_en: obj.name_en, // 新闻名称
               author: obj.author, // 作者
-              author_en: obj.author_en, // 作者
               cover: obj.cover, // 封面图
-              cover_en: obj.cover_en, // 封面图
               selItem: obj.classId,
               detail: obj.content, // 详情
-              detail_en: obj.content_en, // 详情
               desc: obj.description, // 简介
-              desc_en: obj.description_en // 简介
+              englishType: obj.englishType // 简介
             };
-            that.$refs.uImg.isImageState = 1;
+              console.log(that.ruleForm);
+              that.$refs.uImg.isImageState = 1;
             that.$refs.uImg.imgUrl = that.$store.state.picHead + obj.cover;
-            that.$refs.uImg_en.isImageState = 1;
-            that.$refs.uImg_en.imgUrl = that.$store.state.picHead + obj.cover_en;
           }else{}
         });
       },
@@ -227,7 +224,6 @@
       editor(){
         let CKEDITOR = window.CKEDITOR;
         myEditor = CKEDITOR.replace("detail");
-        myEditor_en = CKEDITOR.replace("detail_en");
       },
     }
   }

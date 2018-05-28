@@ -18,7 +18,7 @@
                 </el-form-item>
                 <el-form-item label="发送范围：" :label-width="formLabelWidth" required>
                     <br>
-                    <el-select v-model="form.userGroup" multiple placeholder="请选择组">
+                    <el-select v-model="form.userGroup" multiple placeholder="请选择组" @change="selectGroup">
                         <el-option
                                 v-for="item,index in groups"
                                 :key="item.id"
@@ -28,7 +28,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="发送内容：" :label-width="formLabelWidth" required>
-                    <el-input type="textarea" v-model="form.detail" class="iptLength" name="detail"></el-input>
+                    <div class="mw600">
+                        <el-input type="textarea" v-model="form.detail" class="iptLength" name="detail"></el-input>
+                    </div>
                 </el-form-item>
             </el-form>
             <el-button type="primary" @click="send()" class="center-button">确 定</el-button>
@@ -47,7 +49,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            label="主题">
+                            label="主题" class="cursor">
                         <template slot-scope="scope">
                             <span  @click="showDetail(scope.$index)">{{scope.row.title}}</span>
                         </template>
@@ -170,8 +172,8 @@
                         names.push(that.groups[that.form.userGroup[item]].name)
                     }
                     var params={
-                        groupIds:ids,
-                        groupNames:names,
+                        groupIds:ids.toString(),
+                        groupNames:names.toString(),
                         type:1,
                         title:that.form.title,
                         content:that.form.detail
@@ -203,7 +205,6 @@
                 userService.getEmails(that.params).then(function (res) {
 //                    console.log(res);
                     that.list=res.data.datas.datas
-                    console.log(that.list);
                     that.total = res.data.datas.totalCount
                 })
             },
@@ -212,7 +213,15 @@
                 userService.getUserGroups().then(function (res) {
 //                    console.log(res.data.datas);
                     that.groups = res.data.datas
+                    that.groups.unshift({id:1,name:'全部分组'})
                 })
+            },
+            selectGroup:function(group){
+                for(let i of group){
+                    if(i==0){
+                        this.form.userGroup = [0]
+                    }
+                }
             },
             showDetail:function(i){
                 let that = this

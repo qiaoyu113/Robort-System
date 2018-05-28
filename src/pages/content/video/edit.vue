@@ -119,7 +119,7 @@
         rules: {
           title: [
             { required: true, message: '请输入演示视频名称', trigger: 'blur' },
-            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
+//            { min: 0, max: 30, message: '长度在30个字符以内', trigger: 'blur' }
           ],
           pic: [
             { required: true, message: '请上传演示视频图片', trigger: 'blur' },
@@ -168,7 +168,7 @@
       submit (form) {
         let that = this;
         that.form.desc = myEditor.getData();
-        that.form.desc_en = myEditor.getData();
+        that.form.desc_en = myEditor_en.getData();
         // 表单验证
         this.$refs[form].validate((valid) => {
           if (valid) { //验证成功
@@ -375,8 +375,8 @@
             that.$refs.upCover.imgUrl = that.$store.state.picHead + obj.cover; // 图片显示路径
             that.$refs.upCover_en.isImageState = 1; // 显示删除图片图标
             that.$refs.upCover_en.imgUrl = that.$store.state.picHead + obj.cover_en; // 图片显示路径
-            let arr = that.form.video.split('/');
-            let arr_en = that.form.video_en.split('/');
+            let arr = that.form.video ? that.form.video.split('/'):[];
+            let arr_en = that.form.video_en ? that.form.video_en.split('/'):[];
             that.fileList =[{
               name: arr[arr.length-1],
               size: '',
@@ -385,8 +385,11 @@
               name: arr_en[arr.length-1],
               size: '',
             }];
-            myEditor.setData(that.form.desc);
-            myEditor_en.setData(that.form.desc_en);
+            setTimeout(function(){
+                myEditor.setData(that.form.desc);
+                myEditor_en.setData(that.form.desc_en);
+            },100)
+
           }
         });
       },

@@ -172,7 +172,7 @@ autoCropHeight 默认裁剪高度
   }
 </script>
 <style lang="less" scope>
-  .upload-pic .el-dialog{margin:0 auto 15vh!important;height: 100%}
+  .upload-pic .el-dialog{margin:0 auto 10vh!important;height: 100%;max-height: 100vh;overflow: hidden}
   .vue-cropper{height: 60%!important;;img{width: 100%}}
   .picUpload{display: flex; justify-content: flex-start;align-items: center;
     .right{margin-left:20px;

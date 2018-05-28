@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container content-video">
     <!--按钮、搜索-->
     <p class="opration-bar">
       <el-button type="primary" icon="el-icon-plus" size="mini" class="left" @click="add">新增</el-button>
@@ -202,7 +202,7 @@
   .v-modal{display:none!important;}
   .el-dialog__wrapper{margin-top:0!important;background:rgba(0,0,0,.3)!important;display:flex;justify-content: center;align-items: center;}
   .el-dialog{z-index:2018;}
-  .vue-cropper{height:500px!important;}
+  .content-video .vue-cropper{height:500px!important;}
   .upload-img{width:300px;height:188px;position:relative;
   .image{width:300px;height:150px;}
   .btn{width:300px;height:150px;position:absolute;top:40px;right:0;bottom:0;left: 0;display:flex;justify-content: center;align-items: center;

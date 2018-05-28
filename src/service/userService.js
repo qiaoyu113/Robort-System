@@ -66,6 +66,9 @@ export const userService = {
     saveTexts: function (params) {
         return axios.post('/admin/sms/tempate/', qs.stringify(params));
     },
+    deleteTexts: function (params) {
+        return axios.delete('/admin/sms/template/'+params);
+    },
     sendTexts: function (params) {
         return axios.post('/admin/sms/send/', qs.stringify(params));
     },
@@ -74,6 +77,9 @@ export const userService = {
     },
     getTextTemps: function (params) {
         return axios.get('/admin/sms/template'+ this.getParam(params));
+    },
+    getTempList: function () {
+        return axios.get('/admin/sms/tempate/list');
     },
     getParam: function(param){
         let url = '';

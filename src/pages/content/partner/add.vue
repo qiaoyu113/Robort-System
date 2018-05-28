@@ -38,7 +38,9 @@
         <el-input v-model="ruleForm.url" class="iptFormLen" placeholder="请输入网址"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="detail">
-        <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
+        <div class="mw600">
+          <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
+        </div>
       </el-form-item>
       <div class="contact-box" v-show="pType==2">
         <el-form-item label="联系人" prop="contactname1" size="mini" class="par-contact">
@@ -97,7 +99,9 @@
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upOrg_en"></upload-original>
       </el-form-item>
       <el-form-item label="简介" prop="detail_en">
-        <textarea v-model="ruleForm.detail_en" class="iptFormLen" name="detail_en"></textarea>
+        <div class="mw600">
+          <textarea v-model="ruleForm.detail_en" class="iptFormLen" name="detail_en"></textarea>
+        </div>
       </el-form-item>
       <div class="contact-box" v-show="pType==2">
         <el-form-item label="联系人" prop="contactname1_en" size="mini" class="par-contact">
@@ -124,7 +128,7 @@
         </el-form-item>
         <div class="contact">
           <el-form-item prop="contactname2_en" size="mini">
-          <el-input v-model="ruleForm.contactname2" class="contact-input" placeholder="姓名"></el-input>
+          <el-input v-model="ruleForm.contactname2_en" class="contact-input" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item prop="contactphone2_en" size="mini" >
           <el-input v-model="ruleForm.contactphone2_en" class="contact-input" placeholder="phone"></el-input>
@@ -139,8 +143,8 @@
       </div>
       <el-form-item label="参考资料" size="mini" v-show="pType==2">
         <div class="media" v-for="referenDatas,id in ruleForm.referenDatas_en">
-          <el-input v-model="referenDatas.name" class="title-input" placeholder="标题"></el-input>
-          <el-input v-model="referenDatas.link" class="src-input" placeholder="地址"></el-input>
+          <el-input v-model="referenDatas.name" class="title-input mw600" placeholder="标题"></el-input>
+          <el-input v-model="referenDatas.link" class="src-input mw600" placeholder="地址"></el-input>
           <el-button type="line" @click="removeRefer_en(id)" size="mini" plain>删除</el-button>
         </div>
         <el-button type="line"  icon="el-icon-plus" @click="addRefer_en()" size="mini" plain>新增参考资料</el-button>
@@ -300,6 +304,7 @@ export default {
     submitForm(formName) {
       let that = this;
       that.ruleForm.detail = myEditor.getData();
+      that.ruleForm.detail_en = myEditor_en.getData();
       this.$refs[formName].validate((valid) => {
         if (valid) { // 验证成功
           let name = that.ruleForm.name;
@@ -478,7 +483,7 @@ export default {
 }
 </script>
 <style lang="less" scope>
-  .container .partner-add{
+  .container.partner-add{
     font-size:14px;color:#333;
     padding: 20px;
     .iptFormLen {

@@ -38,7 +38,9 @@
         <el-input v-model="ruleForm.url" class="iptFormLen" placeholder="请输入网址"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="detail">
-        <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
+        <div class="mw600">
+          <textarea v-model="ruleForm.detail" class="iptFormLen" name="detail"></textarea>
+        </div>
       </el-form-item>
       <div class="contact-box" v-show="pType==2">
         <el-form-item label="联系人" prop="contactname1" size="mini" class="par-contact">
@@ -94,7 +96,9 @@
         <upload-original :options="uploadOrg" v-on:getPictureUrl="myPicUrl_en" ref="upOrg_en"></upload-original>
       </el-form-item>
       <el-form-item label="简介" prop="detail_en">
-        <textarea v-model="ruleForm.detail_en" class="iptFormLen" name="detail_en"></textarea>
+        <div class="mw600">
+          <textarea v-model="ruleForm.detail_en" class="iptFormLen" name="detail_en"></textarea>
+        </div>
       </el-form-item>
       <div class="contact-box" v-show="pType==2">
         <el-form-item label="联系人" prop="contactname1_en" size="mini" class="par-contact">

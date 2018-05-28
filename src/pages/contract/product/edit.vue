@@ -23,7 +23,9 @@
                 </el-select>
             </el-form-item>-->
             <el-form-item label="简介" prop="detail">
-                <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+                <div class="mw600">
+                    <el-input type="textarea" v-model="ruleForm.detail" class="iptLength" name="detail"></el-input>
+                </div>
             </el-form-item>
             <el-form-item label="价格" prop="price">
                 <div>
@@ -56,7 +58,9 @@
                 <el-input type="textarea" v-model="ruleForm.desc_en" class="iptLength" resize="none" placeholder="显示在列表页，可写作者简介或内容简介"></el-input>
             </el-form-item>
             <el-form-item label="简介" prop="detail_en">
-                <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+                <div class="mw600">
+                    <el-input type="textarea" v-model="ruleForm.detail_en" class="iptLength" name="detail_en"></el-input>
+                </div>
             </el-form-item>
 
 
@@ -137,11 +141,11 @@ export default {
             rules: {
                 title: [
                     { required: true, message: '请输入产品包名称', trigger: 'blur' },
-                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
+//                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
                 ],
                 title_en: [
                     { required: true, message: '请输入产品包名称', trigger: 'blur' },
-                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
+//                    { min: 0, max: 20, message: '长度在 20 个字符内', trigger: 'blur' }
                 ],
                 cover: [
                     { required: true, message: '请上传封面图', trigger: 'blur' }

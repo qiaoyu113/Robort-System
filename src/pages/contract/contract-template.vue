@@ -52,7 +52,11 @@
         </el-table-column>
         <el-table-column
                 prop="productPkgName"
-                label="所在产品包">
+                label="所在产品包"
+                :column-key="'filterPkg'"
+                :filter-multiple = false
+                :filters="filterPkg"
+                filter-placement="bottom-end">
         </el-table-column>
         <el-table-column
                 width="80"
@@ -162,7 +166,7 @@
         tableData2: [], //列表数据
         multipleSelection: [], //列表数据
         filterList:[],
-        cPackage: [], //产品包信息
+        filterPkg:[],//产品包信息
         currentPage: 1, // 分页
         myPagination: {
           size: 10,
@@ -177,6 +181,7 @@
     components: {pagination},
     mounted () {
       let that = this;
+      that.getPackage()
       if(that.tabIndex == '1'){
         that.getList();
         that.getTemplateType();//下拉分类
@@ -198,6 +203,20 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+      },
+      // 产品包
+      getPackage () {
+          let that = this;
+          contractService.getPackage().then(function (res) {
+              if(res.data.success){
+                  let filterPkg = res.data.datas;
+                  for(let i of filterPkg){
+                      let c = {'text':i.name,'value':i.id}
+                      that.filterPkg.push(c)
+                  }
+//                  console.log('产品包', that.filterPkg);
+              }else{}
+          });
       },
       getList () {
         let that = this;
@@ -274,7 +293,7 @@
       getTemplateType () {
         let that = this;
         contractService.getTemplateType({type: 2}).then(function (res) {
-          console.log('分类', res);
+//          console.log('分类', res);
           if(res.data.success){
             let array = res.data.datas;
             for(let i=0;i<array.length;i++){
@@ -287,20 +306,26 @@
               };
               that.filterList.push(obj);
             }
-              console.log(that.filterList);
+//              console.log(that.filterList);
           }else{}
         });
       },
       // 筛选
       filterHandle (filters) {
-//       console.log('选中分类', filters['filterclass'][0]);
+//       console.log('选中分类', filters);
         let that = this;
-        if(filters['filterclass'][0]){
+        if(filters['filterclass'] && filters['filterclass'][0]){
             that.classId = filters['filterclass'][0];
-        }else{
+        }else if(filters['filterclass']){
             that.classId=null
         }
-
+        if(filters['filterPkg'] && filters['filterPkg'][0]){
+            that.productPkgId = filters['filterPkg'][0];
+        }else if(filters['filterPkg']){
+            that.productPkgId=null
+        }
+        this.getList();
+        this.$refs.multipleTable.doLayout();
 //        that.$refs.multipleTable.clearFilter();
         //return row.className === value;
       },
@@ -414,12 +439,6 @@
           that.getList2();
         }
         return cur;
-      },
-      classId (cur, old) {
-        //console.log('分类变化', cur);
-        this.classId = cur;
-        this.getList();
-        this.$refs.multipleTable.doLayout();
       }
     }
   }

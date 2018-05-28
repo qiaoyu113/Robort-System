@@ -8,7 +8,7 @@
             <el-form :model="form">
                 <el-form-item label="发送范围：" :label-width="formLabelWidth" required>
                     <br>
-                    <el-select v-model="form.userGroup" multiple placeholder="请选择组">
+                    <el-select v-model="form.userGroup" multiple placeholder="请选择组" @change="selectGroup">
                         <el-option
                                 v-for="item,index in groups"
                                 :key="item.id"
@@ -89,7 +89,7 @@
         methods: {
             send:function(){
                 let that = this
-                console.log(that.form.userGroup);
+//                console.log(that.form.userGroup);
                 if(that.form.userGroup.length<1){
                     that.$message.error('请选择发送组')
                 }else if(!that.form.text){
@@ -101,8 +101,8 @@
                         names.push(that.groups[that.form.userGroup[item]].name)
                     }
                     var params={
-                        groupIds:ids,
-                        groupNames:names,
+                        groupIds:ids.toString(),
+                        groupNames:names.toString(),
                         type:1,
                         content:that.form.text
                     }
@@ -141,7 +141,15 @@
                 userService.getUserGroups().then(function (res) {
 //                    console.log(res.data.datas);
                     that.groups = res.data.datas
+                    that.groups.unshift({id:1,name:'全部分组'})
                 })
+            },
+            selectGroup:function(group){
+                for(let i of group){
+                    if(i==0){
+                        this.form.userGroup = [0]
+                    }
+                }
             },
             changeSize: function (size) {
                 this.params.pageSize = size
