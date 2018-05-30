@@ -166,6 +166,7 @@
         contractService.contractPackageAndTemplate({productPkgId: id, templateIds: strfy}).then(function (res) {
             //console.log('为一个产品包添加模板',res);
             if(res.data.success){
+                that.ckChecked = []
                 that.dialogFormVisible = false;
                 that.getInfo();
                 that.getList();

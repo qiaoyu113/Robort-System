@@ -15,7 +15,6 @@ const store = new Vuex.Store({
         // picHead:'http://test.resource.vjuzhen.com/', // 图片资源地址
         // qrCodeDomain: 'http://test.tj.docqbot.com/d/', // 二维码地址主机头
         // api:'http://39.106.114.64:8097/', // api地址
-        // api:'http://qpbudz.natappfree.cc', // api地址
         picHead:'http://resource.docqbot.com/', // 图片资源地址
         api:'http://admin.api.docqbot.com/', // api地址
         qrCodeDomain: 'http://tj.docqbot.com/d/', // 二维码地址主机头
