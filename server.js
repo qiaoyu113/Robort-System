@@ -4,7 +4,8 @@ const express = require('express')
 const favicon = require('serve-favicon')
 const resolve = file => path.resolve(__dirname, file)
 
-const isProd = process.env.NODE_ENV === 'production'
+// const isProd = process.env.NODE_ENV === 'production'
+const isProd = false
 
 const app = express()
 let renderer

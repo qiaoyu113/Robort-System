@@ -62,6 +62,9 @@ const accounts= (resolve) => {require(['./pages/financial/accounts.vue'],resolve
 const orders= (resolve) => {require(['./pages/financial/orders.vue'],resolve)}
 const refund= (resolve) => {require(['./pages/financial/refund.vue'],resolve)}
 const orderDetail= (resolve) => {require(['./pages/financial/order-detail.vue'],resolve)}
+// 数据统计
+const flow= (resolve) => {require(['./pages/data/flow.vue'],resolve)}
+const userStats= (resolve) => {require(['./pages/data/user.vue'],resolve)}
 // 系统设置
 const sysClassify= (resolve) => {require(['./pages/system/classify.vue'],resolve)}
 const sysAccount= (resolve) => {require(['./pages/system/account.vue'],resolve)}
@@ -146,6 +149,9 @@ const routers = [
                {name: 'messages',path:'/message/messages',component: messages},
                {name: 'emails',path:'/message/emails',component: emails},
                {name: 'texts',path:'/message/texts',component: texts},
+                // 数据统计
+               {name: 'userStats',path:'/statistic/user',component: userStats},
+               {name: 'flow',path:'/statistic/flow',component: flow},
                // 财务
                {name: 'manage',path:'/financial/manage/:tabIndex',component: manage},
                {name: 'accounts',path:'/financial/accounts',component: accounts},
