@@ -93,6 +93,17 @@
                                 </el-menu-item-group>
                             </el-submenu>
                             <el-submenu
+                                    index="10" background-color="#304156" text-color="#fff" active-text-color="#fff">
+                                <template slot="title">
+                                    <i class="iconfont icon-tongji"></i>
+                                    <span>数据统计</span>
+                                </template>
+                                <el-menu-item-group>
+                                    <el-menu-item index="流量分析"><router-link to="/statistic/flow">流量分析</router-link></el-menu-item>
+                                    <el-menu-item index="用户分析"><router-link to="/statistic/user">用户分析</router-link></el-menu-item>
+                                </el-menu-item-group>
+                            </el-submenu>
+                            <el-submenu
                                     index="9" background-color="#304156" text-color="#fff" active-text-color="#fff">
                                 <template slot="title">
                                     <i class="iconfont icon-shezhi"></i>
@@ -163,6 +174,8 @@
 //            console.log(this.$refs.menu);
             this.$refs.menu.open(7);
             switch (r) {
+                case 'flow': that.titleName = "流量分析";this.$refs.menu.open(10);break;
+                case 'userStats' : that.titleName = "用户分析";this.$refs.menu.open(10);break;
                 case 'sysClassify': that.titleName = "字典设置";this.$refs.menu.open(9);break;
                 case 'sysAccount' : that.titleName = "账号设置";this.$refs.menu.open(9);break;
                 case 'productPackage' : that.titleName = "产品包";this.$refs.menu.open(7);break;
