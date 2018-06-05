@@ -1,6 +1,6 @@
 <template>
   <div class="survey">
-     <p class="tishi">本页根据昨日数据来计算，而用户管理页根据当前数据计算，两者不一致。</p>
+     <!-- <p class="tishi">本页根据昨日数据来计算，而用户管理页根据当前数据计算，两者不一致。</p> -->
       <div class="article_div">
       <!-- 总概况 -->
       <div class="v_survey">
