@@ -6,9 +6,9 @@
       <div class="v_survey">
         <p class="v_surveytop">昨日流量</p>
         <div class="v_surveybox clearfix">
-          <div><p>浏览量（PV）</p><p>100</p></div>
-          <div><p>访客数（UV）</p><p>100</p></div>
-          <div><p>IP数</p><p>100</p></div>
+          <div><p>浏览量（PV）</p><p>{{yesPV}}</p></div>
+          <div><p>访客数（UV）</p><p>{{yesUV}}</p></div>
+          <div><p>IP数</p><p>{{yesIP}}</p></div>
         </div>
       </div>
       <!-- 图表块 -->
@@ -16,15 +16,15 @@
           <div class="v_myCharttop clearfix">
             <div class="v_myCharttopl">指标趋势图</div>
               <div class="v_myCharttopr">
-                <el-select v-model="status" placeholder="浏览量（PV）" size="mini" @change='getWalletflows'>
-                  <el-option label="浏览量（PV）" value=""></el-option>
-                  <el-option label="访客数（UV）" value="1"></el-option>
-                  <el-option label="IP数" value="2"></el-option>
+                <el-select v-model="status" placeholder="浏览量（PV）" size="mini" @change='getnum(status)'>
+                  <el-option label="浏览量（PV）" value="1"></el-option>
+                  <el-option label="访客数（UV）" value="2"></el-option>
+                  <el-option label="IP数" value="3"></el-option>
                 </el-select>
 
-                <el-select style="margin-left:10px;" v-model="time" placeholder="最近7天" size="mini" @change='getWalletflows'>
-                  <el-option label="最近7天" value=""></el-option>
-                  <el-option label="最近30天" value="1"></el-option>
+                <el-select style="margin-left:10px;" v-model="time" placeholder="最近7天" size="mini" @change='getWalletflows(time)'>
+                  <el-option label="最近7天" value="1"></el-option>
+                  <el-option label="最近30天" value="2"></el-option>
                 </el-select>
               </div>
           </div>
@@ -37,65 +37,27 @@
 
 <script>
     import {statisticsService} from '../../service/statisticsService'
-    // import {common} from '../../assets/js/common/common'
-    // import CKEDITOR from "../../../src/assets/js/common/ckeditor/ckeditor"
-    // let myEditor;// 富文本编辑器
-    // 引入基本模板
-   // let echarts = require('echarts/lib/echarts')
-   // require('echarts/lib/chart/bar')
+    import {common} from '../../assets/js/common/common'
    let echarts = require('echarts')
-
   export default {
     props: [],
     data () {
       return {
-        // 操作区
-        status: '', // 选择需求状态
-        query: '', // 查询条件
-        dicId: '30', //行业状态
-        // 列表
-        tableData: [], //列表数据
-        // 分页
-        inde:1,
-        pages:{
-           no:1,
-           size:10,
-        },
-        totaldata:'',//总额
-
-       startTime:'',         //时间
-       endTime:'',           //时间
-       timeshow:false,          //是否隐藏
-       timetext:'最近30天',
-       time:'最近7天',
-    
-     
-        pickerOptions0: {  
-        disabledDate:(time)=> {  
-          // 最多只能选择3个月的
-
-          let ayearAgo = Date.now() - (31536000000 / 4) 
-          return time.getTime() > Date.now() || time.getTime() < ayearAgo 
-        }
-      }, 
-      pickerOptions1: {  
-        disabledDate :(time)=> {  
-          let aa = this.startTime
-          return time.getTime() > Date.now() || time.getTime() < aa 
-        }  
-       }, 
+        status:'1',
+       time:'1',
+       totalData:{},
+        yesPV:'',
+        yesUV:'',
+        yesIP:'',
+        tendency:[],
+        times:[],
+        datas:[],
+        text:'',
 
       }
     },
-    // components: {pagination},
     mounted () {
-      // let that = this;
-      // that.getList();
-      this.getWalletflows(1)
-    //   this.getUserwallets()
-
-      this.drawLine()
-    
+      this.getWalletflows(this.time)
     },
     methods: {
      drawLine(){
@@ -120,7 +82,7 @@
               ,top:0
             },
             grid: {
-              left: '0%',
+              left: '1%',
               right: '4%',
               bottom: '9%',
               containLabel: true
@@ -128,7 +90,7 @@
             xAxis: {
               type: 'category',
               boundaryGap:false,
-              data:['11.07','11.08','11.09','11.10','11.11','11.12','11.13','11.14','11.15','11.16']
+              data:this.datas
           },
           yAxis: {
               type: 'value'
@@ -138,11 +100,11 @@
           },
           series: [
               {
-                  name:'浏览次数',
+                  name:this.text,
                   type:'line',
                   stack: '总量1',
                   // areaStyle: {normal: {}},
-                  data:['10','22','10','50','13','31','15','10','22','10'],
+                  data:this.times,
                   itemStyle : {normal : {color:'#32A8FF'}},
                   areaStyle:{
                     normal:{
@@ -163,130 +125,48 @@
           ]
         });
     },
-       //时间
-      timebox:function(){
-      	  if(this.timeshow==false){
-                  this.timeshow=true
-      	  }else if(this.timeshow!=false){
-      	  	      this.timeshow=false
-      	  }
-      },
-    times:function(){
-    	  this.timetext='自定义'
+    // 进行筛选
+    getnum(status){
+      let times = new Array();
+      let dates = new Array();
+      for(var i = 0; i < this.tendency.length; i++){
+        switch (Number(status)){
+            case 1:
+                times.push(this.tendency[this.tendency.length - i - 1].pv);
+                this.text = '浏览次数';
+                break;
+            case 2:
+                times.push(this.tendency[this.tendency.length - i - 1].cookiev);
+                this.text = '浏览人数';
+                break;
+            case 3:
+                times.push(this.tendency[this.tendency.length - i - 1].uv);
+                this.text = 'IP数';
+                break;
+        }
+        var date = this.tendency[this.tendency.length - i - 1].date;
+        dates.push(common.getFormatOfDate(date,"MM-dd"));
+      }
+
+      this.times = times.reverse();
+      this.datas = dates.reverse();
+      this.drawLine()
     },
-
-      time:function(id){
-           var now=new Date(this.day)  //当前日期
-            var nowDay = now.getDate(); //当前日
-            var nowMonth = now.getMonth(); //当前月
-            var nowYear = now.getYear(); //当前年
-                nowYear += (nowYear < 2000) ? 1900 : 0;
-            // var newDate=now.getTime()//当前毫秒数
-            if(id==1){
-                 var endDate = new Date(nowYear, nowMonth, nowDay - 1);
-                 var endDates = new Date(nowYear, nowMonth, nowDay);
-                 this.startTime=endDate.getTime()
-                  this.endTime=endDates.getTime() - 1
-                  // document.getElementById('timetext').html('昨天')
-                  this.timetext='昨天'
-            }
-             if(id==2){
-                var nowDayOfWeek = now.getDay(); //今天本周的第几天
-                var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
-                var weekEndDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
-                 this.startTime=weekStartDate.getTime()
-                  this.endTime=weekEndDate.getTime() - 1
-                 // document.getElementById('timetext').text('上周')
-                  this.timetext='上周'
-            }
-             if(id==3){
-               var startTimes = new Date(nowYear, nowMonth, 1);
-                var endDate = new Date(nowYear, nowMonth, nowDay + 1);
-                 this.startTime=startTimes.getTime()
-                  this.endTime=endDate.getTime() - 1
-                  // document.getElementById('timetext').html('本月')
-                   this.timetext='本月'
-            }
-             if(id==4){
-              var monthStartDate = new Date(nowYear, nowMonth - 1, nowDay);
-                var monthEndDate = new Date(nowYear, nowMonth, nowDay);
-                var days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
-                var startTimes=new Date(nowYear, nowMonth - 1, 1);
-                var endTimes=new Date(nowYear, nowMonth - 1, days + 1);
-                 this.startTime=startTimes.getTime()
-                  this.endTime=endTimes.getTime() - 1
-                 // document.getElementById('timetext').html('上月')
-                  this.timetext='上月'
-            }
-             if(id==5){
-                 var todayDate = new Date(nowYear, nowMonth, nowDay - 6);
-                 var endDate = new Date(nowYear, nowMonth, nowDay + 1);
-                 this.startTime=todayDate.getTime()
-                  this.endTime=endDate.getTime() - 1
-                  // document.getElementById('timetext').html('最近7天')
-                   this.timetext='最近7天'
-            }
-             if(id==6){
-             
-                 var todayDate = new Date(nowYear, nowMonth, nowDay - 14);
-                  var endDate = new Date(nowYear, nowMonth, nowDay + 1);
-                 this.startTime=todayDate.getTime()
-                  this.endTime=endDate.getTime() - 1
-                 // document.getElementById('timetext').html('最近15天')
-                  this.timetext='最近15天'
-            }
-             if(id==7){
-                 var todayDate = new Date(nowYear, nowMonth, nowDay - 29);
-                  var endDate = new Date(nowYear, nowMonth, nowDay + 1);
-                 this.startTime=todayDate.getTime()
-                  this.endTime=endDate.getTime() - 1
-                  // document.getElementById('timetext').html('最近30天')
-                   this.timetext='最近30天'
-            }
-            // if(this.startTime!=''){
-            //   this.startTimes=publics.stamp(this.startTime)
-            //  this.endTimes=publics.stamp(this.endTime)
-            // }
-             
-        },
-
-      //分页
-      handleSizeChange(val){
-          this.pages.size=val
-        //   this.getWalletflows()
-      },
-      handleCurrentChange(val){
-          this.pages.no=val
-        //   this.getWalletflows()
-      },
-      // 
-   
       //获得列表
       getWalletflows (item) {
         let that = this;
         statisticsService.getFlow({dateType:item}).then(function (res) { 
-                  if(res.data.code==200){
-                          that.tableData=res.data.datas.records
-                          that.inde=res.data.datas.total
-                  }
+          if(res.data.code==200){
+              that.totalData=res.data.datas
+              that.yesPV = that.totalData.yesterdayAndAll[0].pv
+              that.yesUV = that.totalData.yesterdayAndAll[0].cookiev
+              that.yesIP = that.totalData.yesterdayAndAll[0].uv
+              that.tendency = that.totalData.tendency
+              that.getnum(that.status)
+          }
                   
         });
-      },
-       //获得总额
-      getUserwallets () {
-        let that = this;
-        commonService.getUserwallets().then(function (res) {
-                  if(res.data.code==200){
-                          that.totaldata=res.data.datas
-                  }
-                  
-        });
-      },
- 
-       
-       
-     
-  
+      }
     },
    
   }

@@ -12,6 +12,10 @@ export const statisticsService = {
     getFlow: function (params) {
         return axios.get('/admin/statistics/flow'+ this.getParams(params));
     },
+    // 用户
+    getAdmin: function (params) {
+        return axios.get('/admin/statistics/user'+ this.getParams(params));
+    },
     getParams: function(param){
         let url = '';
         for(let key in param){
