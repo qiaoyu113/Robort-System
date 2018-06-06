@@ -85,15 +85,28 @@ autoCropHeight 默认裁剪高度
       // 图片上传至服务器
       postToService (base64, width, height) {
         let that = this;
-        pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
-          //console.log('截取的图片', res);
-          if(res.data.success){
-            that.$emit('getPictureUrl', res.data.datas);
-            that.dialogCropperVisible = false;
-            that.imgUrl = that.$store.state.picHead + res.data.datas;
-            that.isImageState = 1;
-          }
-        });
+        if(that.$route.name == 'videoDemoAdd' || that.$route.name == 'videoDemoEdit'){
+          pluginService.uploadFileBase64Origin({base64Img: base64, width: width, height: height}).then(function (res) {
+            if(res.data.success){
+              that.$emit('getPictureUrl', res.data.datas.oldImg);
+              that.dialogCropperVisible = false;
+              that.imgUrl = that.$store.state.picHead + res.data.datas.oldImg;
+              that.isImageState = 1;
+            }
+          });
+
+        } else {
+          pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
+            //console.log('截取的图片', res);
+            if(res.data.success){
+              that.$emit('getPictureUrl', res.data.datas);
+              that.dialogCropperVisible = false;
+              that.imgUrl = that.$store.state.picHead + res.data.datas;
+              that.isImageState = 1;
+            }
+          });
+        }
+        
       },
       // 图片截取输出
       finish (type) {

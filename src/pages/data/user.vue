@@ -1,13 +1,13 @@
 <template>
   <div class="survey">
-     <p class="tishi">本页根据昨日数据来计算，而用户管理页根据当前数据计算，两者不一致。</p>
+     <!-- <p class="tishi">本页根据昨日数据来计算，而用户管理页根据当前数据计算，两者不一致。</p> -->
       <div class="article_div">
       <!-- 总概况 -->
       <div class="v_survey">
         <p class="v_surveytop">用户统计</p>
         <div class="v_surveybox clearfix">
           <div><p>总用户数</p><p>{{totalCount}}</p></div>
-          <div><p>昨日新增用户数</p><p>{{yescount}}</p></div>
+          <div><p>新增用户数</p><p>{{yescount}}</p></div>
         </div>
       </div>
       <!-- 图表块 -->

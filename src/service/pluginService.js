@@ -6,6 +6,9 @@ export const pluginService = {
     uploadFileBase64: function (params) {
        return axios.post('/files/base64', qs.stringify(params));
     },
+    uploadFileBase64Origin: function (params) {
+        return axios.post('/files/base64/origin', qs.stringify(params));
+     },
     uploadFile: function (params) {
         return axios.post('/files', params);
     },
