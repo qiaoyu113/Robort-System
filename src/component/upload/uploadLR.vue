@@ -29,7 +29,7 @@ autoCropHeight 默认裁剪高度
     </div>
     <!--截图-->
     <el-dialog title="" :visible.sync="dialogCropperVisible" :show-close="false">
-      <vue-cropper v-if=""
+      <vue-cropper
               ref="cropper"
               :img="option.img"
               :outputSize="option.size"
@@ -41,6 +41,7 @@ autoCropHeight 默认裁剪高度
               :autoCropHeight="options.autoCropHeight"
               :fixed="option.fixed"
               :fixedNumber="options.fixedNumber"
+              full="true"
       ></vue-cropper>
       <span slot="footer" class="dialog-footer">
             <el-button size="mini" @click="cancelImg">取消</el-button>
@@ -62,8 +63,9 @@ autoCropHeight 默认裁剪高度
           info: true,
           size: 1,
           outputType: 'jpeg',
-          canScale: false,
+          canScale: true,
           autoCrop: true,
+          full:true,
           // 开启宽度和高度比例
           fixed: true
         }, //截图
@@ -94,10 +96,8 @@ autoCropHeight 默认裁剪高度
               that.isImageState = 1;
             }
           });
-
         } else {
           pluginService.uploadFileBase64({base64Img: base64, width: width, height: height}).then(function (res) {
-            //console.log('截取的图片', res);
             if(res.data.success){
               that.$emit('getPictureUrl', res.data.datas);
               that.dialogCropperVisible = false;

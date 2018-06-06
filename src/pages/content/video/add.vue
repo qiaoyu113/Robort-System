@@ -4,7 +4,7 @@
       <el-form-item label="视频名称" prop="title">
         <el-input v-model="form.title" size="mini" class="iptFormLen"></el-input>
       </el-form-item>
-      <el-form-item label="图片" prop="pic">
+      <el-form-item label="图片" prop="pic" class="uploadImg">
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl"></upload-img>
       </el-form-item>
       <el-form-item label="选择视频" prop="video">
@@ -110,6 +110,7 @@
         },
         myOption: {
           // 只有自动截图开启 宽度高度才生效
+          fill:true,
           autoCropWidth: 900,
           autoCropHeight: 600,
           // 开启宽度和高度比例
@@ -355,6 +356,7 @@
   }
 </script>
 <style lang="less" scope>
+@import url('../../../assets/css/common/vue_cropper.less');
   .el-form-item__content,.el-form-item__label{line-height:28px;}
   .el-upload-list__item-name [class^=el-icon]{height:auto!important;}
   .el-form-item__content{margin-left:78px;}

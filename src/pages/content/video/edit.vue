@@ -4,7 +4,7 @@
       <el-form-item label="视频名称" prop="title">
         <el-input v-model="form.title" size="mini" class="iptFormLen"></el-input>
       </el-form-item>
-      <el-form-item label="图片" prop="pic">
+      <el-form-item label="图片" prop="pic" class="uploadImg">
         <upload-img :options="myOption" v-on:getPictureUrl="myPicUrl" ref="upCover"></upload-img>
         <!--<div class="picUpload iptFormLen">-->
           <!--<div class="thumb-zone">-->
@@ -144,6 +144,7 @@
         },
         myOption: {
           // 只有自动截图开启 宽度高度才生效
+          fill:true,
           autoCropWidth: 900,
           autoCropHeight: 600,
           // 开启宽度和高度比例
@@ -455,7 +456,8 @@
   .video-list{width:600px;
   .v-des{color:#333;display:flex;justify-content: flex-start; align-items: center;}
   .el-icon-circle-check{margin-left:10px;cursor:pointer;color:#67c23a;display:block;}
-  .el-icon-close{margin-left:10px;cursor:pointer; display:none;}
+  .el-icon-close{margin-left:10p
+  x;cursor:pointer; display:none;}
   .v-des:hover{background:#eee;}
   .v-des:hover .el-icon-circle-check{display:none;}
   .v-des:hover .el-icon-close{display:block;}
@@ -470,4 +472,29 @@
     -webkit-border-radius:1px;
     -moz-border-radius:1px;
     border-radius:1px;}
+    .uploadImg{
+      .el-dialog{
+        width: 1000px !important;
+        height: 710px !important;
+        overflow: visible !important;
+        transform: scale(.8) !important;
+        max-height: 120vh !important;
+        .el-dialog__body{
+          width: 900px !important;
+          height: 600px !important;
+          padding: 10px 50px !important;
+          .vue-cropper{
+            width: 100% !important;
+            height: 100% !important;
+            .cropper-box-canvas{
+              img{
+                width: auto !important;
+                height:100% !important;
+              }
+            }
+          }
+        }
+          
+      }
+    }
 </style>
