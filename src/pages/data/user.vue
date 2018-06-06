@@ -7,7 +7,7 @@
         <p class="v_surveytop">用户统计</p>
         <div class="v_surveybox clearfix">
           <div><p>总用户数</p><p>{{totalCount}}</p></div>
-          <div><p>昨日新增用户数</p><p>{{yescount}}</p></div>
+          <div><p>新增用户数</p><p>{{yescount}}</p></div>
         </div>
       </div>
       <!-- 图表块 -->
