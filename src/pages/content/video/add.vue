@@ -209,7 +209,7 @@
             }).then((results) => {
                 // 上传完成
                 //console.log(results,'上传完成');
-                that.form.video = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+                that.form.video = "https://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
                   let option = {
                     name: fileName,
                     size: Math.floor(limit),
@@ -270,7 +270,7 @@
             }).then((results) => {
                 // 上传完成
                 //console.log(results,'上传完成');
-                that.form.video_en = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+                that.form.video_en = "https://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
                   let option = {
                     name: fileName,
                     size: Math.floor(limit),
