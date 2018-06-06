@@ -248,7 +248,7 @@
           }).then((results) => {
             // 上传完成
             //console.log(results,'上传完成');
-            that.form.video = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+            that.form.video = "https://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
             let option = {
               name: fileName,
               size: Math.floor(limit),
@@ -261,7 +261,7 @@
 
           var obj = document.getElementById('uploadVideo') ;
           obj.select();
-          document.selection.clear();
+          if(document.selection)document.selection.clear();
 //obj.outerHTML=obj.outerHTML;
 
         }else{
@@ -316,7 +316,7 @@
           }).then((results) => {
             // 上传完成
             //console.log(results,'上传完成');
-            that.form.video_en = "http://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
+            that.form.video_en = "https://shiatang.oss-cn-shanghai.aliyuncs.com/"+key;
             let option = {
               name: fileName,
               size: Math.floor(limit),
@@ -329,7 +329,7 @@
 
           var obj = document.getElementById('uploadVideo') ;
           obj.select();
-          document.selection.clear();
+          if(document.selection)document.selection.clear();
 //obj.outerHTML=obj.outerHTML;
 
         }else{
@@ -378,14 +378,15 @@
             that.$refs.upCover_en.imgUrl = that.$store.state.picHead + obj.cover_en; // 图片显示路径
             let arr = that.form.video ? that.form.video.split('/'):[];
             let arr_en = that.form.video_en ? that.form.video_en.split('/'):[];
-            that.fileList =[{
-              name: arr[arr.length-1],
-              size: '',
-            }];
-            that.fileList_en =[{
+              that.fileList = (arr.length >0) ?[{
+                name: arr[arr.length - 1],
+                size: '',
+            }]:[]
+            that.fileList_en = (arr_en.length >0) ?[{
               name: arr_en[arr.length-1],
               size: '',
-            }];
+            }]:[];
+//              console.log(that.form.video_en,arr_en,that.fileList_en);
             setTimeout(function(){
                 myEditor.setData(that.form.desc);
                 myEditor_en.setData(that.form.desc_en);

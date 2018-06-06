@@ -8,6 +8,10 @@ CKEDITOR.editorConfig = function( config ) {
     // For complete reference see:
     // config.extraPlugins = 'floatpanel,sourcearea';
 
+    config.extraPlugins = '3rdVideo,sourcearea,lineheight';
+    config.allowedContent = true;
+    config.extraAllowedContent = 'iframe[*]';
+
     config.toolbarGroups = [ // 定义工具
         { name: 'document', groups: [ 'mode', 'undo'] },
         { name: 'links', groups: [ 'links' ] },
@@ -20,6 +24,7 @@ CKEDITOR.editorConfig = function( config ) {
         // { name: 'clipboard', groups: [ 'clipboard' ] },
         // { name: 'forms', groups: [ 'forms' ] },
         { name: 'tools', groups: [ 'tools' ] },
+        { name: 'others', groups: [ 'others' ] }
     ];
 
     config.removeButtons = 'Font,Smiley,Save,Print,NewPage,Templates,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CreateDiv,Language,Anchor,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Styles,SelectAll,Find,Replace,Flash,Superscript,Subscript,BidiLtr,BidiRtl';
