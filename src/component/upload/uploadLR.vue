@@ -50,7 +50,7 @@ autoCropHeight 默认裁剪高度
     </el-dialog>
   </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
   import VueCropper from 'vue-cropper'
   import {pluginService} from '../../service/pluginService'
 
@@ -90,9 +90,9 @@ autoCropHeight 默认裁剪高度
         if(that.$route.name == 'videoDemoAdd' || that.$route.name == 'videoDemoEdit'){
           pluginService.uploadFileBase64Origin({base64Img: base64, width: width, height: height}).then(function (res) {
             if(res.data.success){
-              that.$emit('getPictureUrl', res.data.datas.oldImg);
+              that.$emit('getPictureUrl', [res.data.datas.oldImg,res.data.datas.zipImg]);
               that.dialogCropperVisible = false;
-              that.imgUrl = that.$store.state.picHead + res.data.datas.oldImg;
+              that.imgUrl = that.$store.state.picHead + res.data.datas.zipImg;
               that.isImageState = 1;
             }
           });

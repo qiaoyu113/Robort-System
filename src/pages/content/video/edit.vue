@@ -96,7 +96,7 @@
     <!--</el-dialog>-->
   </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
   import uploadImg from '../../../component/upload/uploadLR.vue'
   import {pluginService} from '../../../service/pluginService'
   import {contentService} from '../../../service/contentService'
@@ -111,6 +111,8 @@
           title_en: '', // 名称
           pic: '', // 图片
           pic_en: '', // 图片
+          originCover:'', //原图
+          originCover_en:'',//原图
           video: '', // 视频
           video_en: '', // 视频
           desc: '' ,//简介
@@ -179,6 +181,8 @@
               id: that.$route.params.videoId,
               name: that.form.title,
               name_en: that.form.title_en,
+              originCover:that.form.originCover,
+              originCover_en:that.form.originCover_en,
               cover: that.form.pic,
               cover_en: that.form.pic_en,
               video: that.form.video,
@@ -200,12 +204,14 @@
       // 获得封面图路径
       myPicUrl (val) {
         let that = this;
-        that.form.pic = val;// 封面图
+        that.form.pic = val[1];// 封面图
+        that.form.originCover = val[0];// 封面图
       },
       // 获得封面图路径
       myPicUrl_en (val) {
         let that = this;
-        that.form.pic_en = val;// 封面图
+        that.form.pic_en = val[1];// 封面图
+        that.form.originCover_en = val[0];// 封面图
       },
       // 视频上传
       uploadVideo (event) {

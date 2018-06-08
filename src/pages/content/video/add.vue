@@ -62,7 +62,7 @@
     </el-form>
   </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
   import uploadImg from '../../../component/upload/uploadLR.vue'
   import {pluginService} from '../../../service/pluginService'
   import {contentService} from '../../../service/contentService'
@@ -79,6 +79,8 @@
           pic_en: '', // 图片
           video: '', // 视频
           video_en: '', // 视频
+          originCover:'', //原图
+          originCover_en:'',//原图
           desc: '', //简介
           desc_en: '' //简介
         }, // 新增表单
@@ -140,6 +142,8 @@
           if (valid) { //验证成功
             //console.log('tijiao', that.form);
             contentService.addVideoDemo({
+                originCover:that.form.originCover,
+                originCover_en:that.form.originCover_en,
                 name: that.form.title,
                 name_en: that.form.title_en,
                 cover: that.form.pic,
@@ -162,12 +166,14 @@
       // 图片上传
       myPicUrl (val) {
         let that = this;
-        that.form.pic = val;// 封面图
+        that.form.pic = val[1];// 封面图
+        that.form.originCover = val[0];// 封面图
       },
       // 图片上传
       myPicUrl_en (val) {
         let that = this;
-        that.form.pic_en = val;// 封面图
+        that.form.pic_en = val[1];// 封面图
+        that.form.originCover_en = val[0];// 封面图
       },
       // 视频上传
       uploadVideo (event) {
